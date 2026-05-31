@@ -42,10 +42,18 @@ const getRelativeTime = (timestamp: number, lang: 'ar' | 'en'): string => {
 
 export default function ProfilePage() {
   const { t, lang, dir } = useT();
-  const { firebaseUser, userProfile, refreshProfile } = useAuth();
+  const { firebaseUser, userProfile, loading, refreshProfile } = useAuth();
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState('');
   const [saving, setSaving] = useState(false);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center pt-16">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   const completedCount = Object.values(userProfile?.progress || {}).filter(v => v === 'completed').length;
   const totalLessons = FREE_LESSONS.length + PREMIUM_LESSONS.length;

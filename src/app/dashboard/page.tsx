@@ -9,7 +9,15 @@ import { FREE_LESSONS, PREMIUM_LESSONS } from '@/lib/constants';
 
 export default function DashboardPage() {
   const { t, lang } = useT();
-  const { userProfile, firebaseUser } = useAuth();
+  const { userProfile, firebaseUser, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center pt-16">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (!firebaseUser || !userProfile) {
     return (

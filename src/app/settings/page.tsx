@@ -15,7 +15,7 @@ import toast from 'react-hot-toast';
 
 export default function SettingsPage() {
   const { t, lang, setLang, dir } = useT();
-  const { firebaseUser, userProfile, refreshProfile } = useAuth();
+  const { firebaseUser, userProfile, loading, refreshProfile } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   const [editName, setEditName] = useState('');
@@ -25,6 +25,14 @@ export default function SettingsPage() {
   const [pwCurrent, setPwCurrent] = useState('');
   const [pwNew, setPwNew] = useState('');
   const [pwSaving, setPwSaving] = useState(false);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center pt-16">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (!firebaseUser || !userProfile) {
     return (
