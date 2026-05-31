@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
-import { getUserProfile, createUserDocument } from '@/lib/auth';
+import { getUserProfile, createUserDocument, handleGoogleRedirect } from '@/lib/auth';
 import type { User } from '@/lib/types';
 
 interface AuthContextType {
@@ -53,11 +53,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setFirebaseUser(user);
       if (user) {
         try {
-          let profile = await getUserProfile(user.uid);
-          if (!profile && user.email) {
-            profile = await createUserDocument(user);
+          const redirectProfile = await handleGoogleRedirect();
+          if (redirectProfile) {
+            setUserProfile(redirectProfile);
+          } else {
+            let profile = await getUserProfile(user.uid);
+            if (!profile && user.email) {
+              profile = await createUserDocument(user);
+            }
+            setUserProfile(profile);
           }
-          setUserProfile(profile);
         } catch {
           setUserProfile(null);
         }

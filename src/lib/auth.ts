@@ -7,9 +7,11 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   User as FirebaseUser,
 } from 'firebase/auth';
-import { doc, setDoc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 import type { User } from './types';
 
@@ -68,11 +70,7 @@ export const loginUser = async (email: string, password: string): Promise<User> 
   return createUserDocument(result.user);
 };
 
-export const signInWithGoogle = async (): Promise<User> => {
-  const provider = new GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: 'select_account' });
-  const result = await signInWithPopup(auth, provider);
-  const user = result.user;
+const saveGoogleUser = async (user: FirebaseUser): Promise<User> => {
   const existing = await getUserProfile(user.uid);
   if (existing) {
     await updateDoc(doc(db, 'users', user.uid), {
@@ -80,9 +78,35 @@ export const signInWithGoogle = async (): Promise<User> => {
       displayName: user.displayName || existing.displayName,
       photoURL: user.photoURL || existing.photoURL,
     });
-    return { ...existing, lastLoginAt: Date.now(), displayName: user.displayName || existing.displayName, photoURL: user.photoURL || existing.photoURL };
+    return {
+      ...existing,
+      lastLoginAt: Date.now(),
+      displayName: user.displayName || existing.displayName,
+      photoURL: user.photoURL || existing.photoURL,
+    };
   }
   return createUserDocument(user);
+};
+
+export const signInWithGoogle = async (): Promise<User> => {
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  try {
+    const result = await signInWithPopup(auth, provider);
+    return saveGoogleUser(result.user);
+  } catch (popupErr: any) {
+    if (popupErr?.code === 'auth/popup-blocked' || popupErr?.code === 'auth/popup-closed-by-user') {
+      await signInWithRedirect(auth, provider);
+      return new Promise(() => {});
+    }
+    throw popupErr;
+  }
+};
+
+export const handleGoogleRedirect = async (): Promise<User | null> => {
+  const result = await getRedirectResult(auth);
+  if (!result) return null;
+  return saveGoogleUser(result.user);
 };
 
 export const logoutUser = () => signOut(auth);

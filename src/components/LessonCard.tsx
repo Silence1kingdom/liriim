@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { FiClock, FiLock, FiUnlock, FiCheckCircle } from 'react-icons/fi';
+import { useT } from '@/contexts/LangContext';
 
 interface LessonCardProps {
   id: string;
@@ -14,6 +15,7 @@ interface LessonCardProps {
 }
 
 export default function LessonCard({ id, title, description, icon, duration, type, isCompleted }: LessonCardProps) {
+  const { t } = useT();
   return (
     <Link
       href={`/lessons/${id}`}
@@ -30,11 +32,11 @@ export default function LessonCard({ id, title, description, icon, duration, typ
         <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
         <span className="text-text-muted text-xs font-mono mr-auto flex items-center gap-1">
           {type === 'free' ? <FiUnlock size={10} /> : <FiLock size={10} />}
-          {type === 'free' ? 'free.sh' : 'premium.sh'}
+          {type === 'free' ? t('lessonCard.free') : t('lessonCard.premium')}
         </span>
         {isCompleted && (
           <span className="flex items-center gap-1 text-primary text-xs font-mono">
-            <FiCheckCircle size={10} /> done
+            <FiCheckCircle size={10} /> {t('lessonCard.completed')}
           </span>
         )}
       </div>
@@ -46,7 +48,7 @@ export default function LessonCard({ id, title, description, icon, duration, typ
           <span className={`font-mono text-xs px-2 py-1 rounded border
             ${type === 'free' ? 'text-primary bg-primary/10 border-primary/20' : 'text-accent bg-accent/10 border-accent/20'}`}
           >
-            {type === 'free' ? '$ free' : '# premium'}
+            {type === 'free' ? t('lessonCard.freeTag') : t('lessonCard.premiumTag')}
           </span>
         </div>
         <h3 className="text-lg font-bold text-text mb-2 group-hover:text-primary transition-colors font-mono">{title}</h3>

@@ -12,10 +12,10 @@ interface HistoryEntry {
 }
 
 export default function TerminalPlayground() {
-  const { lang } = useT();
-  const [fs, setFs] = useState<FileNode>(() => getInitialFS());
+  const { lang, t } = useT();
   const [cwd, setCwd] = useState('/home/user');
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [fs, setFs] = useState<FileNode>(() => getInitialFS());
+  const [history, setHistory] = useState<{ input: string; output: string; error?: boolean }[]>([]);
   const [currentInput, setCurrentInput] = useState('');
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -23,9 +23,7 @@ export default function TerminalPlayground() {
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
-  const welcomeMessage = lang === 'ar'
-    ? 'مرحباً بك في تيرمينال B_20!\nاكتب help لعرض الأوامر المتاحة.\n'
-    : 'Welcome to B_20 Terminal!\nType help for available commands.\n';
+  const welcomeMessage = t('terminal.welcome');
 
   useEffect(() => {
     if (!history.length) {
@@ -127,14 +125,14 @@ export default function TerminalPlayground() {
           <button
             onClick={resetTerminal}
             className="text-text-muted hover:text-primary transition-colors p-1"
-            title={lang === 'ar' ? 'إعادة تعيين' : 'Reset'}
+            title={t('playground.reset')}
           >
             <FiRefreshCw size={12} />
           </button>
           <button
             onClick={() => setHistory([])}
             className="text-text-muted hover:text-primary transition-colors p-1"
-            title={lang === 'ar' ? 'مسح الشاشة' : 'Clear'}
+            title={t('playground.clear')}
           >
             <FiTrash2 size={12} />
           </button>
@@ -186,10 +184,10 @@ export default function TerminalPlayground() {
       <div className="flex items-center justify-between px-3 py-1.5 border-t border-border bg-secondary/50">
         <span className="text-[10px] text-text-muted font-mono flex items-center gap-1">
           <FiInfo size={10} />
-          {lang === 'ar' ? 'اضغط ↑↓ للتاريخ' : '↑↓ history'}
+          {t('terminal.history')}
         </span>
         <span className="text-[10px] text-text-muted font-mono">
-          {lang === 'ar' ? 'اكتب help للأوامر' : 'Type help for commands'}
+          {t('terminal.typeHelp')}
         </span>
       </div>
     </div>

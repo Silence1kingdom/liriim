@@ -10,9 +10,7 @@ interface TerminalDemoProps {
 }
 
 export default function TerminalDemo({ commands, autoRun = false }: TerminalDemoProps) {
-  const { lang } = useT();
-  const executingText = lang === 'ar' ? 'جاري التنفيذ...' : 'Executing...';
-  const runText = lang === 'ar' ? 'تشغيل الأمر' : 'Run command';
+  const { lang, t } = useT();
   const [visibleLines, setVisibleLines] = useState<{ cmd: string; output: string }[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [currentCmd, setCurrentCmd] = useState('');
@@ -77,7 +75,7 @@ export default function TerminalDemo({ commands, autoRun = false }: TerminalDemo
         {showOutput && !isTyping && (
           <div className="flex items-center gap-2 text-text-muted ml-5">
             <span className="w-2 h-5 bg-primary animate-pulse" />
-            <span className="text-xs">{executingText}</span>
+            <span className="text-xs">{t('terminal.executing')}</span>
           </div>
         )}
         {!autoRun && (
@@ -91,7 +89,7 @@ export default function TerminalDemo({ commands, autoRun = false }: TerminalDemo
             }}
             className="mt-2 px-3 py-1 bg-primary/10 text-primary text-xs rounded hover:bg-primary/20 transition-colors font-mono"
           >
-            $ {runText}
+            $ {t('terminal.run')}
           </button>
         )}
       </div>

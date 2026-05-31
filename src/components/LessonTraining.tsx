@@ -19,7 +19,7 @@ interface LessonTrainingProps {
 }
 
 export default function LessonTraining({ steps, lessonId }: LessonTrainingProps) {
-  const { lang } = useT();
+  const { lang, t } = useT();
   const [fs, setFs] = useState<FileNode>(() => getInitialFS());
   const [history, setHistory] = useState<{ input: string; output: string; error?: boolean }[]>([]);
   const [currentInput, setCurrentInput] = useState('');
@@ -29,9 +29,7 @@ export default function LessonTraining({ steps, lessonId }: LessonTrainingProps)
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
-  const welcomeMsg = lang === 'ar'
-    ? 'تدريب تفاعلي: قم بتطبيق الأوامر التي تعلمتها في هذا الدرس.\n'
-    : 'Interactive training: Practice the commands you learned in this lesson.\n';
+  const welcomeMsg = t('training.welcome');
 
   useEffect(() => {
     if (!history.length) {
@@ -113,10 +111,10 @@ export default function LessonTraining({ steps, lessonId }: LessonTrainingProps)
         <span className="terminal-dot terminal-dot-green" />
         <span className="text-text-muted text-xs mr-auto">b20@training:~/lesson-{lessonId || 'practice'}</span>
         <span className="flex items-center gap-1">
-          <button onClick={resetTraining} className="text-text-muted hover:text-primary transition-colors p-1" title={lang === 'ar' ? 'إعادة تعيين التدريب' : 'Reset training'}>
+          <button onClick={resetTraining} className="text-text-muted hover:text-primary transition-colors p-1" title={t('training.reset')}> 
             <FiRefreshCw size={12} />
           </button>
-          <button onClick={() => setHistory([])} className="text-text-muted hover:text-primary transition-colors p-1" title={lang === 'ar' ? 'مسح' : 'Clear'}>
+          <button onClick={() => setHistory([])} className="text-text-muted hover:text-primary transition-colors p-1" title={t('training.clear')}> 
             <FiTrash2 size={12} />
           </button>
           <FiTerminal size={12} className="text-primary ml-1" />
@@ -127,7 +125,7 @@ export default function LessonTraining({ steps, lessonId }: LessonTrainingProps)
         <div className="flex items-center gap-2 mb-1.5">
           <span className="flex items-center gap-1 text-xs font-bold text-text">
             <FiTerminal size={12} className="text-primary" />
-            {lang === 'ar' ? `تدريب الدرس (${completedSteps.size}/${steps.length})` : `Lesson Training (${completedSteps.size}/${steps.length})`}
+            {t('training.header')} ({completedSteps.size}/{steps.length})
           </span>
         </div>
         <div className="flex gap-1 mb-2">
@@ -159,9 +157,7 @@ export default function LessonTraining({ steps, lessonId }: LessonTrainingProps)
             className="flex items-center gap-1 text-[11px] text-text-muted hover:text-primary transition-colors"
           >
             <FiHelpCircle size={11} />
-            {showHint
-              ? (lang === 'ar' ? 'إخفاء التلميح' : 'Hide hint')
-              : (lang === 'ar' ? 'عرض تلميح' : 'Show hint')}
+            {showHint ? t('training.hideHint') : t('training.showHint')}
           </button>
           {showHint && (
             <p className="text-[11px] text-accent leading-relaxed">
@@ -175,7 +171,7 @@ export default function LessonTraining({ steps, lessonId }: LessonTrainingProps)
             onClick={() => completeStep(activeStep)}
             className="mt-2 text-xs text-primary hover:text-primary-dark transition-colors font-semibold"
           >
-            {lang === 'ar' ? 'تخطي إلى التالي ←' : 'Skip to next →'}
+            {t('training.skipNext')}
           </button>
         )}
       </div>
@@ -222,7 +218,7 @@ export default function LessonTraining({ steps, lessonId }: LessonTrainingProps)
         <div className="px-4 py-3 bg-primary/5 border-t border-border">
           <p className="text-primary text-sm font-semibold flex items-center gap-2">
             <FiCheckCircle />
-            {lang === 'ar' ? 'أحسنت! أكملت جميع التدريبات.' : 'Great job! You completed all exercises.'}
+            {t('training.done')}
           </p>
         </div>
       )}

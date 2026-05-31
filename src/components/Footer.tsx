@@ -3,8 +3,10 @@
 import Link from 'next/link';
 import { FiTerminal, FiGithub, FiYoutube, FiTwitter, FiFacebook, FiHeart } from 'react-icons/fi';
 import { SITE_NAME_AR } from '@/lib/constants';
+import { useT } from '@/contexts/LangContext';
 
 export default function Footer() {
+  const { t } = useT();
   return (
     <footer className="bg-surface border-t border-border mt-20">
       {/* ASCII art divider */}
@@ -30,7 +32,7 @@ export default function Footer() {
             <p className="text-text-muted text-sm leading-relaxed font-mono">
               $ cat /etc/b20/description
               <br />
-              <span className="text-primary">منصة تعليمية عربية متخصصة في تعليم أوامر لينكس وأدوات التيرمينال من الصفر إلى الاحتراف.</span>
+              <span className="text-primary">{t('footer.brand')}</span>
             </p>
           </div>
 

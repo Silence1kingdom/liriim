@@ -125,10 +125,27 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'profile.email': { ar: 'البريد الإلكتروني', en: 'Email' },
   'profile.subscription': { ar: 'الاشتراك', en: 'Subscription' },
   'profile.createdAt': { ar: 'تاريخ الإنشاء', en: 'Created At' },
+  'profile.lastLogin': { ar: 'آخر تسجيل دخول', en: 'Last Login' },
   'profile.free': { ar: 'حساب مجاني', en: 'Free Account' },
   'profile.premium': { ar: 'مشترك في الباقة المدفوعة', en: 'Premium Subscriber' },
   'profile.dashboard': { ar: 'لوحة المستخدم', en: 'Dashboard' },
   'profile.courses': { ar: 'استعرض الكورسات', en: 'Browse Courses' },
+  'profile.stats': { ar: 'إحصائيات التعلم', en: 'Learning Stats' },
+  'profile.completedLessons': { ar: 'الدروس المكتملة', en: 'Completed Lessons' },
+  'profile.totalProgress': { ar: 'التقدم العام', en: 'Overall Progress' },
+  'profile.accountInfo': { ar: 'معلومات الحساب', en: 'Account Info' },
+  'profile.accountType': { ar: 'نوع الحساب', en: 'Account Type' },
+  'profile.memberSince': { ar: 'عضو منذ', en: 'Member Since' },
+  'profile.quickLinks': { ar: 'روابط سريعة', en: 'Quick Links' },
+  'profile.playground': { ar: 'التيرمينال التفاعلي', en: 'Terminal Playground' },
+  'profile.settings': { ar: 'إعدادات الحساب', en: 'Account Settings' },
+  'profile.editProfile': { ar: 'تعديل الملف الشخصي', en: 'Edit Profile' },
+  'profile.save': { ar: 'حفظ التغييرات', en: 'Save Changes' },
+  'profile.cancel': { ar: 'إلغاء', en: 'Cancel' },
+  'profile.editTitle': { ar: 'تعديل الملف الشخصي', en: 'Edit Profile' },
+  'profile.displayName': { ar: 'الاسم المعروض', en: 'Display Name' },
+  'profile.updated': { ar: 'تم تحديث الملف الشخصي', en: 'Profile updated' },
+  'profile.loginRequired': { ar: 'يرجى تسجيل الدخول أولاً', en: 'Please login first' },
 
   // Courses
   'courses.title': { ar: 'الكورسات', en: 'Courses' },
@@ -264,6 +281,27 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'training.hint': { ar: 'تلميح', en: 'Hint' },
   'training.hideHint': { ar: 'إخفاء التلميح', en: 'Hide hint' },
   'training.showHint': { ar: 'عرض تلميح', en: 'Show hint' },
+
+  // Terminal (standalone)
+  'terminal.run': { ar: 'تشغيل الأمر', en: 'Run command' },
+  'terminal.executing': { ar: 'جاري التنفيذ...', en: 'Executing...' },
+  'terminal.welcome': { ar: 'مرحباً بك في تيرمينال B_20!\nاكتب help لعرض الأوامر المتاحة.\n', en: 'Welcome to B_20 Terminal!\nType help for available commands.\n' },
+  'terminal.history': { ar: 'اضغط ↑↓ للتاريخ', en: '↑↓ history' },
+  'terminal.typeHelp': { ar: 'اكتب help للأوامر', en: 'Type help for commands' },
+
+  // Training (additional)
+  'training.header': { ar: 'تدريب الدرس', en: 'Lesson Training' },
+  'training.skipNext': { ar: 'تخطي إلى التالي ←', en: 'Skip to next →' },
+  'training.reset': { ar: 'إعادة تعيين التدريب', en: 'Reset training' },
+  'training.clear': { ar: 'مسح', en: 'Clear' },
+  'training.welcome': { ar: 'تدريب تفاعلي: قم بتطبيق الأوامر التي تعلمتها في هذا الدرس.\n', en: 'Interactive training: Practice the commands you learned in this lesson.\n' },
+
+  // Lesson Card
+  'lessonCard.free': { ar: 'free.sh', en: 'free.sh' },
+  'lessonCard.premium': { ar: 'premium.sh', en: 'premium.sh' },
+  'lessonCard.completed': { ar: 'مكتمل', en: 'done' },
+  'lessonCard.freeTag': { ar: '$ مجاني', en: '$ free' },
+  'lessonCard.premiumTag': { ar: '# مدفوع', en: '# premium' },
 
   // Free lessons page
   'free.title': { ar: 'الدورات المجانية', en: 'Free Courses' },
