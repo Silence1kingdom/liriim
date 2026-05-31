@@ -5,6 +5,9 @@ import {
   updateProfile,
   sendPasswordResetEmail,
   onAuthStateChanged,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  updatePassword as firebaseUpdatePassword,
   GoogleAuthProvider,
   signInWithPopup,
   signInWithRedirect,
@@ -112,6 +115,14 @@ export const handleGoogleRedirect = async (): Promise<User | null> => {
 export const logoutUser = () => signOut(auth);
 
 export const resetPassword = (email: string) => sendPasswordResetEmail(auth, email);
+
+export const updatePassword = async (currentPassword: string, newPassword: string): Promise<void> => {
+  const user = auth.currentUser;
+  if (!user || !user.email) throw new Error('No authenticated user');
+  const credential = EmailAuthProvider.credential(user.email, currentPassword);
+  await reauthenticateWithCredential(user, credential);
+  await firebaseUpdatePassword(user, newPassword);
+};
 
 export const getUserProfile = async (uid: string): Promise<User | null> => {
   const docSnap = await getDoc(doc(db, 'users', uid));

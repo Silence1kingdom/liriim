@@ -14,6 +14,7 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'nav.about': { ar: 'عن المنصة', en: 'About' },
   'nav.contact': { ar: 'اتصل بنا', en: 'Contact' },
   'nav.dashboard': { ar: 'لوحة المستخدم', en: 'Dashboard' },
+  'nav.profile': { ar: 'الملف الشخصي', en: 'Profile' },
   'nav.admin': { ar: 'لوحة التحكم', en: 'Admin Panel' },
   'nav.login': { ar: 'دخول', en: 'Login' },
   'nav.register': { ar: 'اشتراك', en: 'Register' },
@@ -250,6 +251,19 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'admin.manageUsersDesc': { ar: 'عرض وإدارة المستخدمين', en: 'View and manage users' },
   'admin.siteSettings': { ar: 'إعدادات الموقع', en: 'Site Settings' },
   'admin.siteSettingsDesc': { ar: 'تخصيص إعدادات المنصة', en: 'Customize platform settings' },
+
+  // Settings
+  'settings.title': { ar: 'إعدادات الحساب', en: 'Account Settings' },
+  'settings.theme': { ar: 'السمة', en: 'Theme' },
+  'settings.language': { ar: 'اللغة', en: 'Language' },
+  'settings.account': { ar: 'معلومات الحساب', en: 'Account Details' },
+  'settings.darkMode': { ar: 'الوضع الليلي', en: 'Dark Mode' },
+  'settings.lightMode': { ar: 'الوضع النهاري', en: 'Light Mode' },
+  'settings.arabic': { ar: 'العربية', en: 'Arabic' },
+  'settings.english': { ar: 'الإنجليزية', en: 'English' },
+  'settings.profile': { ar: 'الملف الشخصي', en: 'View Profile' },
+  'settings.dashboard': { ar: 'لوحة المستخدم', en: 'Go to Dashboard' },
+  'settings.loginRequired': { ar: 'يرجى تسجيل الدخول أولاً', en: 'Please login first' },
 
   // Common
   'common.loading': { ar: 'جاري التحميل...', en: 'Loading...' },

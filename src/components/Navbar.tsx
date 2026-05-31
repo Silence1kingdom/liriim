@@ -94,7 +94,7 @@ export default function Navbar() {
             {firebaseUser ? (
               <div className={`flex items-center gap-2 ${dir === 'rtl' ? 'mr-2 pr-2 border-r' : 'ml-2 pl-2 border-l'} border-border`}>
                 <Link
-                  href="/dashboard"
+                  href="/profile"
                   className="flex items-center gap-2 px-3 py-1.5 text-sm text-text hover:text-primary transition-colors rounded-lg hover:bg-surface-light"
                 >
                   {userProfile?.photoURL ? (
@@ -102,7 +102,7 @@ export default function Navbar() {
                   ) : (
                     <FiUser size={14} />
                   )}
-                  <span className="font-mono text-xs max-w-[100px] truncate">{userProfile?.displayName || t('nav.dashboard')}</span>
+                  <span className="font-mono text-xs max-w-[100px] truncate">{userProfile?.displayName || t('nav.profile')}</span>
                 </Link>
                 <button
                   onClick={handleLogout}
@@ -191,8 +191,8 @@ export default function Navbar() {
                     <p className="text-text-muted text-xs truncate">{firebaseUser.email}</p>
                   </div>
                 </div>
-                <MobileLink href="/dashboard" onClick={() => setIsOpen(false)} active={isActive('/dashboard')} dir={dir}>
-                  <span className="flex items-center gap-2"><FiUser size={14} /> {t('nav.dashboard')}</span>
+                <MobileLink href="/profile" onClick={() => setIsOpen(false)} active={isActive('/profile')} dir={dir}>
+                  <span className="flex items-center gap-2"><FiUser size={14} /> {t('nav.profile')}</span>
                 </MobileLink>
                 <button onClick={handleLogout} className="w-full text-left py-2.5 px-3 text-red-400 hover:bg-red-400/5 rounded-lg transition-colors flex items-center gap-2 text-sm">
                   <FiLogOut size={14} /> {t('nav.logout')}

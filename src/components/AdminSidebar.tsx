@@ -2,24 +2,26 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useT } from '@/contexts/LangContext';
 import { FiHome, FiBook, FiGrid, FiUsers, FiSettings, FiTerminal, FiArrowRight } from 'react-icons/fi';
 
-const adminLinks = [
-  { href: '/admin', label: 'لوحة التحكم', icon: FiHome },
-  { href: '/admin/lessons', label: 'الدروس', icon: FiBook },
-  { href: '/admin/categories', label: 'التصنيفات', icon: FiGrid },
-  { href: '/admin/users', label: 'المستخدمين', icon: FiUsers },
-  { href: '/admin/settings', label: 'الإعدادات', icon: FiSettings },
-];
-
 export default function AdminSidebar() {
+  const { t, dir } = useT();
   const pathname = usePathname();
 
+  const adminLinks = [
+    { href: '/admin', label: t('admin.dashboard'), icon: FiHome },
+    { href: '/admin/lessons', label: t('admin.lessons'), icon: FiBook },
+    { href: '/admin/categories', label: t('admin.categories'), icon: FiGrid },
+    { href: '/admin/users', label: t('admin.users'), icon: FiUsers },
+    { href: '/admin/settings', label: t('admin.settings'), icon: FiSettings },
+  ];
+
   return (
-    <aside className="w-64 bg-surface border-l border-border min-h-screen p-4 hidden lg:block">
+    <aside className="w-64 bg-surface border-l border-border min-h-screen p-4 hidden lg:block" dir={dir}>
       <Link href="/admin" className="flex items-center gap-2 text-primary font-bold text-lg mb-8">
         <FiTerminal />
-        لوحة الإدارة
+        {t('admin.dashboard')}
       </Link>
       <nav className="space-y-1">
         {adminLinks.map((link) => {
@@ -45,7 +47,7 @@ export default function AdminSidebar() {
         className="flex items-center gap-2 mt-8 px-4 py-3 text-text-muted hover:text-primary text-sm transition-colors"
       >
         <FiArrowRight />
-        العودة للموقع
+        {t('admin.backToSite')}
       </Link>
     </aside>
   );
