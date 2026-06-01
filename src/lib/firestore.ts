@@ -95,6 +95,10 @@ export const saveSiteSettings = async (data: Partial<SiteSettings>) => {
   await setDoc(doc(db, 'settings', SETTINGS_DOC_ID), data, { merge: true });
 };
 
+export const resetSiteSettings = async (defaults: SiteSettings) => {
+  await setDoc(doc(db, 'settings', SETTINGS_DOC_ID), defaults);
+};
+
 // Quiz Results
 export const saveQuizResult = async (userId: string, result: QuizResult) => {
   await setDoc(doc(db, 'users', userId, 'quizResults', result.lessonId), result);

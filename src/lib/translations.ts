@@ -237,6 +237,8 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'footer.contact': { ar: 'اتصل بنا', en: 'Contact Us' },
   'footer.social': { ar: 'تواصل معنا', en: 'Follow Us' },
   'footer.copyright': { ar: 'جميع الحقوق محفوظة.', en: 'All rights reserved.' },
+  'footer.rights': { ar: 'جميع الحقوق محفوظة', en: 'All rights reserved' },
+  'footer.noSocial': { ar: 'لا توجد روابط تواصل بعد', en: 'No social links configured' },
 
   // Admin
   'admin.dashboard': { ar: 'لوحة التحكم', en: 'Dashboard' },
@@ -661,6 +663,10 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'admin.settings.saveBtn': { ar: 'حفظ الإعدادات', en: 'Save Settings' },
   'admin.settings.saveSuccess': { ar: 'تم حفظ الإعدادات', en: 'Settings saved' },
   'admin.settings.saveError': { ar: 'فشل الحفظ', en: 'Failed to save' },
+  'admin.settings.resetBtn': { ar: 'إعادة تعيين', en: 'Reset to Defaults' },
+  'admin.settings.resetConfirm': { ar: 'هل أنت متأكد؟ سيتم إعادة تعيين جميع الإعدادات إلى القيم الافتراضية.', en: 'Are you sure? All settings will be reset to defaults.' },
+  'admin.settings.resetSuccess': { ar: 'تم إعادة التعيين إلى الإعدادات الافتراضية', en: 'Settings reset to defaults' },
+  'admin.settings.resetError': { ar: 'فشل إعادة التعيين', en: 'Failed to reset settings' },
 
   'admin.seed.title': { ar: 'إعداد الأدمن', en: 'Admin Setup' },
   'admin.seed.desc': { ar: 'استخدم هذه الصفحة لترقية حسابك إلى أدمن. هذه العملية مخصصة للمرة الأولى فقط.', en: 'Use this page to upgrade your account to admin. This is for initial setup only.' },

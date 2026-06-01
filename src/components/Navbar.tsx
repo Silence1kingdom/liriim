@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useT } from '@/contexts/LangContext';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { logoutUser } from '@/lib/auth';
-import { SITE_ABBR } from '@/lib/constants';
 import { FiMenu, FiX, FiTerminal, FiLogOut, FiUser, FiSun, FiMoon, FiGlobe, FiCommand, FiChevronRight, FiChevronLeft, FiAward, FiTrendingUp, FiShield } from 'react-icons/fi';
 
 export default function Navbar() {
@@ -16,6 +16,9 @@ export default function Navbar() {
   const { firebaseUser, userProfile, isAdmin } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { t, lang, setLang, dir } = useT();
+  const { settings } = useSiteSettings();
+  const siteAbbr = settings ? (lang === 'ar' ? 'ب ف' : 'BV') : 'BV';
+  const siteName = settings ? (lang === 'ar' ? settings.siteNameAr : settings.siteName) : 'Black Vector';
 
   const handleLogout = async () => {
     await logoutUser();
@@ -42,7 +45,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 text-primary font-bold text-xl font-mono group shrink-0">
             <FiTerminal className="text-2xl group-hover:animate-pulse" />
-            <span className="tracking-tight">{'>'}_ {SITE_ABBR}</span>
+            <span className="tracking-tight">{'>'}_ {siteAbbr}</span>
           </Link>
 
           {/* Desktop nav */}

@@ -57,20 +57,14 @@ export interface SiteSettings {
   descriptionAr: string;
   logoUrl: string;
   primaryColor: string;
-  socialLinks: {
-    facebook?: string;
-    twitter?: string;
-    github?: string;
-    youtube?: string;
-    tiktok?: string;
-    telegram?: string;
-    instagram?: string;
-  };
   premiumPrice: number;
   currency: string;
-  contactEmail: string;
+  supportEmail: string;
   footerText: string;
   footerTextAr: string;
+  socialGithub: string;
+  socialTwitter: string;
+  socialYoutube: string;
 }
 
 export interface ContactMessage {

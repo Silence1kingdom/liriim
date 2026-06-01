@@ -1,15 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { FiSettings, FiSave, FiTerminal, FiImage, FiDollarSign, FiGlobe, FiAtSign } from 'react-icons/fi';
-import { getSiteSettings, saveSiteSettings } from '@/lib/firestore';
+import { FiSettings, FiSave, FiTerminal, FiImage, FiRotateCcw } from 'react-icons/fi';
+import { saveSiteSettings, resetSiteSettings } from '@/lib/firestore';
+import { useSiteSettings, defaultSettings } from '@/contexts/SiteSettingsContext';
 import { useT } from '@/contexts/LangContext';
 import toast from 'react-hot-toast';
 
 export default function AdminSettingsPage() {
   const { t } = useT();
-  const [loading, setLoading] = useState(true);
+  const { settings, loading: contextLoading } = useSiteSettings();
   const [saving, setSaving] = useState(false);
+  const [resetting, setResetting] = useState(false);
   const [form, setForm] = useState({
     siteName: '', siteNameAr: '', logoUrl: '', description: '', descriptionAr: '',
     primaryColor: '#00ff41', premiumPrice: 19, currency: 'USD',
@@ -18,10 +20,10 @@ export default function AdminSettingsPage() {
   });
 
   useEffect(() => {
-    getSiteSettings().then(settings => {
-      if (settings) setForm(prev => ({ ...prev, ...settings } as typeof form));
-    }).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    if (settings) {
+      setForm(prev => ({ ...prev, ...settings }));
+    }
+  }, [settings]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -32,7 +34,18 @@ export default function AdminSettingsPage() {
     finally { setSaving(false); }
   };
 
-  if (loading) return <div className="text-center py-20"><div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" /></div>;
+  const handleReset = async () => {
+    if (!confirm(t('admin.settings.resetConfirm'))) return;
+    setResetting(true);
+    try {
+      await resetSiteSettings(defaultSettings);
+      setForm(prev => ({ ...prev, ...defaultSettings }));
+      toast.success(t('admin.settings.resetSuccess'));
+    } catch { toast.error(t('admin.settings.resetError')); }
+    finally { setResetting(false); }
+  };
+
+  if (contextLoading) return <div className="text-center py-20"><div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" /></div>;
 
   const siteNameEN = t('admin.settings.siteName') + ' (EN)';
   const siteNameAR = t('admin.settings.siteName') + ' (AR)';
@@ -142,10 +155,16 @@ export default function AdminSettingsPage() {
           </div>
         </Section>
 
-        <button onClick={handleSave} disabled={saving}
-          className="flex items-center gap-2 px-6 py-3 bg-primary text-secondary font-bold rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 font-mono">
-          <FiSave /> {saving ? t('common.loading') : t('admin.settings.saveBtn')}
-        </button>
+        <div className="flex items-center gap-4">
+          <button onClick={handleSave} disabled={saving}
+            className="flex items-center gap-2 px-6 py-3 bg-primary text-secondary font-bold rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 font-mono">
+            <FiSave /> {saving ? t('common.loading') : t('admin.settings.saveBtn')}
+          </button>
+          <button onClick={handleReset} disabled={resetting}
+            className="flex items-center gap-2 px-6 py-3 bg-red-500/10 text-red-400 font-bold rounded-lg hover:bg-red-500/20 transition-colors disabled:opacity-50 font-mono border border-red-500/20">
+            <FiRotateCcw /> {resetting ? t('common.loading') : t('admin.settings.resetBtn')}
+          </button>
+        </div>
       </div>
     </div>
   );

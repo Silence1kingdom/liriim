@@ -4,6 +4,8 @@ import { ReactNode } from 'react';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { LangProvider, useT } from '@/contexts/LangContext';
+import { SiteSettingsProvider } from '@/contexts/SiteSettingsContext';
+import HeadUpdater from '@/components/HeadUpdater';
 import { Toaster } from 'react-hot-toast';
 
 const ToastWrapper = () => {
@@ -31,10 +33,13 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   return (
     <ThemeProvider>
       <LangProvider>
-        <AuthProvider>
-          {children}
-          <ToastWrapper />
-        </AuthProvider>
+        <SiteSettingsProvider>
+          <AuthProvider>
+            {children}
+            <ToastWrapper />
+            <HeadUpdater />
+          </AuthProvider>
+        </SiteSettingsProvider>
       </LangProvider>
     </ThemeProvider>
   );
