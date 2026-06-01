@@ -24,7 +24,7 @@ export default function DashboardPage() {
       <div className="min-h-screen flex items-center justify-center pt-16">
         <div className="text-center">
           <FiTerminal className="text-primary text-5xl mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-text mb-2">{lang === 'ar' ? 'مرحباً بك' : 'Welcome'}</h2>
+          <h2 className="text-2xl font-bold text-text mb-2">{t('dash.welcomeHeading')}</h2>
           <p className="text-text-muted mb-4">{t('dash.loginRequired')}</p>
           <Link href="/login" className="px-6 py-3 bg-primary text-secondary font-bold rounded-lg inline-block">
             {t('dash.loginBtn')}

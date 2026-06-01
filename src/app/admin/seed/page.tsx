@@ -1,14 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { updateUserProfile } from '@/lib/auth';
 import toast from 'react-hot-toast';
-import { FiShield, FiAlertTriangle } from 'react-icons/fi';
+import { FiShield, FiAlertTriangle, FiLock } from 'react-icons/fi';
 
 export default function SeedAdminPage() {
   const { firebaseUser, userProfile, refreshProfile } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [seedKey, setSeedKey] = useState('');
+
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_ADMIN_SEED_KEY && process.env.NEXT_PUBLIC_ADMIN_SEED_KEY !== 'your_seed_key') {
+      setSeedKey(process.env.NEXT_PUBLIC_ADMIN_SEED_KEY || '');
+    }
+  }, []);
 
   const handleMakeAdmin = async () => {
     if (!firebaseUser) {
@@ -54,12 +61,12 @@ export default function SeedAdminPage() {
             <>
               <div className="flex items-center gap-2 p-3 bg-yellow-500/10 rounded-lg border border-yellow-500/20 mb-6 text-sm text-yellow-400">
                 <FiAlertTriangle />
-                <span>هذه الصفحة للإعداد الأولي فقط. يُرجى حذفها بعد الاستخدام.</span>
+                <span>هذه الصفحة للإعداد الأولي فقط. قم بتعيين ADMIN_SEED_KEY في البيئة لحماية الصفحة. احذفها بعد الاستخدام في الإنتاج.</span>
               </div>
               <button
                 onClick={handleMakeAdmin}
                 disabled={loading || !firebaseUser}
-                className="w-full py-3 bg-accent text-white font-bold rounded-lg hover:bg-accent/90 transition-colors disabled:opacity-50"
+                className="w-full py-3 border border-accent text-accent font-bold rounded-lg hover:bg-accent/10 transition-colors disabled:opacity-50"
               >
                 {loading ? 'جاري الترقية...' : !firebaseUser ? 'سجل الدخول أولاً' : 'ترقيتي إلى أدمن'}
               </button>

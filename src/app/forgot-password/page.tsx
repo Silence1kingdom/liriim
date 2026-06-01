@@ -16,7 +16,7 @@ export default function ForgotPasswordPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) {
-      toast.error(lang === 'ar' ? 'يرجى إدخال البريد الإلكتروني' : 'Please enter your email');
+      toast.error(t('forgot.emailRequired'));
       return;
     }
     setLoading(true);

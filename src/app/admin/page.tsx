@@ -48,12 +48,12 @@ export default function AdminDashboard() {
   }, []);
 
   const statCards = [
-    { icon: FiBook, label: lang === 'ar' ? 'الدروس' : 'Lessons', value: String(stats.lessons), sub: `${stats.freeLessons} ${lang === 'ar' ? 'مجاني' : 'free'} · ${stats.premiumLessons} ${lang === 'ar' ? 'مدفوع' : 'premium'}`, href: '/admin/lessons', color: 'text-primary', bg: 'bg-primary/10' },
-    { icon: FiGrid, label: lang === 'ar' ? 'التصنيفات' : 'Categories', value: String(stats.categories), sub: '', href: '/admin/categories', color: 'text-accent', bg: 'bg-accent/10' },
-    { icon: FiUsers, label: lang === 'ar' ? 'المستخدمين' : 'Users', value: String(stats.users), sub: `${stats.admins} ${lang === 'ar' ? 'أدمن' : 'admin'} · ${stats.premium} ${lang === 'ar' ? 'مشترك' : 'premium'}`, href: '/admin/users', color: 'text-blue-400', bg: 'bg-blue-400/10' },
-    { icon: FiMessageSquare, label: lang === 'ar' ? 'الرسائل' : 'Messages', value: String(stats.messages), sub: stats.unread > 0 ? `${stats.unread} ${lang === 'ar' ? 'غير مقروءة' : 'unread'}` : '', href: '/admin/messages', color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
-    { icon: FiTrendingUp, label: lang === 'ar' ? 'مستخدمين اليوم' : 'Today', value: String(stats.todayUsers), sub: '', href: '/admin/users', color: 'text-green-400', bg: 'bg-green-400/10' },
-    { icon: FiStar, label: lang === 'ar' ? 'المشتركين' : 'Subscribers', value: String(stats.premium), sub: `${stats.users > 0 ? Math.round(stats.premium / stats.users * 100) : 0}%`, href: '/admin/users', color: 'text-accent', bg: 'bg-accent/10' },
+    { icon: FiBook, label: `${t('admin.statLessons')}`, value: String(stats.lessons), sub: `${stats.freeLessons} ${t('admin.statFree')} · ${stats.premiumLessons} ${t('admin.statPaid')}`, href: '/admin/lessons', color: 'text-primary', bg: 'bg-primary/10' },
+    { icon: FiGrid, label: `${t('admin.statCategories')}`, value: String(stats.categories), sub: '', href: '/admin/categories', color: 'text-accent', bg: 'bg-accent/10' },
+    { icon: FiUsers, label: `${t('admin.statUsers')}`, value: String(stats.users), sub: `${stats.admins} ${t('admin.statAdminLabel')} · ${stats.premium} ${t('admin.statPremiumLabel')}`, href: '/admin/users', color: 'text-blue-400', bg: 'bg-blue-400/10' },
+    { icon: FiMessageSquare, label: `${t('admin.statMessages')}`, value: String(stats.messages), sub: stats.unread > 0 ? `${stats.unread} ${t('admin.statUnread')}` : '', href: '/admin/messages', color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
+    { icon: FiTrendingUp, label: `${t('admin.statToday')}`, value: String(stats.todayUsers), sub: '', href: '/admin/users', color: 'text-green-400', bg: 'bg-green-400/10' },
+    { icon: FiStar, label: `${t('admin.statSubscribers')}`, value: String(stats.premium), sub: `${stats.users > 0 ? Math.round(stats.premium / stats.users * 100) : 0}%`, href: '/admin/users', color: 'text-accent', bg: 'bg-accent/10' },
   ];
 
   return (
@@ -158,10 +158,10 @@ export default function AdminDashboard() {
           <div className="p-5">
             <h2 className="text-lg font-bold text-text font-mono mb-4 flex items-center gap-2">
               <FiUsers className="text-blue-400" size={16} />
-              {lang === 'ar' ? 'آخر المستخدمين' : 'Recent Users'}
+              {t('admin.recentUsers')}
             </h2>
             {recentUsers.length === 0 ? (
-              <p className="text-text-muted text-sm font-mono">{lang === 'ar' ? 'لا يوجد مستخدمين' : 'No users yet'}</p>
+              <p className="text-text-muted text-sm font-mono">{t('admin.noUsers')}</p>
             ) : (
               <div className="space-y-2">
                 {recentUsers.map((u: any) => (

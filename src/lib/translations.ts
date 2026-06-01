@@ -118,6 +118,7 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'dash.freeDesc': { ar: 'تابع تعلم أساسيات لينكس', en: 'Continue learning Linux basics' },
   'dash.premiumCourses': { ar: 'الباقة المدفوعة', en: 'Premium Courses' },
   'dash.premiumDesc': { ar: 'اكتشف الأدوات المتقدمة', en: 'Discover advanced tools' },
+  'dash.welcomeHeading': { ar: 'مرحباً بك', en: 'Welcome' },
   'dash.loginRequired': { ar: 'يرجى تسجيل الدخول أولاً', en: 'Please login first' },
   'dash.loginBtn': { ar: 'تسجيل الدخول', en: 'Login' },
 
@@ -441,6 +442,96 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'leader.me': { ar: 'أنا', en: 'Me' },
   'leader.empty': { ar: 'لا يوجد متصدرين بعد', en: 'No learners yet' },
   'leader.nav': { ar: 'المتصدرين', en: 'Leaderboard' },
+
+  // Lessons (toast & durations)
+  'lesson.completedToast': { ar: 'تم إكمال الدرس!', en: 'Lesson completed!' },
+  'lesson.durationFallback': { ar: '20 دقيقة', en: '20 min' },
+
+  // Courses page feature descriptions
+  'course.feature1': { ar: 'التنقل بين المجلدات', en: 'Folder navigation' },
+  'course.feature2': { ar: 'إدارة الملفات والمجلدات', en: 'File & folder management' },
+  'course.feature3': { ar: 'الصلاحيات والمستخدمين', en: 'Permissions & users' },
+  'course.feature4': { ar: 'أوامر البحث', en: 'Search commands' },
+  'course.feature5': { ar: 'جمع المعلومات والاستطلاع', en: 'Recon & information gathering' },
+  'course.feature6': { ar: 'اختبار اختراق الشبكات', en: 'Network penetration testing' },
+  'course.feature7': { ar: 'تحليل الثغرات الأمنية', en: 'Vulnerability analysis' },
+  'course.feature8': { ar: 'أدوات الحماية والدفاع', en: 'Security & defense tools' },
+
+  // Profile relative dates
+  'profile.today': { ar: 'اليوم', en: 'Today' },
+  'profile.yesterday': { ar: 'أمس', en: 'Yesterday' },
+  'profile.daysAgo': { ar: 'منذ {days} أيام', en: '{days} days ago' },
+  'profile.freeLessons': { ar: 'الدروس المجانية', en: 'Free Lessons' },
+  'profile.premiumLessons': { ar: 'الدروس المدفوعة', en: 'Premium Lessons' },
+
+  // Settings page
+  'settings.fillFields': { ar: 'يرجى ملء جميع الحقول', en: 'Please fill all fields' },
+  'settings.passwordShort': { ar: 'كلمة المرور الجديدة قصيرة جداً', en: 'New password is too short' },
+  'settings.passwordChanged': { ar: 'تم تغيير كلمة المرور بنجاح', en: 'Password changed successfully' },
+  'settings.passwordFailed': { ar: 'فشل تغيير كلمة المرور. تحقق من كلمة المرور الحالية', en: 'Failed to change password. Check current password' },
+  'settings.currentPassword': { ar: 'كلمة المرور الحالية', en: 'Current password' },
+  'settings.newPassword': { ar: 'كلمة المرور الجديدة', en: 'New password' },
+  'settings.changePassword': { ar: 'تغيير كلمة المرور', en: 'Change Password' },
+  'settings.changePasswordBtn': { ar: 'تغيير كلمة المرور', en: 'Change Password' },
+  'settings.passwordRequired': { ar: 'كلمة المرور مطلوبة', en: 'Password is required' },
+
+  // Register page
+  'register.nameRequired': { ar: 'الاسم مطلوب', en: 'Name is required' },
+  'register.emailRequired': { ar: 'البريد الإلكتروني مطلوب', en: 'Email is required' },
+  'register.emailInvalid': { ar: 'البريد الإلكتروني غير صالح', en: 'Invalid email' },
+  'register.passwordRequired': { ar: 'كلمة المرور مطلوبة', en: 'Password is required' },
+  'register.passwordLength': { ar: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل', en: 'Password must be at least 6 characters' },
+  'register.confirmRequired': { ar: 'تأكيد كلمة المرور مطلوب', en: 'Please confirm your password' },
+  'register.passwordsNotMatch': { ar: 'كلمة المرور غير متطابقة', en: 'Passwords do not match' },
+  'register.created': { ar: '✓ تم إنشاء الحساب بنجاح', en: '✓ Account created successfully' },
+  'register.googleSuccess': { ar: '✓ تم تسجيل الدخول عبر Google', en: '✓ Signed in with Google' },
+  'register.connecting': { ar: 'جاري الاتصال...', en: 'Connecting...' },
+  'register.namePlaceholder': { ar: 'الاسم الكامل', en: 'Full Name' },
+
+  // Login page
+  'login.success': { ar: '✓ تم تسجيل الدخول بنجاح', en: '✓ Logged in successfully' },
+  'login.googleSuccess': { ar: '✓ تم تسجيل الدخول عبر Google', en: '✓ Signed in with Google' },
+
+  // Forgot password
+  'forgot.emailRequired': { ar: 'يرجى إدخال البريد الإلكتروني', en: 'Please enter your email' },
+
+  // Contact page
+  'contact.fillRequired': { ar: 'يرجى ملء الحقول المطلوبة', en: 'Please fill required fields' },
+  'contact.noSubject': { ar: 'بدون موضوع', en: 'No subject' },
+  'contact.sendError': { ar: 'حدث خطأ أثناء الإرسال', en: 'An error occurred while sending' },
+
+  // Pricing page
+  'pricing.activated': { ar: 'تم تفعيل الباقة المدفوعة!', en: 'Premium activated!' },
+  'pricing.verifying': { ar: 'جاري التحقق من الدفع...', en: 'Verifying payment...' },
+  'pricing.errorShort': { ar: 'خطأ', en: 'Error' },
+  'pricing.verifyError': { ar: 'حدث خطأ أثناء التحقق من الدفع. تواصل مع الدعم الفني.', en: 'Error verifying payment. Contact support.' },
+  'pricing.backToPremium': { ar: 'العودة للدروس المدفوعة', en: 'Back to Premium' },
+  'pricing.successShort': { ar: 'تم الدفع بنجاح', en: 'Payment Successful' },
+  'pricing.loading': { ar: 'جاري...', en: 'Loading...' },
+
+  // Admin dashboard stat labels
+  'admin.statLessons': { ar: 'الدروس', en: 'Lessons' },
+  'admin.statFree': { ar: 'مجاني', en: 'free' },
+  'admin.statPaid': { ar: 'مدفوع', en: 'premium' },
+  'admin.statCategories': { ar: 'التصنيفات', en: 'Categories' },
+  'admin.statUsers': { ar: 'المستخدمين', en: 'Users' },
+  'admin.statAdminLabel': { ar: 'أدمن', en: 'admin' },
+  'admin.statPremiumLabel': { ar: 'مشترك', en: 'premium' },
+  'admin.statMessages': { ar: 'الرسائل', en: 'Messages' },
+  'admin.statUnread': { ar: 'غير مقروءة', en: 'unread' },
+  'admin.statToday': { ar: 'مستخدمين اليوم', en: 'Today' },
+  'admin.statSubscribers': { ar: 'المشتركين', en: 'Subscribers' },
+  'admin.recentUsers': { ar: 'آخر المستخدمين', en: 'Recent Users' },
+  'admin.noUsers': { ar: 'لا يوجد مستخدمين', en: 'No users yet' },
+
+  // Quiz page
+  'quiz.answerLabel': { ar: 'الإجابة: ', en: 'Answer: ' },
+
+  // Certificate page
+  'cert.passed': { ar: 'مجتازة', en: 'Passed' },
+
+  // Errors
+  'error.loginRequired': { ar: 'يرجى تسجيل الدخول أولاً', en: 'Please log in first' },
 };
 
 export const getLangDir = (lang: Lang): 'rtl' | 'ltr' => (lang === 'ar' ? 'rtl' : 'ltr');

@@ -244,7 +244,7 @@ export default function CertificatePage() {
                 <div className={`text-2xl font-bold font-mono ${passedQuizzes === TOTAL_LESSONS ? 'text-primary' : 'text-text'}`}>
                   {passedQuizzes}/{TOTAL_LESSONS}
                 </div>
-                <div className="text-xs text-text-muted font-mono mt-0.5">{lang === 'ar' ? 'مجتازة' : 'Passed'}</div>
+                <div className="text-xs text-text-muted font-mono mt-0.5">{t('cert.passed')}</div>
               </div>
             </div>
             <div className="terminal-window">

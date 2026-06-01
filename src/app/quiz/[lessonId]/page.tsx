@@ -15,7 +15,7 @@ import toast from 'react-hot-toast';
 const allLessons = [...FREE_LESSONS, ...PREMIUM_LESSONS];
 
 export default function QuizPage() {
-  const { t, lang } = useT();
+  const { t, lang, dir } = useT();
   const params = useParams();
   const router = useRouter();
   const lessonId = params?.lessonId as string;
@@ -123,7 +123,7 @@ export default function QuizPage() {
                 {percentage}%
               </h2>
               <p className="text-text-muted text-sm mb-1 font-mono">
-                {correctAnswers}/{totalQuestions} {t('quiz.correct').toLowerCase()}
+                {correctAnswers}/{totalQuestions} {t('quiz.correct')}
               </p>
 
               {passed ? (
@@ -256,7 +256,7 @@ export default function QuizPage() {
               disabled={currentQuestion === 0}
               className="flex items-center gap-2 px-4 py-2 border border-border text-text rounded-lg hover:bg-surface-light transition-colors font-mono text-sm disabled:opacity-30"
             >
-              <FiArrowRight /> {t('quiz.prev')}
+              {dir === 'rtl' ? <FiArrowRight /> : <FiArrowLeft />} {t('quiz.prev')}
             </button>
 
             {currentQuestion < totalQuestions - 1 ? (
@@ -265,7 +265,7 @@ export default function QuizPage() {
                 disabled={selectedAnswer === undefined}
                 className="flex items-center gap-2 px-4 py-2 border border-border text-text rounded-lg hover:bg-surface-light transition-colors font-mono text-sm disabled:opacity-30"
               >
-                {t('quiz.next')} <FiArrowLeft />
+                {t('quiz.next')} {dir === 'rtl' ? <FiArrowLeft /> : <FiArrowRight />}
               </button>
             ) : (
               <button

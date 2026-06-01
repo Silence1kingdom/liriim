@@ -77,21 +77,21 @@ export default function SettingsPage() {
 
   const handlePasswordChange = async () => {
     if (!pwCurrent || !pwNew) {
-      toast.error(lang === 'ar' ? 'يرجى ملء جميع الحقول' : 'Please fill all fields');
+      toast.error(t('settings.fillFields'));
       return;
     }
     if (pwNew.length < 6) {
-      toast.error(lang === 'ar' ? 'كلمة المرور الجديدة قصيرة جداً' : 'New password is too short');
+      toast.error(t('settings.passwordShort'));
       return;
     }
     setPwSaving(true);
     try {
       await updatePassword(pwCurrent, pwNew);
-      toast.success(lang === 'ar' ? 'تم تغيير كلمة المرور بنجاح' : 'Password changed successfully');
+      toast.success(t('settings.passwordChanged'));
       setPwCurrent('');
       setPwNew('');
     } catch {
-      toast.error(lang === 'ar' ? 'فشل تغيير كلمة المرور. تحقق من كلمة المرور الحالية' : 'Failed to change password. Check current password');
+      toast.error(t('settings.passwordFailed'));
     } finally {
       setPwSaving(false);
     }
@@ -193,14 +193,14 @@ export default function SettingsPage() {
                 type="password"
                 value={pwCurrent}
                 onChange={(e) => setPwCurrent(e.target.value)}
-                placeholder={lang === 'ar' ? 'كلمة المرور الحالية' : 'Current password'}
+                placeholder={t('settings.currentPassword')}
                 className="w-full bg-surface border border-border rounded px-3 py-2 text-text font-mono text-sm outline-none focus:border-primary"
               />
               <input
                 type="password"
                 value={pwNew}
                 onChange={(e) => setPwNew(e.target.value)}
-                placeholder={lang === 'ar' ? 'كلمة المرور الجديدة' : 'New password'}
+                placeholder={t('settings.newPassword')}
                 className="w-full bg-surface border border-border rounded px-3 py-2 text-text font-mono text-sm outline-none focus:border-primary"
               />
               <button
@@ -209,7 +209,7 @@ export default function SettingsPage() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary font-mono text-sm rounded-lg hover:bg-primary/20 transition-colors disabled:opacity-50"
               >
                 <FiSave size={14} />
-                {pwSaving ? t('common.loading') : (lang === 'ar' ? 'تغيير كلمة المرور' : 'Change Password')}
+                {pwSaving ? t('common.loading') : t('settings.changePasswordBtn')}
               </button>
             </div>
           </div>

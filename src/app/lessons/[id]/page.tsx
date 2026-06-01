@@ -217,6 +217,82 @@ const lessonData: { [key: string]: any } = {
       { cmd: 'grep "^A" fruits.txt', output: 'Apple\nApricot' },
     ],
   },
+  'free-7': {
+    title: 'أساسيات HTML',
+    content: `
+      <h2 class="text-2xl font-bold text-text mt-6 mb-3">مقدمة في HTML</h2>
+      <p class="text-text-muted leading-relaxed mb-4">HTML (HyperText Markup Language) هي اللغة الأساسية لبناء صفحات الويب. كل موقع ويب تستخدمه مبني على HTML.</p>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">هيكل صفحة HTML</h3>
+      <p class="text-text-muted leading-relaxed mb-4">أي صفحة HTML تبدأ بـ <code class="text-primary">&lt;!DOCTYPE html&gt;</code> وتحتوي على <code class="text-primary">&lt;html&gt;</code> ثم <code class="text-primary">&lt;head&gt;</code> و <code class="text-primary">&lt;body&gt;</code>.</p>
+      <ul class="list-disc list-inside text-text-muted space-y-2 mb-4">
+        <li><code class="text-primary">&lt;!DOCTYPE html&gt;</code> - تعريف نوع المستند</li>
+        <li><code class="text-primary">&lt;html&gt;</code> - العنصر الجذر للصفحة</li>
+        <li><code class="text-primary">&lt;head&gt;</code> - معلومات عن الصفحة (العنوان، الترميز)</li>
+        <li><code class="text-primary">&lt;body&gt;</code> - المحتوى المرئي للصفحة</li>
+      </ul>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">الوسوم الأساسية</h3>
+      <ul class="list-disc list-inside text-text-muted space-y-2 mb-4">
+        <li><code class="text-primary">&lt;h1&gt;</code> إلى <code class="text-primary">&lt;h6&gt;</code> - العناوين</li>
+        <li><code class="text-primary">&lt;p&gt;</code> - الفقرة النصية</li>
+        <li><code class="text-primary">&lt;a href="..."&gt;</code> - رابط تشعبي</li>
+        <li><code class="text-primary">&lt;img src="..." alt="..."&gt;</code> - صورة</li>
+        <li><code class="text-primary">&lt;ul&gt;</code> و <code class="text-primary">&lt;ol&gt;</code> - قوائم غير مرتبة ومرتبة</li>
+        <li><code class="text-primary">&lt;div&gt;</code> - حاوية (كتلة)</li>
+        <li><code class="text-primary">&lt;span&gt;</code> - حاوية (سطر)</li>
+      </ul>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">السمات (Attributes)</h3>
+      <p class="text-text-muted leading-relaxed mb-4">الوسوم يمكن أن تحتوي على سمات لإضافة معلومات إضافية: <code class="text-primary">&lt;tag attribute="value"&gt;</code>. السمات الشائعة: <code class="text-primary">class</code>، <code class="text-primary">id</code>، <code class="text-primary">style</code>، <code class="text-primary">src</code>، <code class="text-primary">href</code>.</p>
+    `,
+    commands: [
+      { cmd: 'echo "<!DOCTYPE html><html><head><title>My Page</title></head><body><h1>Hello World</h1></body></html>" > index.html', output: '' },
+      { cmd: 'cat index.html', output: '<!DOCTYPE html><html><head><title>My Page</title></head><body><h1>Hello World</h1></body></html>' },
+      { cmd: 'echo "<ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>" > list.html', output: '' },
+      { cmd: 'wc -c index.html', output: '76 index.html' },
+    ],
+  },
+  'free-8': {
+    title: 'أساسيات CSS',
+    content: `
+      <h2 class="text-2xl font-bold text-text mt-6 mb-3">مقدمة في CSS</h2>
+      <p class="text-text-muted leading-relaxed mb-4">CSS (Cascading Style Sheets) هي لغة تصميم تتحكم في مظهر وتنسيق صفحات HTML. بدون CSS، كانت كل المواقع تبدو كنص عادي على خلفية بيضاء.</p>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">طرق إضافة CSS</h3>
+      <ul class="list-disc list-inside text-text-muted space-y-2 mb-4">
+        <li><strong>داخلي (Inline):</strong> باستخدام السمة style داخل الوسم</li>
+        <li><strong>داخلي (Internal):</strong> باستخدام وسم <code class="text-primary">&lt;style&gt;</code> داخل <code class="text-primary">&lt;head&gt;</code></li>
+        <li><strong>خارجي (External):</strong> ملف منفصل <code class="text-primary">style.css</code> وربطه بـ <code class="text-primary">&lt;link&gt;</code></li>
+      </ul>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">المحددات (Selectors)</h3>
+      <ul class="list-disc list-inside text-text-muted space-y-2 mb-4">
+        <li><code class="text-primary">element</code> - تحديد بواسطة اسم الوسم: <code class="text-primary">p { }</code></li>
+        <li><code class="text-primary">.class</code> - تحديد بواسطة الكلاس: <code class="text-primary">.my-class { }</code></li>
+        <li><code class="text-primary">#id</code> - تحديد بواسطة المعرف: <code class="text-primary">#my-id { }</code></li>
+      </ul>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">الخصائص الشائعة</h3>
+      <ul class="list-disc list-inside text-text-muted space-y-2 mb-4">
+        <li><code class="text-primary">color</code> - لون النص</li>
+        <li><code class="text-primary">background-color</code> - لون الخلفية</li>
+        <li><code class="text-primary">font-size</code> - حجم الخط</li>
+        <li><code class="text-primary">margin</code> - الهوامش الخارجية</li>
+        <li><code class="text-primary">padding</code> - الهوامش الداخلية</li>
+        <li><code class="text-primary">display</code> - نوع العرض (block, inline, flex, grid)</li>
+      </ul>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">Flexbox</h3>
+      <p class="text-text-muted leading-relaxed mb-4">Flexbox هو نظام تخطيط حديث يسمح بترتيب العناصر بسهولة. تفعّل بـ <code class="text-primary">display: flex</code> وتتحكم في الاتجاه بـ <code class="text-primary">flex-direction</code>.</p>
+    `,
+    commands: [
+      { cmd: 'echo "body { background-color: #0a0a0f; color: #00ff41; font-family: monospace; }" > style.css', output: '' },
+      { cmd: 'cat style.css', output: 'body { background-color: #0a0a0f; color: #00ff41; font-family: monospace; }' },
+      { cmd: 'echo "h1 { font-size: 2em; text-align: center; border-bottom: 1px solid #00ff41; }" >> style.css', output: '' },
+      { cmd: 'wc -l style.css', output: '2 style.css' },
+    ],
+  },
 };
 
 const premiumLessonData: { [key: string]: any } = {
@@ -400,6 +476,80 @@ const premiumLessonData: { [key: string]: any } = {
       { cmd: 'sudo rkhunter --check', output: '[ System Checks ]\n[ Checking binaries        ] OK\n[ Checking file properties ] OK\n[ Checking rootkits        ] OK\n[ Checking network         ] OK\n[ Checking kernel modules  ] OK\nSystem checks summary: All OK' },
     ],
   },
+  'prem-7': {
+    title: 'أساسيات JavaScript',
+    content: `
+      <h2 class="text-2xl font-bold text-text mt-6 mb-3">مقدمة في JavaScript</h2>
+      <p class="text-text-muted leading-relaxed mb-4">JavaScript (JS) هي لغة البرمجة التي تجعل صفحات الويب تفاعلية. بينما HTML يبني الهيكل و CSS يصمم المظهر، JS يضيف الحركة والتفاعل.</p>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">المتغيرات (Variables)</h3>
+      <p class="text-text-muted leading-relaxed mb-4">المتغيرات تُستخدم لتخزين البيانات. يمكن تعريفها بـ <code class="text-primary">let</code> أو <code class="text-primary">const</code>:</p>
+      <ul class="list-disc list-inside text-text-muted space-y-2 mb-4">
+        <li><code class="text-primary">let name = "Ahmed";</code> - متغير يمكن تغيير قيمته</li>
+        <li><code class="text-primary">const pi = 3.14;</code> - ثابت لا يمكن تغييره</li>
+        <li><code class="text-primary">var</code> - قديم، لا يُستخدم في الكود الحديث</li>
+      </ul>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">أنواع البيانات</h3>
+      <ul class="list-disc list-inside text-text-muted space-y-2 mb-4">
+        <li><code class="text-primary">String</code> - نص: <code class="text-primary">"Hello"</code></li>
+        <li><code class="text-primary">Number</code> - رقم: <code class="text-primary">42</code></li>
+        <li><code class="text-primary">Boolean</code> - منطق: <code class="text-primary">true</code> / <code class="text-primary">false</code></li>
+        <li><code class="text-primary">Array</code> - مصفوفة: <code class="text-primary">[1, 2, 3]</code></li>
+        <li><code class="text-primary">Object</code> - كائن: <code class="text-primary">{ name: "Ahmed", age: 25 }</code></li>
+      </ul>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">الدوال (Functions)</h3>
+      <p class="text-text-muted leading-relaxed mb-4">الدوال هي كود قابل لإعادة الاستخدام. تعريف دالة: <code class="text-primary">function greet(name) { return "Hello " + name; }</code>. أو باستخدام الأسهم: <code class="text-primary">const greet = (name) => "Hello " + name;</code>.</p>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">التعامل مع DOM</h3>
+      <p class="text-text-muted leading-relaxed mb-4">JavaScript يمكنه التلاعب بصفحة HTML مباشرة عبر DOM: <code class="text-primary">document.getElementById('myId')</code>، <code class="text-primary">document.querySelector('.myClass')</code>، <code class="text-primary">element.addEventListener('click', handler)</code>.</p>
+    `,
+    commands: [
+      { cmd: 'echo "console.log(\'Hello from JavaScript!\');" > script.js', output: '' },
+      { cmd: 'echo "let x = 10; let y = 20; console.log(\'Sum:\', x + y);" >> script.js', output: '' },
+      { cmd: 'node -e "console.log(\'Hello from Node.js!\')" 2>/dev/null || echo "JavaScript is everywhere!"', output: 'JavaScript is everywhere!' },
+      { cmd: 'cat script.js', output: "console.log('Hello from JavaScript!');\nlet x = 10; let y = 20; console.log('Sum:', x + y);" },
+    ],
+  },
+  'prem-8': {
+    title: 'مقدمة في بايثون',
+    content: `
+      <h2 class="text-2xl font-bold text-text mt-6 mb-3">مقدمة في لغة بايثون</h2>
+      <p class="text-text-muted leading-relaxed mb-4">بايثون (Python) هي لغة برمجة عالية المستوى، سهلة التعلم وقوية جداً. تُستخدم في تطوير الويب، تحليل البيانات، الذكاء الاصطناعي، وأمن المعلومات.</p>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">المتغيرات والطباعة</h3>
+      <p class="text-text-muted leading-relaxed mb-4">في بايثون، تعريف المتغيرات سهل جداً ولا يحتاج لتحديد النوع: <code class="text-primary">name = "Ahmed"</code>. للطباعة نستخدم: <code class="text-primary">print("Hello")</code> أو <code class="text-primary">print(f"Hello {name}")</code> (f-strings).</p>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">أنواع البيانات الأساسية</h3>
+      <ul class="list-disc list-inside text-text-muted space-y-2 mb-4">
+        <li><code class="text-primary">int</code> - عدد صحيح: <code class="text-primary">42</code></li>
+        <li><code class="text-primary">float</code> - عدد عشري: <code class="text-primary">3.14</code></li>
+        <li><code class="text-primary">str</code> - نص: <code class="text-primary">"Hello"</code></li>
+        <li><code class="text-primary">list</code> - قائمة: <code class="text-primary">[1, 2, 3]</code></li>
+        <li><code class="text-primary">dict</code> - قاموس: <code class="text-primary">{"key": "value"}</code></li>
+      </ul>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">الجمل الشرطية والحلقات</h3>
+      <ul class="list-disc list-inside text-text-muted space-y-2 mb-4">
+        <li><code class="text-primary">if x > 0: print("Positive")</code> - شرط</li>
+        <li><code class="text-primary">for i in range(5): print(i)</code> - حلقة تكرار</li>
+        <li><code class="text-primary">while x > 0: x -= 1</code> - حلقة شرطية</li>
+      </ul>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">الدوال في بايثون</h3>
+      <p class="text-text-muted leading-relaxed mb-4">تعريف دالة: <code class="text-primary">def greet(name): return f"Hello {name}"</code>. بايثون تدعم الوسائط الافتراضية والدوال المجهولة (lambda).</p>
+
+      <h3 class="text-xl font-bold text-text mt-5 mb-3">مكتبات أمن المعلومات</h3>
+      <p class="text-text-muted leading-relaxed mb-4">بايثون مشهورة في الأمن السيبراني بمكتبات مثل: <code class="text-primary">scapy</code> (التلاعب بالحزم)، <code class="text-primary">requests</code> (HTTP)، <code class="text-primary">beautifulsoup4</code> (تحليل HTML)، <code class="text-primary">cryptography</code> (التشفير).</p>
+    `,
+    commands: [
+      { cmd: 'echo \'print("Hello from Python!")\' > hello.py', output: '' },
+      { cmd: 'echo \'name = input("Enter name: ")\' >> hello.py', output: '' },
+      { cmd: 'echo \'print(f"Welcome, {name}!")\' >> hello.py', output: '' },
+      { cmd: 'python3 -c "import this" 2>/dev/null || echo "Python Zen: Beautiful is better than ugly."', output: 'Python Zen: Beautiful is better than ugly.' },
+    ],
+  },
 };
 
 const trainingSteps: { [key: string]: { instruction: string; instructionEn: string; hint: string; hintEn: string }[] } = {
@@ -458,12 +608,32 @@ const trainingSteps: { [key: string]: { instruction: string; instructionEn: stri
     { instruction: 'عرض قواعد iptables الحالية', instructionEn: 'Show current iptables rules', hint: 'sudo iptables -L -n', hintEn: 'Use iptables -L -n' },
     { instruction: 'اعرض حالة fail2ban لخدمة sshd', instructionEn: 'Show fail2ban status for sshd', hint: 'sudo fail2ban-client status sshd', hintEn: 'Use fail2ban-client' },
   ],
+  'free-7': [
+    { instruction: 'أنشئ ملف HTML أساسي', instructionEn: 'Create a basic HTML file', hint: 'echo "<h1>Hello World</h1>" > index.html', hintEn: 'Use echo to create index.html' },
+    { instruction: 'اعرض محتوى الملف', instructionEn: 'Show the file content', hint: 'cat index.html', hintEn: 'Use cat' },
+    { instruction: 'أضف رابط إلى الملف', instructionEn: 'Add a link to the file', hint: 'echo "<a href=\"https://example.com\">Link</a>" >> index.html', hintEn: 'Use echo with append' },
+  ],
+  'free-8': [
+    { instruction: 'أنشئ ملف CSS وأضف أنماطاً', instructionEn: 'Create a CSS file with styles', hint: 'echo "body { color: red; }" > style.css', hintEn: 'Use echo to create style.css' },
+    { instruction: 'أضف لون خلفية للملف', instructionEn: 'Add background color', hint: 'echo "body { background: #000; }" > style.css', hintEn: 'Use echo with background' },
+    { instruction: 'اعرض محتوى الملف', instructionEn: 'Show the file content', hint: 'cat style.css', hintEn: 'Use cat' },
+  ],
+  'prem-7': [
+    { instruction: 'أنشئ ملف JavaScript', instructionEn: 'Create a JavaScript file', hint: 'echo "console.log(1 + 1);" > app.js', hintEn: 'Use echo to create app.js' },
+    { instruction: 'أضف دالة للملف', instructionEn: 'Add a function to the file', hint: 'echo "function greet() { return \'Hi!\'; }" >> app.js', hintEn: 'Use echo with append' },
+    { instruction: 'اعرض محتوى الملف', instructionEn: 'Show the file content', hint: 'cat app.js', hintEn: 'Use cat' },
+  ],
+  'prem-8': [
+    { instruction: 'أنشئ ملف بايثون', instructionEn: 'Create a Python file', hint: 'echo "print(2 + 2)" > test.py', hintEn: 'Use echo to create test.py' },
+    { instruction: 'أضف متغيرات للملف', instructionEn: 'Add variables to the file', hint: 'echo "name = \'Ali\'; print(name)" >> test.py', hintEn: 'Use echo with append' },
+    { instruction: 'اعرض محتوى الملف', instructionEn: 'Show the file content', hint: 'cat test.py', hintEn: 'Use cat' },
+  ],
 };
 
 const allLessons = [...FREE_LESSONS, ...PREMIUM_LESSONS];
 
 export default function LessonPage() {
-  const { t, lang } = useT();
+  const { t, lang, dir } = useT();
   const params = useParams();
   const router = useRouter();
   const id = params?.id as string;
@@ -490,16 +660,16 @@ export default function LessonPage() {
 
   const handleMarkComplete = useCallback(async () => {
     if (!firebaseUser || !userProfile) {
-      toast.error(lang === 'ar' ? 'يرجى تسجيل الدخول أولاً' : 'Please log in first');
+      toast.error(t('error.loginRequired'));
       return;
     }
     try {
       const newProgress = { ...userProfile.progress, [id]: 'completed' as const };
       await updateUserProfile(firebaseUser.uid, { progress: newProgress });
       await refreshProfile();
-      toast.success(lang === 'ar' ? 'تم إكمال الدرس!' : 'Lesson completed!');
+      toast.success(t('lesson.completedToast'));
     } catch {
-      toast.error(lang === 'ar' ? 'حدث خطأ' : 'An error occurred');
+      toast.error(t('common.error'));
     }
   }, [firebaseUser, userProfile, id, refreshProfile, lang]);
 
@@ -518,7 +688,7 @@ export default function LessonPage() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-2 text-text-muted text-sm mb-4">
             <FiClock />
-            <span>{lessonMeta?.duration || (lang === 'ar' ? '20 دقيقة' : '20 min')}</span>
+            <span>{lessonMeta?.duration || t('lesson.durationFallback')}</span>
             <span className="mx-2">•</span>
             <span className={isPremium ? 'text-accent' : 'text-primary'}>
               {isPremium ? t('lesson.paid') : t('lesson.free')}
@@ -595,7 +765,7 @@ export default function LessonPage() {
                   href={`/lessons/${prevLesson.id}`}
                   className="flex items-center gap-2 px-4 py-2 border border-border text-text rounded-lg hover:bg-surface-light transition-colors"
                 >
-                  <FiChevronRight /> {prevLesson.title}
+                  {dir === 'rtl' ? <FiChevronRight /> : <FiChevronLeft />} {prevLesson.title}
                 </Link>
               )}
             </div>
@@ -626,7 +796,7 @@ export default function LessonPage() {
                   href={`/lessons/${nextLesson.id}`}
                   className="flex items-center gap-2 px-4 py-2 border border-border text-text rounded-lg hover:bg-surface-light transition-colors"
                 >
-                  {nextLesson.title} <FiChevronLeft />
+                  {nextLesson.title} {dir === 'rtl' ? <FiChevronLeft /> : <FiChevronRight />}
                 </Link>
               )}
             </div>

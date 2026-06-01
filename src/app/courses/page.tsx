@@ -33,10 +33,10 @@ export default function CoursesPage() {
               <h2 className="text-2xl font-bold text-text mb-2 group-hover:text-primary transition-colors">{t('courses.free.title')}</h2>
               <p className="text-text-muted mb-4">{t('courses.free.desc')}</p>
               <ul className="space-y-2 text-sm text-text-muted">
-                <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'التنقل بين المجلدات' : 'Folder navigation'}</li>
-                <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'إدارة الملفات والمجلدات' : 'File & folder management'}</li>
-                <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'الصلاحيات والمستخدمين' : 'Permissions & users'}</li>
-                <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'أوامر البحث' : 'Search commands'}</li>
+                <li className="flex items-center gap-2">✓ {t('course.feature1')}</li>
+                <li className="flex items-center gap-2">✓ {t('course.feature2')}</li>
+                <li className="flex items-center gap-2">✓ {t('course.feature3')}</li>
+                <li className="flex items-center gap-2">✓ {t('course.feature4')}</li>
                 <li className="flex items-center gap-2">✓ HTML & CSS</li>
               </ul>
               <span className="inline-flex items-center gap-2 mt-6 text-primary font-semibold">
@@ -59,10 +59,10 @@ export default function CoursesPage() {
               <h2 className="text-2xl font-bold text-text mb-2 group-hover:text-accent transition-colors">{t('courses.premium.title')}</h2>
               <p className="text-text-muted mb-4">{t('courses.premium.desc')}</p>
               <ul className="space-y-2 text-sm text-text-muted">
-                <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'جمع المعلومات والاستطلاع' : 'Recon & information gathering'}</li>
-                <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'اختبار اختراق الشبكات' : 'Network penetration testing'}</li>
-                <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'تحليل الثغرات الأمنية' : 'Vulnerability analysis'}</li>
-                <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'أدوات الحماية والدفاع' : 'Security & defense tools'}</li>
+                <li className="flex items-center gap-2">✓ {t('course.feature5')}</li>
+                <li className="flex items-center gap-2">✓ {t('course.feature6')}</li>
+                <li className="flex items-center gap-2">✓ {t('course.feature7')}</li>
+                <li className="flex items-center gap-2">✓ {t('course.feature8')}</li>
                 <li className="flex items-center gap-2">✓ JavaScript & Python</li>
               </ul>
               <span className="inline-flex items-center gap-2 mt-6 text-accent font-semibold">

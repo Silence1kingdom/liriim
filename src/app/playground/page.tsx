@@ -5,7 +5,7 @@ import TerminalPlayground from '@/components/TerminalPlayground';
 import { FiTerminal, FiFolder, FiFile, FiInfo } from 'react-icons/fi';
 
 export default function PlaygroundPage() {
-  const { t, lang } = useT();
+  const { t, lang, dir } = useT();
 
   const initialFiles = [
     { name: 'Documents/', type: 'dir' },
@@ -24,7 +24,7 @@ export default function PlaygroundPage() {
   ];
 
   return (
-    <div className="pt-24 pb-16" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="pt-24 pb-16" dir={dir}>
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">

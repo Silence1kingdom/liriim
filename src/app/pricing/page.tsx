@@ -9,8 +9,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useT } from '@/contexts/LangContext';
 import toast from 'react-hot-toast';
 
-const MONTHLY_PRICE_ID = 'price_monthly';
-const YEARLY_PRICE_ID = 'price_yearly';
+const MONTHLY_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID || 'price_monthly';
+const YEARLY_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID || 'price_yearly';
 
 function PricingPageInner() {
   const { t, lang } = useT();
@@ -33,7 +33,7 @@ function PricingPageInner() {
           const data = await res.json();
           if (data.success) {
             await refreshProfile();
-            toast.success(lang === 'ar' ? 'تم تفعيل الباقة المدفوعة!' : 'Premium activated!');
+            toast.success(t('pricing.activated'));
           } else {
             setError(true);
           }
@@ -72,7 +72,7 @@ function PricingPageInner() {
         toast.error(data.error);
       }
     } catch {
-      toast.error(lang === 'ar' ? 'حدث خطأ' : 'An error occurred');
+      toast.error(t('common.error'));
     } finally {
       setLoading(false);
     }
@@ -91,7 +91,7 @@ function PricingPageInner() {
               <div className="terminal-window-header justify-center">
                 <FiRefreshCw className="text-primary animate-spin" size={16} />
                 <span className="text-primary text-sm font-mono">
-                  {lang === 'ar' ? 'جاري التحقق من الدفع...' : 'Verifying payment...'}
+                  {t('pricing.verifying')}
                 </span>
               </div>
               <div className="py-12">
@@ -103,12 +103,12 @@ function PricingPageInner() {
               <div className="terminal-window-header justify-center border-red-500/20">
                 <FiX className="text-red-400" size={16} />
                 <span className="text-red-400 text-sm font-mono">
-                  {lang === 'ar' ? 'خطأ' : 'Error'}
+                  {t('pricing.errorShort')}
                 </span>
               </div>
               <div className="p-8">
-                <p className="text-text-muted mb-6">{lang === 'ar' ? 'حدث خطأ أثناء التحقق من الدفع. تواصل مع الدعم الفني.' : 'Error verifying payment. Contact support.'}</p>
-                <Link href="/courses/premium" className="text-primary hover:underline font-mono">{lang === 'ar' ? 'العودة للدروس المدفوعة' : 'Back to Premium'}</Link>
+                <p className="text-text-muted mb-6">{t('pricing.verifyError')}</p>
+                <Link href="/courses/premium" className="text-primary hover:underline font-mono">{t('pricing.backToPremium')}</Link>
               </div>
             </div>
           ) : (
@@ -116,7 +116,7 @@ function PricingPageInner() {
               <div className="terminal-window-header justify-center border-primary/20">
                 <FiCheck className="text-primary" size={16} />
                 <span className="text-primary text-sm font-mono">
-                  {lang === 'ar' ? 'تم الدفع بنجاح' : 'Payment Successful'}
+                  {t('pricing.successShort')}
                 </span>
               </div>
               <div className="p-8">
@@ -253,7 +253,7 @@ function PricingPageInner() {
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
                       <div className="w-4 h-4 border-2 border-secondary border-t-transparent rounded-full animate-spin" />
-                      {lang === 'ar' ? 'جاري...' : 'Loading...'}
+                      {t('pricing.loading')}
                     </span>
                   ) : (
                     t('pricing.pro.cta')

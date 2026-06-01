@@ -13,8 +13,8 @@ service firebase.storage {
     }
 
     function isAdmin() {
-      return firestore.exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && firestore.get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      return firestore.exists(/databases/(default)/documents/users/$(request.auth.uid))
+        && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
   }
 }

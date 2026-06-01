@@ -43,31 +43,31 @@ export default function RegisterPage() {
     setConfirmError('');
 
     if (!displayName.trim()) {
-      setNameError(lang === 'ar' ? 'الاسم مطلوب' : 'Name is required');
+      setNameError(t('register.nameRequired'));
       valid = false;
     }
 
     if (!email.trim()) {
-      setEmailError(lang === 'ar' ? 'البريد الإلكتروني مطلوب' : 'Email is required');
+      setEmailError(t('register.emailRequired'));
       valid = false;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setEmailError(lang === 'ar' ? 'البريد الإلكتروني غير صالح' : 'Invalid email');
+      setEmailError(t('register.emailInvalid'));
       valid = false;
     }
 
     if (!password) {
-      setPasswordError(lang === 'ar' ? 'كلمة المرور مطلوبة' : 'Password is required');
+      setPasswordError(t('register.passwordRequired'));
       valid = false;
     } else if (password.length < 6) {
-      setPasswordError(lang === 'ar' ? 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' : 'Password must be at least 6 characters');
+      setPasswordError(t('register.passwordLength'));
       valid = false;
     }
 
     if (!confirmPassword) {
-      setConfirmError(lang === 'ar' ? 'تأكيد كلمة المرور مطلوب' : 'Please confirm your password');
+      setConfirmError(t('register.confirmRequired'));
       valid = false;
     } else if (password !== confirmPassword) {
-      setConfirmError(lang === 'ar' ? 'كلمة المرور غير متطابقة' : 'Passwords do not match');
+      setConfirmError(t('register.passwordsNotMatch'));
       valid = false;
     }
 
@@ -81,7 +81,7 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       await registerUser(email, password, displayName);
-      toast.success(lang === 'ar' ? '✓ تم إنشاء الحساب بنجاح' : '✓ Account created successfully');
+      toast.success(t('register.created'));
       router.push('/dashboard');
     } catch (err: any) {
       const msg = getAuthErrorMessage(err?.code || '', lang);
@@ -100,7 +100,7 @@ export default function RegisterPage() {
     setGoogleLoading(true);
     try {
       await signInWithGoogle();
-      toast.success(lang === 'ar' ? '✓ تم تسجيل الدخول عبر Google' : '✓ Signed in with Google');
+      toast.success(t('register.googleSuccess'));
       router.push('/dashboard');
     } catch (err: any) {
       if (err?.code === 'auth/popup-blocked') {
@@ -158,7 +158,7 @@ export default function RegisterPage() {
             )}
             <span className="text-gray-800 dark:text-gray-200 font-mono text-sm font-semibold">
               {googleLoading
-                ? (lang === 'ar' ? 'جاري الاتصال...' : 'Connecting...')
+                ? t('register.connecting')
                 : t('auth.register.google')}
             </span>
           </div>
@@ -190,7 +190,7 @@ export default function RegisterPage() {
                 type="text"
                 value={displayName}
                 onChange={(e) => { setDisplayName(e.target.value); setNameError(''); }}
-                placeholder={lang === 'ar' ? 'الاسم الكامل' : 'Full Name'}
+                placeholder={t('register.namePlaceholder')}
                 className={`w-full bg-secondary border rounded-lg py-3 px-4 text-text font-mono text-sm focus:outline-none transition-colors ${
                   nameError ? 'border-red-500' : 'border-border focus:border-primary'
                 }`}
@@ -299,7 +299,7 @@ export default function RegisterPage() {
               className="w-full py-3 bg-primary text-secondary font-bold rounded-lg hover:bg-primary-dark transition-all disabled:opacity-50 flex items-center justify-center gap-2 font-mono text-sm"
             >
               {loading ? (
-                <><FiLoader className="animate-spin" /> {lang === 'ar' ? 'جاري إنشاء الحساب...' : 'Creating account...'}</>
+                <><FiLoader className="animate-spin" /> {t('auth.register.loading')}</>
               ) : (
                 <><FiUserPlus /> {t('auth.register.button')}</>
               )}

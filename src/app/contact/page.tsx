@@ -15,16 +15,16 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) {
-      toast.error(lang === 'ar' ? 'يرجى ملء الحقول المطلوبة' : 'Please fill required fields');
+      toast.error(t('contact.fillRequired'));
       return;
     }
     setLoading(true);
     try {
-      await createContactMessage({ ...form, subject: form.subject || (lang === 'ar' ? 'بدون موضوع' : 'No subject') });
+      await createContactMessage({ ...form, subject: form.subject || t('contact.noSubject') });
       toast.success(t('contact.success'));
       setForm({ name: '', email: '', subject: '', message: '' });
     } catch {
-      toast.error(lang === 'ar' ? 'حدث خطأ أثناء الإرسال' : 'An error occurred while sending');
+      toast.error(t('contact.sendError'));
     } finally {
       setLoading(false);
     }

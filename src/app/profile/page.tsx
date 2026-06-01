@@ -269,7 +269,7 @@ export default function ProfilePage() {
                 </h3>
                 <div>
                   <div className="flex justify-between text-xs font-mono mb-1">
-                    <span className="text-text">{lang === 'ar' ? 'الدروس المجانية' : 'Free Lessons'}</span>
+                    <span className="text-text">{t('profile.freeLessons')}</span>
                     <span className="text-text-muted">{freeCompleted}/{FREE_LESSONS.length}</span>
                   </div>
                   <div className="h-2 bg-secondary rounded-full overflow-hidden">
@@ -278,7 +278,7 @@ export default function ProfilePage() {
                 </div>
                 <div>
                   <div className="flex justify-between text-xs font-mono mb-1">
-                    <span className="text-text">{lang === 'ar' ? 'الدروس المدفوعة' : 'Premium Lessons'}</span>
+                    <span className="text-text">{t('profile.premiumLessons')}</span>
                     <span className="text-text-muted">{premCompleted}/{PREMIUM_LESSONS.length}</span>
                   </div>
                   <div className="h-2 bg-secondary rounded-full overflow-hidden">

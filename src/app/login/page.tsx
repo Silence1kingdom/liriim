@@ -33,15 +33,15 @@ export default function LoginPage() {
     setPasswordError('');
 
     if (!email.trim()) {
-      setEmailError(lang === 'ar' ? 'البريد الإلكتروني مطلوب' : 'Email is required');
+      setEmailError(t('register.emailRequired'));
       valid = false;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setEmailError(lang === 'ar' ? 'البريد الإلكتروني غير صالح' : 'Invalid email');
+      setEmailError(t('register.emailInvalid'));
       valid = false;
     }
 
     if (!password) {
-      setPasswordError(lang === 'ar' ? 'كلمة المرور مطلوبة' : 'Password is required');
+      setPasswordError(t('register.passwordRequired'));
       valid = false;
     }
 
@@ -55,7 +55,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await loginUser(email, password);
-      toast.success(lang === 'ar' ? '✓ تم تسجيل الدخول بنجاح' : '✓ Logged in successfully');
+      toast.success(t('login.success'));
       router.push('/dashboard');
     } catch (err: any) {
       const msg = getAuthErrorMessage(err?.code || '', lang);
@@ -74,7 +74,7 @@ export default function LoginPage() {
     setGoogleLoading(true);
     try {
       await signInWithGoogle();
-      toast.success(lang === 'ar' ? '✓ تم تسجيل الدخول عبر Google' : '✓ Signed in with Google');
+      toast.success(t('login.googleSuccess'));
       router.push('/dashboard');
     } catch (err: any) {
       if (err?.code === 'auth/popup-blocked') {
@@ -133,7 +133,7 @@ export default function LoginPage() {
             )}
             <span className="text-gray-800 dark:text-gray-200 font-mono text-sm font-semibold">
               {googleLoading
-                ? (lang === 'ar' ? 'جاري الاتصال...' : 'Connecting...')
+                ? t('register.connecting')
                 : t('auth.login.google')}
             </span>
           </div>
@@ -220,7 +220,7 @@ export default function LoginPage() {
               className="w-full py-3 bg-primary text-secondary font-bold rounded-lg hover:bg-primary-dark transition-all disabled:opacity-50 flex items-center justify-center gap-2 font-mono text-sm"
             >
               {loading ? (
-                <><FiLoader className="animate-spin" /> {lang === 'ar' ? 'جاري تسجيل الدخول...' : 'Logging in...'}</>
+                <><FiLoader className="animate-spin" /> {t('auth.login.loading')}</>
               ) : (
                 <><FiLogIn /> {t('auth.login.button')}</>
               )}
