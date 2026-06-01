@@ -9,6 +9,12 @@ export interface User {
   isPremium: boolean;
   premiumExpiresAt?: number;
   progress: { [lessonId: string]: 'started' | 'completed' };
+  certificateEarned?: boolean;
+  certificateIssuedAt?: number;
+  stripeCustomerId?: string;
+  stripeSubscriptionId?: string;
+  favorites?: string[];
+  achievements?: string[];
 }
 
 export interface Category {
@@ -75,4 +81,38 @@ export interface Payment {
   status: 'pending' | 'completed' | 'failed';
   createdAt: number;
   stripeSessionId?: string;
+}
+
+export interface QuizQuestion {
+  id: string;
+  question: string;
+  questionEn: string;
+  options: string[];
+  optionsEn: string[];
+  correct: number;
+}
+
+export interface QuizData {
+  lessonId: string;
+  questions: QuizQuestion[];
+}
+
+export interface QuizResult {
+  lessonId: string;
+  score: number;
+  total: number;
+  percentage: number;
+  answers: number[];
+  completedAt: number;
+  passed: boolean;
+}
+
+export interface CertificateData {
+  userId: string;
+  displayName: string;
+  issuedAt: number;
+  averageScore: number;
+  lessonsPassed: number;
+  totalLessons: number;
+  certificateId: string;
 }

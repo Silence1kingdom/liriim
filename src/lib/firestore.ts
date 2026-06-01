@@ -6,6 +6,7 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  setDoc,
   query,
   where,
   orderBy,
@@ -13,7 +14,7 @@ import {
   DocumentData,
 } from 'firebase/firestore';
 import { db } from './firebase';
-import type { Category, Lesson, ContactMessage, SiteSettings } from './types';
+import type { Category, Lesson, ContactMessage, SiteSettings, QuizResult, CertificateData } from './types';
 
 // Categories
 export const getCategories = async (type?: 'free' | 'premium'): Promise<Category[]> => {
@@ -94,4 +95,64 @@ export const saveSiteSettings = async (data: Partial<SiteSettings>) => {
   } else {
     await updateDoc(doc(db, 'settings', snap.docs[0].id), data);
   }
+};
+
+// Quiz Results
+export const saveQuizResult = async (userId: string, result: QuizResult) => {
+  await setDoc(doc(db, 'users', userId, 'quizResults', result.lessonId), result);
+};
+
+export const getQuizResult = async (userId: string, lessonId: string): Promise<QuizResult | null> => {
+  const snap = await getDoc(doc(db, 'users', userId, 'quizResults', lessonId));
+  return snap.exists() ? (snap.data() as QuizResult) : null;
+};
+
+export const getAllQuizResults = async (userId: string): Promise<QuizResult[]> => {
+  const snap = await getDocs(collection(db, 'users', userId, 'quizResults'));
+  return snap.docs.map((d) => d.data() as QuizResult);
+};
+
+// Certificates
+export const saveCertificate = async (userId: string, cert: CertificateData) => {
+  await setDoc(doc(db, 'users', userId, 'certificates', cert.certificateId), cert);
+  await updateDoc(doc(db, 'users', userId), { certificateEarned: true, certificateIssuedAt: Date.now() });
+};
+
+export const getCertificate = async (userId: string): Promise<CertificateData | null> => {
+  const snap = await getDocs(collection(db, 'users', userId, 'certificates'));
+  if (snap.empty) return null;
+  return snap.docs[0].data() as CertificateData;
+};
+
+// Favorites
+export const toggleFavorite = async (userId: string, lessonId: string, currentFavorites: string[] = []) => {
+  const exists = currentFavorites.includes(lessonId);
+  const updated = exists
+    ? currentFavorites.filter((id) => id !== lessonId)
+    : [...currentFavorites, lessonId];
+  await updateDoc(doc(db, 'users', userId), { favorites: updated });
+  return updated;
+};
+
+// Achievements
+export const saveAchievements = async (userId: string, achievements: string[]) => {
+  await updateDoc(doc(db, 'users', userId), { achievements });
+};
+
+// Leaderboard
+export const getLeaderboard = async (): Promise<any[]> => {
+  const snap = await getDocs(collection(db, 'users'));
+  const users = snap.docs.map((d) => ({ id: d.id, ...d.data() } as any));
+  return users
+    .map((u) => ({
+      id: u.id,
+      displayName: u.displayName || 'User',
+      photoURL: u.photoURL || null,
+      completedCount: Object.values(u.progress || {}).filter((v: any) => v === 'completed').length,
+      achievementsCount: (u.achievements || []).length,
+      isPremium: u.isPremium || false,
+      certificateEarned: u.certificateEarned || false,
+    }))
+    .sort((a, b) => b.completedCount - a.completedCount || b.achievementsCount - a.achievementsCount)
+    .slice(0, 50);
 };

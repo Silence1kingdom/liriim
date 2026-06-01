@@ -4,13 +4,14 @@ import { useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FiClock, FiChevronRight, FiChevronLeft, FiCheckCircle, FiTerminal } from 'react-icons/fi';
+import { FiClock, FiChevronRight, FiChevronLeft, FiCheckCircle, FiTerminal, FiAward, FiHeart } from 'react-icons/fi';
 import TerminalDemo from '@/components/TerminalDemo';
 import LessonTraining from '@/components/LessonTraining';
 import PremiumGuard from '@/components/PremiumGuard';
 import { useAuth } from '@/contexts/AuthContext';
 import { useT } from '@/contexts/LangContext';
 import { updateUserProfile } from '@/lib/auth';
+import { toggleFavorite } from '@/lib/firestore';
 import { FREE_LESSONS, PREMIUM_LESSONS } from '@/lib/constants';
 import toast from 'react-hot-toast';
 
@@ -478,6 +479,15 @@ export default function LessonPage() {
   const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
   const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
 
+  const isFavorited = userProfile?.favorites?.includes(id) || false;
+
+  const handleToggleFavorite = useCallback(async () => {
+    if (!firebaseUser) return;
+    const updated = await toggleFavorite(firebaseUser.uid, id, userProfile?.favorites);
+    await refreshProfile();
+    toast.success(updated.includes(id) ? t('fav.added') : t('fav.removed'));
+  }, [firebaseUser, id, userProfile, refreshProfile, t]);
+
   const handleMarkComplete = useCallback(async () => {
     if (!firebaseUser || !userProfile) {
       toast.error(lang === 'ar' ? 'يرجى تسجيل الدخول أولاً' : 'Please log in first');
@@ -521,6 +531,14 @@ export default function LessonPage() {
                 </span>
               </>
             )}
+            {firebaseUser && (
+              <>
+                <span className="mx-2">•</span>
+                <button onClick={handleToggleFavorite} className="flex items-center gap-1 hover:scale-110 transition-transform" title={isFavorited ? t('fav.remove') : t('fav.add')}>
+                  <FiHeart size={14} className={isFavorited ? 'text-red-400 fill-red-400' : 'text-text-muted'} />
+                </button>
+              </>
+            )}
           </div>
 
           <h1 className="text-3xl md:text-4xl font-bold text-text mb-6">{data.title}</h1>
@@ -547,7 +565,7 @@ export default function LessonPage() {
             </div>
           )}
 
-          {/* Mark complete + Navigation */}
+          {/* Mark complete + Quiz + Navigation */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-12 pt-8 border-t border-border">
             <div className="flex gap-2">
               {prevLesson && (
@@ -560,14 +578,25 @@ export default function LessonPage() {
               )}
             </div>
 
-            {firebaseUser && !isCompleted && (
-              <button
-                onClick={handleMarkComplete}
-                className="flex items-center gap-2 px-6 py-2 bg-primary text-secondary font-bold rounded-lg hover:bg-primary-dark transition-colors"
-              >
-                <FiCheckCircle /> {t('lesson.markComplete')}
-              </button>
-            )}
+            <div className="flex gap-2">
+              {firebaseUser && !isCompleted && (
+                <button
+                  onClick={handleMarkComplete}
+                  className="flex items-center gap-2 px-6 py-2 bg-primary text-secondary font-bold rounded-lg hover:bg-primary-dark transition-colors"
+                >
+                  <FiCheckCircle /> {t('lesson.markComplete')}
+                </button>
+              )}
+
+              {firebaseUser && (
+                <Link
+                  href={`/quiz/${id}`}
+                  className="flex items-center gap-2 px-6 py-2 border border-accent text-accent rounded-lg hover:bg-accent/10 transition-colors"
+                >
+                  <FiAward /> {t('quiz.title')}
+                </Link>
+              )}
+            </div>
 
             <div className="flex gap-2">
               {nextLesson && (

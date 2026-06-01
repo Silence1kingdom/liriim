@@ -8,7 +8,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useT } from '@/contexts/LangContext';
 import { logoutUser } from '@/lib/auth';
 import { SITE_NAME_AR } from '@/lib/constants';
-import { FiMenu, FiX, FiTerminal, FiLogOut, FiUser, FiSettings, FiSun, FiMoon, FiGlobe, FiCommand, FiChevronRight, FiChevronLeft } from 'react-icons/fi';
+import { FiMenu, FiX, FiTerminal, FiLogOut, FiUser, FiSettings, FiSun, FiMoon, FiGlobe, FiCommand, FiChevronRight, FiChevronLeft, FiAward, FiTrendingUp } from 'react-icons/fi';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,6 +29,8 @@ export default function Navbar() {
     { href: '/courses', label: t('nav.courses') },
     { href: '/courses/free', label: t('nav.free') },
     { href: '/courses/premium', label: t('nav.premium') },
+    { href: '/pricing', label: t('pricing.nav') },
+    { href: '/leaderboard', label: t('leader.nav') },
     { href: '/playground', label: t('playground.nav') },
   ];
 
@@ -91,6 +93,15 @@ export default function Navbar() {
               {t('nav.langSwitch')}
             </button>
 
+            {firebaseUser && userProfile?.certificateEarned && (
+              <Link
+                href="/certificate"
+                className="p-2 text-accent hover:bg-surface-light rounded-lg transition-colors"
+                title={t('cert.title')}
+              >
+                <FiAward size={16} />
+              </Link>
+            )}
             {firebaseUser ? (
               <div className={`flex items-center gap-2 ${dir === 'rtl' ? 'mr-2 pr-2 border-r' : 'ml-2 pl-2 border-l'} border-border`}>
                 <Link
@@ -193,6 +204,9 @@ export default function Navbar() {
                 </div>
                 <MobileLink href="/profile" onClick={() => setIsOpen(false)} active={isActive('/profile')} dir={dir}>
                   <span className="flex items-center gap-2"><FiUser size={14} /> {t('nav.profile')}</span>
+                </MobileLink>
+                <MobileLink href="/certificate" onClick={() => setIsOpen(false)} active={isActive('/certificate')} dir={dir}>
+                  <span className="flex items-center gap-2"><FiAward size={14} /> {t('cert.title')}</span>
                 </MobileLink>
                 <button onClick={handleLogout} className="w-full text-left py-2.5 px-3 text-red-400 hover:bg-red-400/5 rounded-lg transition-colors flex items-center gap-2 text-sm">
                   <FiLogOut size={14} /> {t('nav.logout')}

@@ -3,8 +3,13 @@
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
-import { getUserProfile, createUserDocument, handleGoogleRedirect } from '@/lib/auth';
+import { getUserProfile, createUserDocument, handleGoogleRedirect, updateUserProfile } from '@/lib/auth';
 import type { User } from '@/lib/types';
+
+const ADMIN_EMAILS: string[] = [
+  'phantomdark010@gmail.com',
+  'ahmedhamdy7512@gmail.com',
+];
 
 interface AuthContextType {
   firebaseUser: FirebaseUser | null;
@@ -26,6 +31,15 @@ const AuthContext = createContext<AuthContextType>({
 
 export const useAuth = () => useContext(AuthContext);
 
+const ensureAdmin = async (user: FirebaseUser, profile: User): Promise<User> => {
+  if (ADMIN_EMAILS.includes(user.email || '') && profile.role !== 'admin') {
+    const updated = { ...profile, role: 'admin' as const };
+    await updateUserProfile(user.uid, { role: 'admin' });
+    return updated;
+  }
+  return profile;
+};
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const [userProfile, setUserProfile] = useState<User | null>(null);
@@ -37,7 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         const profile = await getUserProfile(firebaseUser.uid);
         if (profile) {
-          setUserProfile(profile);
+          setUserProfile(await ensureAdmin(firebaseUser, profile));
         } else {
           const newProfile = await createUserDocument(firebaseUser);
           setUserProfile(newProfile);
@@ -55,13 +69,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         try {
           const redirectProfile = await handleGoogleRedirect();
           if (redirectProfile) {
-            setUserProfile(redirectProfile);
+            setUserProfile(await ensureAdmin(user, redirectProfile));
           } else {
             let profile = await getUserProfile(user.uid);
             if (!profile && user.email) {
               profile = await createUserDocument(user);
             }
-            setUserProfile(profile);
+            if (profile) {
+              setUserProfile(await ensureAdmin(user, profile));
+            } else {
+              setUserProfile(null);
+            }
           }
         } catch {
           setUserProfile(null);

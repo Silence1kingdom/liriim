@@ -44,7 +44,7 @@ export default function CoursesPage() {
             </motion.div>
           </Link>
 
-          <Link href="/courses/premium">
+          <Link href="/pricing">
             <motion.div
               className="p-8 bg-gradient-to-br from-surface to-surface-light rounded-xl border border-accent/30 hover:border-accent transition-all group relative overflow-hidden"
               whileHover={{ scale: 1.02 }}

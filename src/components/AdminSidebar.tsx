@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useT } from '@/contexts/LangContext';
-import { FiHome, FiBook, FiGrid, FiUsers, FiSettings, FiTerminal, FiArrowRight } from 'react-icons/fi';
+import { FiHome, FiBook, FiGrid, FiUsers, FiSettings, FiTerminal, FiArrowRight, FiMail } from 'react-icons/fi';
 
 export default function AdminSidebar() {
   const { t, dir } = useT();
@@ -14,6 +14,7 @@ export default function AdminSidebar() {
     { href: '/admin/lessons', label: t('admin.lessons'), icon: FiBook },
     { href: '/admin/categories', label: t('admin.categories'), icon: FiGrid },
     { href: '/admin/users', label: t('admin.users'), icon: FiUsers },
+    { href: '/admin/messages', label: 'الرسائل', icon: FiMail },
     { href: '/admin/settings', label: t('admin.settings'), icon: FiSettings },
   ];
 

@@ -1,17 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useT } from '@/contexts/LangContext';
 import { updateUserProfile } from '@/lib/auth';
+import { getAllQuizResults, toggleFavorite } from '@/lib/firestore';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   FiUser, FiMail, FiCalendar, FiAward, FiBook, FiTrendingUp,
   FiStar, FiTerminal, FiSettings, FiEdit2, FiCheck, FiX,
-  FiShield, FiClock, FiLoader, FiSave,
+  FiShield, FiClock, FiLoader, FiSave, FiHeart, FiTarget, FiLock,
 } from 'react-icons/fi';
 import { FREE_LESSONS, PREMIUM_LESSONS } from '@/lib/constants';
+import { ACHIEVEMENTS, checkAchievements } from '@/lib/achievements';
+import type { QuizResult } from '@/lib/types';
 import toast from 'react-hot-toast';
 
 const formatDate = (timestamp: number, lang: 'ar' | 'en'): string => {
@@ -46,6 +49,38 @@ export default function ProfilePage() {
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState('');
   const [saving, setSaving] = useState(false);
+  const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
+  const [favorites, setFavorites] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!firebaseUser) return;
+    getAllQuizResults(firebaseUser.uid).then(setQuizResults).catch(() => {});
+  }, [firebaseUser]);
+
+  useEffect(() => {
+    if (userProfile?.favorites) setFavorites(userProfile.favorites);
+  }, [userProfile?.favorites]);
+
+  // Check and save achievements
+  const earnedAchievements = userProfile?.achievements || [];
+  const newlyEarned = checkAchievements(
+    userProfile?.progress || {},
+    quizResults,
+    favorites,
+    userProfile,
+    earnedAchievements,
+  );
+
+  useEffect(() => {
+    if (newlyEarned.length > 0 && firebaseUser) {
+      const all = [...earnedAchievements, ...newlyEarned];
+      import('@/lib/firestore').then(({ saveAchievements }) => {
+        saveAchievements(firebaseUser.uid, all).catch(() => {});
+        toast.success(t('achieve.unlocked'));
+        refreshProfile();
+      });
+    }
+  }, [newlyEarned.length > 0]);
 
   if (loading) {
     return (
@@ -207,9 +242,11 @@ export default function ProfilePage() {
             </div>
             <div className="terminal-window">
               <div className="p-4 text-center">
-                <FiAward className="text-primary mx-auto mb-2" size={20} />
-                <div className="text-2xl font-bold text-text font-mono">{premCompleted}</div>
-                <div className="text-xs text-text-muted font-mono mt-0.5">{lang === 'ar' ? 'دروس متقدمة' : 'Advanced Done'}</div>
+                <FiAward className={`mx-auto mb-2 ${userProfile?.certificateEarned ? 'text-primary' : 'text-text-muted'}`} size={20} />
+                <div className={`text-2xl font-bold font-mono ${userProfile?.certificateEarned ? 'text-primary' : 'text-text'}`}>
+                  {userProfile?.certificateEarned ? <FiCheck size={24} className="mx-auto" /> : '—'}
+                </div>
+                <div className="text-xs text-text-muted font-mono mt-0.5">{t('cert.title')}</div>
               </div>
             </div>
           </div>
@@ -323,11 +360,104 @@ export default function ProfilePage() {
                   <FiTerminal size={20} className="text-accent group-hover:animate-pulse" />
                   <span className="text-xs font-mono text-text">{t('profile.playground')}</span>
                 </Link>
+                <Link href="/certificate" className="flex flex-col items-center gap-2 p-4 rounded-lg bg-secondary border border-border hover:border-accent/30 transition-all group">
+                  <FiAward size={20} className="text-accent group-hover:animate-pulse" />
+                  <span className="text-xs font-mono text-text">{t('cert.title')}</span>
+                </Link>
                 <Link href="/settings" className="flex flex-col items-center gap-2 p-4 rounded-lg bg-secondary border border-border hover:border-primary/30 transition-all group">
                   <FiSettings size={20} className="text-text-muted group-hover:text-primary transition-colors" />
                   <span className="text-xs font-mono text-text">{t('profile.settings')}</span>
                 </Link>
               </div>
+            </div>
+          </div>
+
+          {/* Achievements */}
+          <div className="terminal-window">
+            <div className="terminal-window-header">
+              <span className="terminal-dot terminal-dot-red" />
+              <span className="terminal-dot terminal-dot-yellow" />
+              <span className="terminal-dot terminal-dot-green" />
+              <span className="text-text-muted text-xs font-mono mr-auto">{'>'} cat /achievements/{userProfile.displayName.replace(/\s+/g, '_').toLowerCase()}</span>
+              <FiAward size={12} className="text-primary" />
+            </div>
+            <div className="p-5">
+              <h3 className="text-sm font-bold text-text font-mono mb-3 flex items-center gap-2">
+                <FiTarget className="text-primary" size={14} />
+                {t('achieve.title')}
+                <span className="text-xs text-text-muted font-mono">({earnedAchievements.length}/{ACHIEVEMENTS.length})</span>
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {ACHIEVEMENTS.map((ach) => {
+                  const unlocked = earnedAchievements.includes(ach.id);
+                  return (
+                    <div key={ach.id} className={`p-3 rounded-lg border text-center transition-all ${
+                      unlocked
+                        ? 'bg-primary/5 border-primary/20'
+                        : 'bg-secondary border-border opacity-50'
+                    }`}>
+                      <div className={`text-2xl mb-1 ${unlocked ? '' : 'grayscale'}`}>{ach.icon}</div>
+                      <p className={`text-xs font-mono ${unlocked ? 'text-text' : 'text-text-muted'}`}>
+                        {unlocked ? (lang === 'ar' ? ach.title : ach.titleEn) : '???'}
+                      </p>
+                      {unlocked ? (
+                        <p className="text-[10px] text-text-muted font-mono mt-0.5 leading-tight">
+                          {lang === 'ar' ? ach.desc : ach.descEn}
+                        </p>
+                      ) : (
+                        <p className="text-[10px] text-text-muted font-mono mt-0.5">{t('achieve.locked')}</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Favorite Lessons */}
+          <div className="terminal-window">
+            <div className="terminal-window-header">
+              <span className="terminal-dot terminal-dot-red" />
+              <span className="terminal-dot terminal-dot-yellow" />
+              <span className="terminal-dot terminal-dot-green" />
+              <span className="text-text-muted text-xs font-mono mr-auto">{'>'} ls /favorites/</span>
+              <FiHeart size={12} className="text-red-400" />
+            </div>
+            <div className="p-5">
+              <h3 className="text-sm font-bold text-text font-mono mb-3 flex items-center gap-2">
+                <FiHeart className="text-red-400" size={14} />
+                {t('fav.title')}
+                <span className="text-xs text-text-muted font-mono">({favorites.length})</span>
+              </h3>
+              {favorites.length === 0 ? (
+                <p className="text-text-muted text-sm font-mono text-center py-6">{t('fav.empty')}</p>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {favorites.map((favId) => {
+                    const lesson = [...FREE_LESSONS, ...PREMIUM_LESSONS].find((l) => l.id === favId);
+                    if (!lesson) return null;
+                    return (
+                      <div key={favId} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary border border-border group">
+                        <Link href={`/lessons/${favId}`} className="text-sm text-text font-mono hover:text-primary transition-colors truncate max-w-[200px]">
+                          {lesson.icon} {lang === 'ar' ? lesson.title : lesson.titleEn}
+                        </Link>
+                        <button
+                          onClick={async () => {
+                            if (!firebaseUser) return;
+                            const updated = await toggleFavorite(firebaseUser.uid, favId, favorites);
+                            setFavorites(updated);
+                            await refreshProfile();
+                            toast.success(t('fav.removed'));
+                          }}
+                          className="text-text-muted hover:text-red-400 transition-colors shrink-0"
+                        >
+                          <FiX size={12} />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
 

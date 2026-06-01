@@ -116,7 +116,7 @@ export default function HomePage() {
             <Link href="/courses/free" className="group px-8 py-4 bg-primary text-secondary font-bold rounded-xl hover:bg-primary-dark transition-all hover:scale-105 flex items-center gap-2 font-mono">
               <span className="group-hover:animate-pulse">$</span> {t('hero.cta.free')} <ArrowIcon />
             </Link>
-            <Link href="/courses/premium" className="group px-8 py-4 border border-accent text-accent font-bold rounded-xl hover:bg-accent/10 transition-all hover:scale-105 flex items-center gap-2 font-mono">
+            <Link href="/pricing" className="group px-8 py-4 border border-accent text-accent font-bold rounded-xl hover:bg-accent/10 transition-all hover:scale-105 flex items-center gap-2 font-mono">
               <span className="text-accent">#</span> {t('hero.cta.premium')}
             </Link>
           </motion.div>
@@ -230,7 +230,7 @@ export default function HomePage() {
             ))}
           </div>
           <motion.div className="text-center mt-8" {...fadeUp}>
-            <Link href="/courses/premium" className="group inline-flex items-center gap-2 px-8 py-4 bg-accent text-white font-bold rounded-xl hover:bg-accent/90 transition-all hover:scale-105 font-mono">
+            <Link href="/pricing" className="group inline-flex items-center gap-2 px-8 py-4 bg-accent text-white font-bold rounded-xl hover:bg-accent/90 transition-all hover:scale-105 font-mono">
               <span className="group-hover:animate-pulse">#</span> {t('section.premium.cta')} <ArrowIcon />
             </Link>
           </motion.div>

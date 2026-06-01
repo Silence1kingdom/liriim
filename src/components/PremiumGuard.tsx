@@ -17,7 +17,9 @@ export default function PremiumGuard({ children }: { children: React.ReactNode }
     );
   }
 
-  if (!firebaseUser || !userProfile?.isPremium) {
+  const isPremiumActive = userProfile?.isPremium && (!userProfile?.premiumExpiresAt || userProfile.premiumExpiresAt > Date.now());
+
+  if (!firebaseUser || !isPremiumActive) {
     return (
       <div className="max-w-md mx-auto my-20">
         <div className="terminal-window text-center">

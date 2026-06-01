@@ -49,7 +49,7 @@ export default function PremiumCoursesPage() {
               <li className="flex items-center gap-2"><FiCheck className="text-accent" /> {t('premium.pricing.certificate')}</li>
             </ul>
             <Link
-              href={userProfile ? '/dashboard' : '/register'}
+              href={userProfile ? '/pricing' : '/register'}
               className="block w-full py-3 bg-accent text-white font-bold rounded-xl hover:bg-accent/90 transition-colors"
             >
               {userProfile ? t('premium.pricing.cta') : t('premium.pricing.cta2')}
