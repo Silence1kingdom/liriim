@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FiTerminal, FiBook, FiUsers, FiShield, FiArrowLeft, FiStar, FiChevronDown, FiCode, FiCommand } from 'react-icons/fi';
+import { FiTerminal, FiBook, FiUsers, FiShield, FiArrowLeft, FiArrowRight, FiStar, FiChevronDown, FiCode, FiCommand } from 'react-icons/fi';
 import TerminalDemo from '@/components/TerminalDemo';
 import LessonCard from '@/components/LessonCard';
 import { useT } from '@/contexts/LangContext';
@@ -47,7 +47,7 @@ export default function HomePage() {
   const { t, lang } = useT();
 
   const isRtl = lang === 'ar';
-  const ArrowIcon = FiArrowLeft;
+  const ArrowIcon = lang === 'ar' ? FiArrowLeft : FiArrowRight;
 
   return (
     <div>

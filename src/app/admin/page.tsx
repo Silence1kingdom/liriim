@@ -6,7 +6,7 @@ import { useT } from '@/contexts/LangContext';
 import Link from 'next/link';
 import { FiBook, FiGrid, FiUsers, FiSettings, FiTerminal, FiMail, FiTrendingUp, FiShield, FiStar, FiMessageSquare, FiPlus } from 'react-icons/fi';
 import { getLessons, getCategories, getContactMessages } from '@/lib/firestore';
-import { collection, getDocs, query, where, orderBy, Timestamp } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 export default function AdminDashboard() {

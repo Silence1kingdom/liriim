@@ -29,7 +29,7 @@ const lessonData: { [key: string]: any } = {
         <li>النقر بالزر الأيمن داخل مجلد واختيار "Open in Terminal"</li>
       </ul>
       <h3 class="text-xl font-bold text-text mt-5 mb-3">مكونات سطر الأوامر</h3>
-      <p class="text-text-muted leading-relaxed mb-4">عند فتح التيرمينال، سترى sesuatu مثل: <code class="text-primary">user@host:~$</code>. هذا يسمى الـ Prompt ويعني أن النظام جاهز لاستقبال الأوامر.</p>
+      <p class="text-text-muted leading-relaxed mb-4">عند فتح التيرمينال، سترى شيئاً مثل: <code class="text-primary">user@host:~$</code>. هذا يسمى الـ Prompt ويعني أن النظام جاهز لاستقبال الأوامر.</p>
       <ul class="list-disc list-inside text-text-muted space-y-2 mb-4">
         <li><code class="text-primary">user</code> - اسم المستخدم الحالي</li>
         <li><code class="text-primary">host</code> - اسم الجهاز</li>

@@ -137,12 +137,21 @@ export const saveAchievements = async (userId: string, achievements: string[]) =
   await updateDoc(doc(db, 'users', userId), { achievements });
 };
 
-// Leaderboard
-export const getLeaderboard = async (): Promise<any[]> => {
+interface LeaderboardEntry {
+  id: string;
+  displayName: string;
+  photoURL: string | null;
+  completedCount: number;
+  achievementsCount: number;
+  isPremium: boolean;
+  certificateEarned: boolean;
+}
+
+export const getLeaderboard = async (): Promise<LeaderboardEntry[]> => {
   const snap = await getDocs(collection(db, 'users'));
-  const users = snap.docs.map((d) => ({ id: d.id, ...d.data() } as any));
+  const users = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
   return users
-    .map((u) => ({
+    .map((u: any) => ({
       id: u.id,
       displayName: u.displayName || 'User',
       photoURL: u.photoURL || null,
