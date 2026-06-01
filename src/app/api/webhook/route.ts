@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { adminDb } from '@/lib/firebase-admin';
+import { getAdminFirestore } from '@/lib/firebase-admin';
 
 const stripeSecret = process.env.STRIPE_SECRET_KEY;
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -23,17 +23,19 @@ export async function POST(req: Request) {
       event = JSON.parse(buf);
     }
 
+    const db = getAdminFirestore();
+
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session;
       const userId = session.metadata?.userId;
       if (userId) {
-        await adminDb.collection('users').doc(userId).update({
+        await db.collection('users').doc(userId).update({
           isPremium: true,
           premiumExpiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000,
           stripeCustomerId: session.customer as string,
           stripeSubscriptionId: session.subscription as string,
         });
-        await adminDb.collection('payments').doc(session.id).set({
+        await db.collection('payments').doc(session.id).set({
           userId,
           amount: session.amount_total || 0,
           currency: session.currency || 'usd',
@@ -47,9 +49,9 @@ export async function POST(req: Request) {
     if (event.type === 'invoice.payment_failed') {
       const invoice = event.data.object as Stripe.Invoice;
       const subId = invoice.subscription as string;
-      const userSnap = await adminDb.collection('users').where('stripeSubscriptionId', '==', subId).get();
+      const userSnap = await db.collection('users').where('stripeSubscriptionId', '==', subId).get();
       userSnap.forEach(async (d) => {
-        await adminDb.collection('users').doc(d.id).update({ isPremium: false });
+        await db.collection('users').doc(d.id).update({ isPremium: false });
       });
     }
 

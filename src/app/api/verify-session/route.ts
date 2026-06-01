@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { adminDb } from '@/lib/firebase-admin';
+import { getAdminFirestore } from '@/lib/firebase-admin';
 
 const stripeSecret = process.env.STRIPE_SECRET_KEY;
 
@@ -29,14 +29,16 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Payment not completed' }, { status: 400 });
     }
 
-    await adminDb.collection('users').doc(userId).update({
+    const db = getAdminFirestore();
+
+    await db.collection('users').doc(userId).update({
       isPremium: true,
       premiumExpiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000,
       stripeCustomerId: session.customer as string,
       stripeSubscriptionId: session.subscription as string,
     });
 
-    await adminDb.collection('payments').doc(session.id).set({
+    await db.collection('payments').doc(session.id).set({
       userId,
       amount: session.amount_total || 0,
       currency: session.currency || 'usd',
