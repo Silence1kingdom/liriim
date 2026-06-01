@@ -82,19 +82,17 @@ export const getContactMessages = async (): Promise<ContactMessage[]> => {
 };
 
 // Site Settings
+const SETTINGS_DOC_ID = 'main';
+
 export const getSiteSettings = async (): Promise<SiteSettings | null> => {
-  const snap = await getDocs(collection(db, 'settings'));
-  if (snap.empty) return null;
-  return { id: snap.docs[0].id, ...snap.docs[0].data() } as any;
+  const docRef = doc(db, 'settings', SETTINGS_DOC_ID);
+  const docSnap = await getDoc(docRef);
+  if (!docSnap.exists()) return null;
+  return { id: docSnap.id, ...docSnap.data() } as SiteSettings;
 };
 
 export const saveSiteSettings = async (data: Partial<SiteSettings>) => {
-  const snap = await getDocs(collection(db, 'settings'));
-  if (snap.empty) {
-    await addDoc(collection(db, 'settings'), data);
-  } else {
-    await updateDoc(doc(db, 'settings', snap.docs[0].id), data);
-  }
+  await setDoc(doc(db, 'settings', SETTINGS_DOC_ID), data, { merge: true });
 };
 
 // Quiz Results

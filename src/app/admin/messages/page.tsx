@@ -48,7 +48,7 @@ export default function AdminMessagesPage() {
           <span className="terminal-dot terminal-dot-red" />
           <span className="terminal-dot terminal-dot-yellow" />
           <span className="terminal-dot terminal-dot-green" />
-          <span className="text-text-muted text-xs font-mono mr-auto">root@b20-admin:~# cat /var/mail/</span>
+          <span className="text-text-muted text-xs font-mono mr-auto">root@bv-admin:~# cat /var/mail/</span>
         </div>
         <div className="p-5">
           <h1 className="text-2xl font-bold text-text font-mono flex items-center gap-2">

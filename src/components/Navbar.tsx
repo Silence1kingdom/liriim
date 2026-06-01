@@ -7,13 +7,13 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useT } from '@/contexts/LangContext';
 import { logoutUser } from '@/lib/auth';
-import { SITE_NAME_AR } from '@/lib/constants';
-import { FiMenu, FiX, FiTerminal, FiLogOut, FiUser, FiSettings, FiSun, FiMoon, FiGlobe, FiCommand, FiChevronRight, FiChevronLeft, FiAward, FiTrendingUp } from 'react-icons/fi';
+import { SITE_ABBR } from '@/lib/constants';
+import { FiMenu, FiX, FiTerminal, FiLogOut, FiUser, FiSun, FiMoon, FiGlobe, FiCommand, FiChevronRight, FiChevronLeft, FiAward, FiTrendingUp } from 'react-icons/fi';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const { firebaseUser, userProfile, isAdmin } = useAuth();
+  const { firebaseUser, userProfile } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { t, lang, setLang, dir } = useT();
 
@@ -42,7 +42,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 text-primary font-bold text-xl font-mono group shrink-0">
             <FiTerminal className="text-2xl group-hover:animate-pulse" />
-            <span className="tracking-tight">{'>'}_ {SITE_NAME_AR}</span>
+            <span className="tracking-tight">{'>'}_ {SITE_ABBR}</span>
           </Link>
 
           {/* Desktop nav */}
@@ -60,19 +60,7 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            {isAdmin && (
-              <Link
-                href="/admin"
-                className={`px-4 py-2 rounded-lg text-sm transition-all font-mono flex items-center gap-1 ${
-                  pathname.startsWith('/admin')
-                    ? 'text-accent bg-accent/10 border border-accent/20 shadow-sm shadow-accent/5'
-                    : 'text-text-muted hover:text-accent hover:bg-surface-light'
-                }`}
-              >
-                <FiSettings size={14} />
-                {t('nav.admin')}
-              </Link>
-            )}
+            
           </div>
 
           {/* Right section */}
@@ -181,11 +169,7 @@ export default function Navbar() {
                 </span>
               </MobileLink>
             ))}
-            {isAdmin && (
-              <MobileLink href="/admin" onClick={() => setIsOpen(false)} active={pathname.startsWith('/admin')} dir={dir}>
-                <span className="flex items-center gap-2"><FiSettings size={14} /> {t('nav.admin')}</span>
-              </MobileLink>
-            )}
+            
             <div className="border-t border-border my-2" />
             {firebaseUser ? (
               <>

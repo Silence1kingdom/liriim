@@ -15,7 +15,7 @@ const terminalCommands = [
 ];
 
 const heroLines = [
-  '> Initializing B_20 environment...',
+  '> Initializing Black Vector environment...',
   '> Loading kernel modules...',
   '> System ready.',
   '> Welcome to the terminal.',
@@ -131,7 +131,7 @@ export default function HomePage() {
               <span className="terminal-dot terminal-dot-red" />
               <span className="terminal-dot terminal-dot-yellow" />
               <span className="terminal-dot terminal-dot-green" />
-              <span className="text-text-muted text-xs font-mono mr-auto">b20@terminal:~$</span>
+              <span className="text-text-muted text-xs font-mono mr-auto">bv@terminal:~$</span>
               <FiTerminal size={12} className="text-primary" />
             </div>
             <div className="p-5 font-mono text-left" dir="ltr">
@@ -152,7 +152,7 @@ export default function HomePage() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2.8, duration: 0.3 }}
               >
-                <span className="text-primary">b20@terminal:~$</span>
+                <span className="text-primary">bv@terminal:~$</span>
                 <span className="text-white">./start-learning.sh</span>
                 <span className="w-2 h-5 bg-primary animate-pulse" />
               </motion.div>
@@ -197,7 +197,7 @@ export default function HomePage() {
             <p className="text-text-muted max-w-xl mx-auto font-mono">{t('section.free.desc')}</p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {FREE_LESSONS.slice(0, 6).map((lesson, i) => (
+            {FREE_LESSONS.map((lesson, i) => (
               <motion.div key={lesson.id} {...fadeUp} transition={{ duration: 0.5, delay: i * 0.1 }}>
                 <LessonCard {...lesson} type="free" />
               </motion.div>
@@ -223,7 +223,7 @@ export default function HomePage() {
             <p className="text-text-muted max-w-xl mx-auto font-mono">{t('section.premium.desc')}</p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {PREMIUM_LESSONS.slice(0, 6).map((lesson, i) => (
+            {PREMIUM_LESSONS.map((lesson, i) => (
               <motion.div key={lesson.id} {...fadeUp} transition={{ duration: 0.5, delay: i * 0.1 }}>
                 <LessonCard {...lesson} type="premium" />
               </motion.div>

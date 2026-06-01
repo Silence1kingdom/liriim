@@ -543,10 +543,32 @@ export default function LessonPage() {
 
           <h1 className="text-3xl md:text-4xl font-bold text-text mb-6">{data.title}</h1>
 
+          {/* Security Disclaimer */}
+          {(data.showDisclaimer || id.startsWith('prem-') || id === 'free-5' || id === 'free-6') && (
+            <div className="mb-8 p-4 rounded-lg border border-accent/30 bg-accent/5">
+              <div className="flex items-start gap-3">
+                <span className="text-accent text-xl shrink-0 mt-0.5">⚠️</span>
+                <div>
+                  <h4 className="text-accent font-bold font-mono text-sm mb-1">{t('lesson.disclaimer')}</h4>
+                  <p className="text-text-muted text-xs font-mono leading-relaxed">{t('lesson.disclaimerText')}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div
             className="prose prose-invert max-w-none mb-8 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: data.content }}
           />
+
+          {data.videoUrl && (
+            <div className="mb-8">
+              <h3 className="text-xl font-bold text-text mb-4">{t('lesson.videoLesson')}</h3>
+              <div className="rounded-lg overflow-hidden border border-border bg-black">
+                <video src={data.videoUrl} controls className="w-full max-h-[500px]" />
+              </div>
+            </div>
+          )}
 
           {data.commands && data.commands.length > 0 && (
             <div className="mb-8">

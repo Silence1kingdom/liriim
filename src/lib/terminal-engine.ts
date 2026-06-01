@@ -73,8 +73,8 @@ const defaultFilesystem: FileNode = {
       children: {
         'passwd': { name: 'passwd', type: 'file', content: 'root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nuser:x:1000:1000:User,,,:/home/user:/bin/bash', permissions: '-rw-r--r--', size: 128 },
         'hosts': { name: 'hosts', type: 'file', content: '127.0.0.1  localhost\n127.0.1.1  my-computer\n::1        ip6-localhost ip6-loopback', permissions: '-rw-r--r--', size: 85 },
-        'hostname': { name: 'hostname', type: 'file', content: 'b20-terminal\n', permissions: '-rw-r--r--', size: 12 },
-        'issue': { name: 'issue', type: 'file', content: 'B_20 Terminal v1.0 \\n \\l\n\nWelcome to Linux!\n', permissions: '-rw-r--r--', size: 45 },
+        'hostname': { name: 'hostname', type: 'file', content: 'bv-terminal\n', permissions: '-rw-r--r--', size: 11 },
+        'issue': { name: 'issue', type: 'file', content: 'Black Vector Terminal v1.0 \\n \\l\n\nWelcome to Linux!\n', permissions: '-rw-r--r--', size: 50 },
       },
     },
     var: {
@@ -85,7 +85,7 @@ const defaultFilesystem: FileNode = {
           name: 'log',
           type: 'dir',
           children: {
-            'syslog': { name: 'syslog', type: 'file', content: 'May 30 10:00:01 b20 kernel: Linux version 6.8.0\nMay 30 10:00:02 b20 systemd[1]: Starting system\nMay 30 10:00:05 b20 sshd[1234]: Server listening on 0.0.0.0 port 22\nMay 30 10:05:12 b20 user[5678]: Logged in user\nMay 30 10:10:00 b20 sudo[9012]: user : TTY=pts/0\nMay 30 10:15:30 b20 kernel: eth0: Link up', permissions: '-rw-r--r--', size: 312 },
+            'syslog': { name: 'syslog', type: 'file', content: 'May 30 10:00:01 bv kernel: Linux version 6.8.0\nMay 30 10:00:02 bv systemd[1]: Starting system\nMay 30 10:00:05 bv sshd[1234]: Server listening on 0.0.0.0 port 22\nMay 30 10:05:12 bv user[5678]: Logged in user\nMay 30 10:10:00 bv sudo[9012]: user : TTY=pts/0\nMay 30 10:15:30 bv kernel: eth0: Link up', permissions: '-rw-r--r--', size: 290 },
             'access.log': { name: 'access.log', type: 'file', content: '192.168.1.1 - - [30/May/2026:10:00:00] "GET /" 200 1234\n192.168.1.10 - - [30/May/2026:10:01:00] "GET /about" 200 567\n192.168.1.50 - - [30/May/2026:10:02:00] "POST /login" 302 0\n10.0.0.1 - - [30/May/2026:10:05:00] "GET /admin" 404 230', permissions: '-rw-r--r--', size: 235 },
           },
         },

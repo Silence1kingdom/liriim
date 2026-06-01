@@ -52,7 +52,7 @@ export default function TerminalDemo({ commands, autoRun = false }: TerminalDemo
         <span className="terminal-dot terminal-dot-red" />
         <span className="terminal-dot terminal-dot-yellow" />
         <span className="terminal-dot terminal-dot-green" />
-        <span className="text-text-muted text-xs mr-auto">b20@terminal:~$</span>
+        <span className="text-text-muted text-xs mr-auto">bv@terminal:~$</span>
         <FiTerminal size={12} className="text-primary" />
       </div>
       <div className="p-4 space-y-2">

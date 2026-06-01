@@ -44,18 +44,28 @@ export interface Lesson {
   command?: string;
   commandOutput?: string;
   videoUrl?: string;
+  showDisclaimer?: boolean;
   createdAt: number;
   updatedAt: number;
 }
 
 export interface SiteSettings {
+  id?: string;
   siteName: string;
   siteNameAr: string;
   description: string;
   descriptionAr: string;
   logoUrl: string;
   primaryColor: string;
-  socialLinks: { facebook?: string; twitter?: string; github?: string; youtube?: string };
+  socialLinks: {
+    facebook?: string;
+    twitter?: string;
+    github?: string;
+    youtube?: string;
+    tiktok?: string;
+    telegram?: string;
+    instagram?: string;
+  };
   premiumPrice: number;
   currency: string;
   contactEmail: string;

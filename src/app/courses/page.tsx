@@ -37,6 +37,7 @@ export default function CoursesPage() {
                 <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'إدارة الملفات والمجلدات' : 'File & folder management'}</li>
                 <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'الصلاحيات والمستخدمين' : 'Permissions & users'}</li>
                 <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'أوامر البحث' : 'Search commands'}</li>
+                <li className="flex items-center gap-2">✓ HTML & CSS</li>
               </ul>
               <span className="inline-flex items-center gap-2 mt-6 text-primary font-semibold">
                 {t('courses.free.cta')} <FiArrowLeft />
@@ -44,7 +45,7 @@ export default function CoursesPage() {
             </motion.div>
           </Link>
 
-          <Link href="/pricing">
+          <Link href="/courses/premium">
             <motion.div
               className="p-8 bg-gradient-to-br from-surface to-surface-light rounded-xl border border-accent/30 hover:border-accent transition-all group relative overflow-hidden"
               whileHover={{ scale: 1.02 }}
@@ -62,6 +63,7 @@ export default function CoursesPage() {
                 <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'اختبار اختراق الشبكات' : 'Network penetration testing'}</li>
                 <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'تحليل الثغرات الأمنية' : 'Vulnerability analysis'}</li>
                 <li className="flex items-center gap-2">✓ {lang === 'ar' ? 'أدوات الحماية والدفاع' : 'Security & defense tools'}</li>
+                <li className="flex items-center gap-2">✓ JavaScript & Python</li>
               </ul>
               <span className="inline-flex items-center gap-2 mt-6 text-accent font-semibold">
                 {t('courses.premium.cta')} <FiArrowLeft />

@@ -2,10 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FiPlus, FiEdit2, FiTrash2, FiEye, FiSearch, FiBook, FiTerminal, FiFilter, FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiEye, FiSearch, FiBook, FiTerminal, FiFilter, FiX, FiChevronLeft, FiChevronRight, FiCode } from 'react-icons/fi';
 import { getLessons, deleteLesson, getCategories } from '@/lib/firestore';
+import { FREE_LESSONS, PREMIUM_LESSONS } from '@/lib/constants';
 import type { Lesson, Category } from '@/lib/types';
 import toast from 'react-hot-toast';
+
+const CONSTANT_LESSONS = [
+  ...FREE_LESSONS.map(l => ({ ...l, source: 'constant' as const, type: 'free' as const })),
+  ...PREMIUM_LESSONS.map(l => ({ ...l, source: 'constant' as const, type: 'premium' as const })),
+];
 
 export default function AdminLessonsPage() {
   const [lessons, setLessons] = useState<Lesson[]>([]);
@@ -15,6 +21,7 @@ export default function AdminLessonsPage() {
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [showConstants, setShowConstants] = useState(true);
   const perPage = 10;
 
   useEffect(() => {
@@ -42,15 +49,18 @@ export default function AdminLessonsPage() {
     } catch { toast.error('فشل الحذف'); }
   };
 
-  const filtered = lessons
+  const filtered = [
+    ...lessons.map(l => ({ ...l, source: 'firestore' as const })),
+    ...(showConstants ? CONSTANT_LESSONS : []),
+  ]
     .filter(l => filter === 'all' || l.type === filter)
-    .filter(l => categoryFilter === 'all' || l.categoryId === categoryFilter)
-    .filter(l => !search || (l.titleAr || '').includes(search) || (l.title || '').toLowerCase().includes(search.toLowerCase()));
+    .filter(l => categoryFilter === 'all' || (l as any).categoryId === categoryFilter || l.source === 'constant')
+    .filter(l => !search || ((l as any).titleAr || l.title || '').includes(search) || (l.title || (l as any).titleEn || '').toLowerCase().includes(search.toLowerCase()));
 
   const totalPages = Math.ceil(filtered.length / perPage);
   const paged = filtered.slice((page - 1) * perPage, page * perPage);
 
-  const getCategoryName = (catId: string) => categories.find(c => c.id === catId)?.nameAr || '—';
+  const getCategoryName = (catId?: string) => catId ? (categories.find(c => c.id === catId)?.nameAr || '—') : '—';
 
   return (
     <div>
@@ -60,7 +70,7 @@ export default function AdminLessonsPage() {
           <span className="terminal-dot terminal-dot-red" />
           <span className="terminal-dot terminal-dot-yellow" />
           <span className="terminal-dot terminal-dot-green" />
-          <span className="text-text-muted text-xs font-mono mr-auto">root@b20-admin:~# ls -la /admin/lessons/</span>
+          <span className="text-text-muted text-xs font-mono mr-auto">root@bv-admin:~# ls -la /admin/lessons/</span>
         </div>
         <div className="p-5">
           <div className="flex items-center justify-between">
@@ -70,7 +80,7 @@ export default function AdminLessonsPage() {
               </h1>
               <p className="text-text-muted text-sm font-mono mt-1">
                 <span className="text-primary">$</span> ls lessons/ | wc -l
-                <span className="text-text-muted"> &rarr; {lessons.length} {lessons.length === 1 ? 'درس' : 'دروس'}</span>
+                <span className="text-text-muted"> &rarr; {lessons.length} من Firestore + {showConstants ? CONSTANT_LESSONS.length : 0} من الكود</span>
               </p>
             </div>
             <Link href="/admin/lessons/new" className="flex items-center gap-2 px-4 py-2 bg-primary text-secondary font-bold rounded-lg hover:bg-primary-dark transition-colors font-mono text-sm">
@@ -96,6 +106,12 @@ export default function AdminLessonsPage() {
             ))}
           </div>
           <div className="w-px h-6 bg-border" />
+          <button onClick={() => { setShowConstants(!showConstants); setPage(1); }}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-colors ${
+              showConstants ? 'bg-accent/10 text-accent' : 'bg-surface-lighter text-text-muted hover:text-text'
+            }`}>
+            <FiCode size={12} /> {showConstants ? 'إخفاء الثابتة' : 'إظهار الثابتة'}
+          </button>
           <select value={categoryFilter} onChange={e => { setCategoryFilter(e.target.value); setPage(1); }}
             className="bg-surface-lighter border border-border rounded-lg px-3 py-1.5 text-text text-xs font-mono focus:border-primary focus:outline-none">
             <option value="all">جميع التصنيفات</option>
@@ -144,14 +160,25 @@ export default function AdminLessonsPage() {
               </tr>
             </thead>
             <tbody>
-              {paged.map((lesson, idx) => (
+              {paged.map((lesson: any, idx) => {
+                const isConstant = lesson.source === 'constant';
+                return (
                 <tr key={lesson.id} className="border-t border-border hover:bg-surface-light transition-colors">
                   <td className="p-4 text-text-muted text-sm font-mono">{(page - 1) * perPage + idx + 1}</td>
                   <td className="p-4">
-                    <div className="text-text font-mono text-sm">{lesson.titleAr || lesson.title}</div>
-                    {lesson.command && <div className="text-text-muted text-[10px] font-mono mt-0.5">$ {lesson.command}</div>}
+                    <div className="flex items-center gap-2">
+                      <span className="text-base">{lesson.icon}</span>
+                      <div>
+                        <div className="text-text font-mono text-sm">{(lesson as any).titleAr || lesson.title}</div>
+                        {(lesson as any).command && <div className="text-text-muted text-[10px] font-mono mt-0.5">$ {(lesson as any).command}</div>}
+                      </div>
+                    </div>
                   </td>
-                  <td className="p-4 text-text-muted text-xs font-mono">{getCategoryName(lesson.categoryId)}</td>
+                  <td className="p-4 text-text-muted text-xs font-mono">
+                    {isConstant ? (
+                      <span className="flex items-center gap-1 text-accent"><FiCode size={10} /> ثابت</span>
+                    ) : getCategoryName((lesson as any).categoryId)}
+                  </td>
                   <td className="p-4">
                     <span className={`px-2 py-0.5 rounded text-xs font-mono ${
                       lesson.type === 'free' ? 'bg-primary/10 text-primary' : 'bg-accent/10 text-accent'
@@ -159,22 +186,30 @@ export default function AdminLessonsPage() {
                       {lesson.type === 'free' ? 'مجاني' : 'مدفوع'}
                     </span>
                   </td>
-                  <td className="p-4 text-text-muted text-sm font-mono">{lesson.order}</td>
+                  <td className="p-4 text-text-muted text-sm font-mono">{(lesson as any).order ?? '—'}</td>
                   <td className="p-4">
                     <div className="flex items-center gap-1 justify-start">
                       <Link href={`/lessons/${lesson.id}`} className="p-2 text-text-muted hover:text-primary transition-colors rounded hover:bg-primary/5" title="عرض">
                         <FiEye size={15} />
                       </Link>
-                      <Link href={`/admin/lessons/${lesson.id}`} className="p-2 text-text-muted hover:text-accent transition-colors rounded hover:bg-accent/5" title="تعديل">
-                        <FiEdit2 size={15} />
-                      </Link>
-                      <button onClick={() => handleDelete(lesson.id)} className="p-2 text-text-muted hover:text-red-400 transition-colors rounded hover:bg-red-400/5" title="حذف">
-                        <FiTrash2 size={15} />
-                      </button>
+                      {isConstant ? (
+                        <Link href={`/admin/lessons/new?preset=${lesson.id}`} className="p-2 text-text-muted hover:text-accent transition-colors rounded hover:bg-accent/5" title="إنشاء نسخة قابلة للتعديل">
+                          <FiPlus size={15} />
+                        </Link>
+                      ) : (
+                        <>
+                          <Link href={`/admin/lessons/${lesson.id}`} className="p-2 text-text-muted hover:text-accent transition-colors rounded hover:bg-accent/5" title="تعديل">
+                            <FiEdit2 size={15} />
+                          </Link>
+                          <button onClick={() => handleDelete(lesson.id)} className="p-2 text-text-muted hover:text-red-400 transition-colors rounded hover:bg-red-400/5" title="حذف">
+                            <FiTrash2 size={15} />
+                          </button>
+                        </>
+                      )}
                     </div>
                   </td>
                 </tr>
-              ))}
+              )})}
             </tbody>
           </table>
         </div>

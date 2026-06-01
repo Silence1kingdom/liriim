@@ -2,7 +2,7 @@ export type Lang = 'ar' | 'en';
 
 export const translations: Record<string, { ar: string; en: string }> = {
   // Site
-  'site.name': { ar: 'B_20', en: 'B_20' },
+  'site.name': { ar: 'بلاك فيكتور', en: 'Black Vector' },
   'site.tagline': { ar: 'منصة تعليم أوامر لينكس', en: 'Linux Terminal Learning Platform' },
   'site.desc': { ar: 'منصة تعليمية متكاملة لتعلم أوامر لينكس والتعامل مع التيرمينال من الصفر إلى الاحتراف', en: 'An integrated learning platform for Linux commands and terminal from zero to hero' },
 
@@ -51,7 +51,7 @@ export const translations: Record<string, { ar: string; en: string }> = {
 
   // Features
   'features.title': { ar: 'لماذا', en: 'Why' },
-  'features.titleHighlight': { ar: 'B_20', en: 'B_20' },
+  'features.titleHighlight': { ar: 'بلاك فيكتور', en: 'Black Vector' },
   'feature1.title': { ar: 'محتوى عربي', en: 'Arabic Content' },
   'feature1.desc': { ar: 'جميع الدروس باللغة العربية مع شرح مبسط ومفصل', en: 'All lessons in Arabic with simple detailed explanations' },
   'feature2.title': { ar: 'من المبتدئ للاحتراف', en: 'Beginner to Pro' },
@@ -80,7 +80,7 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'auth.login.createAccount': { ar: 'إنشاء حساب جديد', en: 'Create Account' },
   'auth.login.google': { ar: 'تسجيل الدخول عبر Google', en: 'Sign in with Google' },
   'auth.register.title': { ar: 'إنشاء حساب جديد', en: 'Create Account' },
-  'auth.register.subtitle': { ar: 'انضم إلى مجتمع B_20 وابدأ تعلم لينكس', en: 'Join B_20 and start learning Linux' },
+  'auth.register.subtitle': { ar: 'انضم إلى مجتمع بلاك فيكتور وابدأ تعلم لينكس', en: 'Join Black Vector and start learning Linux' },
   'auth.register.button': { ar: 'إنشاء الحساب', en: 'Create Account' },
   'auth.register.loading': { ar: 'جاري إنشاء الحساب...', en: 'Creating account...' },
   'auth.register.haveAccount': { ar: 'لديك حساب بالفعل؟', en: 'Already have an account?' },
@@ -185,6 +185,9 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'lesson.prev': { ar: 'الدرس السابق', en: 'Previous' },
   'lesson.next': { ar: 'الدرس التالي', en: 'Next' },
   'lesson.duration': { ar: 'دقيقة', en: 'min' },
+  'lesson.videoLesson': { ar: 'فيديو الدرس', en: 'Lesson Video' },
+  'lesson.disclaimer': { ar: 'تنبيه أمني', en: 'Security Notice' },
+  'lesson.disclaimerText': { ar: 'هذه المادة مقدمة لأغراض تعليمية وتوعوية فقط. يهدف المحتوى إلى تعزيز المعرفة بالأمن السيبراني وأساليب الحماية. لا نشجع أي استخدام غير قانوني أو ضار لهذه الأدوات والمعلومات. المستخدم وحده يتحمل المسؤولية الكاملة عن أي استخدام لهذه المعرفة. يرجى استخدام هذه المعلومات بشكل مسؤول وأخلاقي.', en: 'This material is provided for educational and awareness purposes only. The content aims to enhance cybersecurity knowledge and protection methods. We do not encourage any illegal or harmful use of these tools and information. The user alone bears full responsibility for any use of this knowledge. Please use this information responsibly and ethically.' },
 
   // Premium Guard
   'guard.title': { ar: 'محتوى مدفوع', en: 'Premium Content' },
@@ -193,7 +196,7 @@ export const translations: Record<string, { ar: string; en: string }> = {
 
   // About
   'about.title': { ar: 'عن', en: 'About' },
-  'about.titleHighlight': { ar: 'B_20', en: 'B_20' },
+  'about.titleHighlight': { ar: 'بلاك فيكتور', en: 'Black Vector' },
   'about.desc': { ar: 'منصة تعليمية عربية متخصصة في تعليم أوامر لينكس وأدوات التيرمينال. نهدف إلى تمكين المتحدثين بالعربية من إتقان مهارات الحوسبة المتقدمة.', en: 'An Arabic educational platform for Linux terminal commands, empowering Arabic speakers.' },
   'about.mission.title': { ar: 'رسالتنا', en: 'Our Mission' },
   'about.mission.desc': { ar: 'تقديم محتوى تعليمي عربي عالي الجودة في مجال لينكس وأمن المعلومات', en: 'High-quality Arabic content in Linux and cybersecurity' },
@@ -202,7 +205,7 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'about.values.title': { ar: 'قيمنا', en: 'Our Values' },
   'about.values.desc': { ar: 'الجودة، التميز، المجانية للمحتوى الأساسي، والدعم المستمر', en: 'Quality, excellence, free basic content, and continuous support' },
   'about.story.title': { ar: 'قصتنا', en: 'Our Story' },
-  'about.story.p1': { ar: 'انطلقت منصة B_20 من فكرة بسيطة: لماذا لا يوجد محتوى عربي متخصص في تعليم أوامر لينكس وأدوات التيرمينال؟ قررنا سد هذه الفجوة وتقديم محتوى احترافي باللغة العربية ينقل المتعلم من الصفر إلى الاحتراف.', en: 'B_20 started from a simple idea: why is there no Arabic content for Linux terminal commands? We decided to fill this gap.' },
+  'about.story.p1': { ar: 'انطلقت منصة بلاك فيكتور من فكرة بسيطة: لماذا لا يوجد محتوى عربي متخصص في تعليم أوامر لينكس وأدوات التيرمينال؟ قررنا سد هذه الفجوة وتقديم محتوى احترافي باللغة العربية ينقل المتعلم من الصفر إلى الاحتراف.', en: 'Black Vector started from a simple idea: why is there no Arabic content for Linux terminal commands? We decided to fill this gap.' },
   'about.story.p2': { ar: 'نقدم حالياً أكثر من 50 درساً تعليمياً تغطي أساسيات لينكس وحتى أدوات الاختراق الأخلاقي والحماية المتقدمة. مع التزامنا بتحديث المحتوى باستمرار ليواكب أحدث التقنيات.', en: 'We currently offer 50+ lessons covering Linux basics to advanced ethical hacking tools.' },
 
   // Contact
@@ -216,7 +219,7 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'contact.send': { ar: 'إرسال الرسالة', en: 'Send Message' },
   'contact.sending': { ar: 'جاري الإرسال...', en: 'Sending...' },
   'contact.success': { ar: 'تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.', en: 'Message sent successfully! We will get back to you soon.' },
-  'contact.emailInfo': { ar: 'support@b20-terminal.com', en: 'support@b20-terminal.com' },
+  'contact.emailInfo': { ar: 'support@blackvector.com', en: 'support@blackvector.com' },
   'contact.location': { ar: 'عبر الإنترنت - منصة عربية 100%', en: 'Online - 100% Arabic Platform' },
   'contact.hours': { ar: 'نرد على جميع الاستفسارات خلال 24 ساعة', en: 'We respond within 24 hours' },
   'contact.infoEmail': { ar: 'البريد الإلكتروني', en: 'Email' },
@@ -240,6 +243,7 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'admin.categories': { ar: 'التصنيفات', en: 'Categories' },
   'admin.users': { ar: 'المستخدمين', en: 'Users' },
   'admin.settings': { ar: 'الإعدادات', en: 'Settings' },
+  'admin.messages': { ar: 'الرسائل', en: 'Messages' },
   'admin.backToSite': { ar: 'العودة للموقع', en: 'Back to Site' },
   'admin.welcome': { ar: 'مرحباً بعودتك،', en: 'Welcome back,' },
   'admin.quickActions': { ar: 'إدارة سريعة', en: 'Quick Actions' },
@@ -299,7 +303,7 @@ export const translations: Record<string, { ar: string; en: string }> = {
   // Terminal (standalone)
   'terminal.run': { ar: 'تشغيل الأمر', en: 'Run command' },
   'terminal.executing': { ar: 'جاري التنفيذ...', en: 'Executing...' },
-  'terminal.welcome': { ar: 'مرحباً بك في تيرمينال B_20!\nاكتب help لعرض الأوامر المتاحة.\n', en: 'Welcome to B_20 Terminal!\nType help for available commands.\n' },
+  'terminal.welcome': { ar: 'مرحباً بك في تيرمينال بلاك فيكتور!\nاكتب help لعرض الأوامر المتاحة.\n', en: 'Welcome to Black Vector Terminal!\nType help for available commands.\n' },
   'terminal.history': { ar: 'اضغط ↑↓ للتاريخ', en: '↑↓ history' },
   'terminal.typeHelp': { ar: 'اكتب help للأوامر', en: 'Type help for commands' },
 
@@ -392,10 +396,10 @@ export const translations: Record<string, { ar: string; en: string }> = {
 
   // Certificate
   'cert.title': { ar: 'شهادة إتمام', en: 'Certificate of Completion' },
-  'cert.subtitle': { ar: 'B_20 - منصة تعليم أوامر لينكس', en: 'B_20 - Linux Terminal Learning Platform' },
+  'cert.subtitle': { ar: 'بلاك فيكتور - منصة تعليم أوامر لينكس', en: 'Black Vector - Linux Terminal Learning Platform' },
   'cert.earned': { ar: 'شهادة إتمام', en: 'Certificate of Completion' },
   'cert.presented': { ar: 'تُمنح هذه الشهادة إلى', en: 'This certificate is awarded to' },
-  'cert.completed': { ar: 'لإكمال جميع الدروس والاختبارات في منصة B_20', en: 'For completing all lessons and exams on B_20' },
+  'cert.completed': { ar: 'لإكمال جميع الدروس والاختبارات في منصة بلاك فيكتور', en: 'For completing all lessons and exams on Black Vector' },
   'cert.score': { ar: 'متوسط الدرجات', en: 'Average Score' },
   'cert.issued': { ar: 'تاريخ الإصدار', en: 'Issued Date' },
   'cert.id': { ar: 'رقم الشهادة', en: 'Certificate ID' },

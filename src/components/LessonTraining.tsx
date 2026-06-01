@@ -109,7 +109,7 @@ export default function LessonTraining({ steps, lessonId }: LessonTrainingProps)
         <span className="terminal-dot terminal-dot-red" />
         <span className="terminal-dot terminal-dot-yellow" />
         <span className="terminal-dot terminal-dot-green" />
-        <span className="text-text-muted text-xs mr-auto">b20@training:~/lesson-{lessonId || 'practice'}</span>
+        <span className="text-text-muted text-xs mr-auto">bv@training:~/lesson-{lessonId || 'practice'}</span>
         <span className="flex items-center gap-1">
           <button onClick={resetTraining} className="text-text-muted hover:text-primary transition-colors p-1" title={t('training.reset')}> 
             <FiRefreshCw size={12} />

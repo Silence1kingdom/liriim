@@ -26,7 +26,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <span className="terminal-dot terminal-dot-red" />
             <span className="terminal-dot terminal-dot-yellow" />
             <span className="terminal-dot terminal-dot-green" />
-            <span className="text-text-muted text-xs font-mono mr-auto">b20@admin:~$</span>
+            <span className="text-text-muted text-xs font-mono mr-auto">bv@admin:~$</span>
           </div>
           <div className="p-8 text-center">
             <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />

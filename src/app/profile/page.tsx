@@ -11,6 +11,7 @@ import {
   FiUser, FiMail, FiCalendar, FiAward, FiBook, FiTrendingUp,
   FiStar, FiTerminal, FiSettings, FiEdit2, FiCheck, FiX,
   FiShield, FiClock, FiLoader, FiSave, FiHeart, FiTarget, FiLock,
+  FiServer,
 } from 'react-icons/fi';
 import { FREE_LESSONS, PREMIUM_LESSONS } from '@/lib/constants';
 import { ACHIEVEMENTS, checkAchievements } from '@/lib/achievements';
@@ -45,7 +46,7 @@ const getRelativeTime = (timestamp: number, lang: 'ar' | 'en'): string => {
 
 export default function ProfilePage() {
   const { t, lang, dir } = useT();
-  const { firebaseUser, userProfile, loading, refreshProfile } = useAuth();
+  const { firebaseUser, userProfile, loading, isAdmin, refreshProfile } = useAuth();
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState('');
   const [saving, setSaving] = useState(false);
@@ -368,6 +369,12 @@ export default function ProfilePage() {
                   <FiSettings size={20} className="text-text-muted group-hover:text-primary transition-colors" />
                   <span className="text-xs font-mono text-text">{t('profile.settings')}</span>
                 </Link>
+                {isAdmin && (
+                  <Link href="/admin" className="flex flex-col items-center gap-2 p-4 rounded-lg bg-accent/10 border border-accent/30 hover:bg-accent/20 transition-all group">
+                    <FiServer size={20} className="text-accent group-hover:animate-pulse" />
+                    <span className="text-xs font-mono text-accent">{t('nav.admin')}</span>
+                  </Link>
+                )}
               </div>
             </div>
           </div>

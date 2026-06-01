@@ -7,15 +7,15 @@ import { FiSave, FiTerminal, FiGlobe, FiMail, FiDollarSign, FiEdit3, FiType } fr
 
 export default function AdminSettingsPage() {
   const [form, setForm] = useState({
-    siteName: 'B_20',
-    siteNameAr: 'B_20',
+    siteName: 'Black Vector',
+    siteNameAr: 'بلاك فيكتور',
     description: 'Linux Terminal Learning Platform',
     descriptionAr: 'منصة تعليم أوامر لينكس',
     logoUrl: '',
     primaryColor: '#00ff41',
     premiumPrice: 19,
     currency: 'USD',
-    contactEmail: 'support@lirne-terminal.com',
+    contactEmail: 'support@blackvector.com',
     footerText: 'All rights reserved.',
     footerTextAr: 'جميع الحقوق محفوظة',
     socialLinks: { facebook: '', twitter: '', github: '', youtube: '', tiktok: '', telegram: '', instagram: '' },
@@ -26,7 +26,7 @@ export default function AdminSettingsPage() {
     const load = async () => {
       try {
         const settings = await getSiteSettings();
-        if (settings) setForm(settings as any);
+        if (settings) setForm({ ...form, ...settings } as typeof form);
       } catch {}
       finally { setLoading(false); }
     };
@@ -51,7 +51,7 @@ export default function AdminSettingsPage() {
           <span className="terminal-dot terminal-dot-red" />
           <span className="terminal-dot terminal-dot-yellow" />
           <span className="terminal-dot terminal-dot-green" />
-          <span className="text-text-muted text-xs font-mono mr-auto">root@b20-admin:~# nano /etc/b20/config</span>
+          <span className="text-text-muted text-xs font-mono mr-auto">root@bv-admin:~# nano /etc/bv/config</span>
         </div>
         <div className="p-5">
           <h1 className="text-2xl font-bold text-text font-mono flex items-center gap-2">
@@ -74,6 +74,25 @@ export default function AdminSettingsPage() {
               <label className="block text-text-muted text-xs mb-1 font-mono">عربي</label>
               <input type="text" value={form.siteNameAr} onChange={e => setForm({...form, siteNameAr: e.target.value})}
                 className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono" />
+            </div>
+          </div>
+        </div>
+
+        {/* Logo */}
+        <div className="space-y-1">
+          <h3 className="text-text font-bold font-mono text-sm flex items-center gap-2"><FiTerminal className="text-primary" /> الشعار</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-text-muted text-xs mb-1 font-mono">رابط الصورة</label>
+              <input type="url" value={form.logoUrl} onChange={e => setForm({...form, logoUrl: e.target.value})}
+                className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" placeholder="https://example.com/logo.png" />
+            </div>
+            <div className="flex items-center">
+              {form.logoUrl ? (
+                <img src={form.logoUrl} alt="Logo" className="h-12 rounded border border-border" />
+              ) : (
+                <span className="text-text-muted text-xs font-mono">لا يوجد شعار</span>
+              )}
             </div>
           </div>
         </div>

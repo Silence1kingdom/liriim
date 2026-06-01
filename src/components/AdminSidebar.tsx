@@ -14,7 +14,7 @@ export default function AdminSidebar() {
     { href: '/admin/lessons', label: t('admin.lessons'), icon: FiBook },
     { href: '/admin/categories', label: t('admin.categories'), icon: FiGrid },
     { href: '/admin/users', label: t('admin.users'), icon: FiUsers },
-    { href: '/admin/messages', label: 'الرسائل', icon: FiMail },
+    { href: '/admin/messages', label: t('admin.messages'), icon: FiMail },
     { href: '/admin/settings', label: t('admin.settings'), icon: FiSettings },
   ];
 

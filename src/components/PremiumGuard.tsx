@@ -7,7 +7,7 @@ import { FiLock, FiTerminal } from 'react-icons/fi';
 
 export default function PremiumGuard({ children }: { children: React.ReactNode }) {
   const { t } = useT();
-  const { firebaseUser, userProfile, loading } = useAuth();
+  const { firebaseUser, userProfile, loading, isAdmin } = useAuth();
 
   if (loading) {
     return (
@@ -19,7 +19,7 @@ export default function PremiumGuard({ children }: { children: React.ReactNode }
 
   const isPremiumActive = userProfile?.isPremium && (!userProfile?.premiumExpiresAt || userProfile.premiumExpiresAt > Date.now());
 
-  if (!firebaseUser || !isPremiumActive) {
+  if (!firebaseUser || (!isPremiumActive && !isAdmin)) {
     return (
       <div className="max-w-md mx-auto my-20">
         <div className="terminal-window text-center">

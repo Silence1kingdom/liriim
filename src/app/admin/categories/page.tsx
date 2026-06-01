@@ -66,7 +66,7 @@ export default function AdminCategoriesPage() {
           <span className="terminal-dot terminal-dot-red" />
           <span className="terminal-dot terminal-dot-yellow" />
           <span className="terminal-dot terminal-dot-green" />
-          <span className="text-text-muted text-xs font-mono mr-auto">root@b20-admin:~# ls -la /admin/categories/</span>
+          <span className="text-text-muted text-xs font-mono mr-auto">root@bv-admin:~# ls -la /admin/categories/</span>
         </div>
         <div className="p-5">
           <div className="flex items-center justify-between">

@@ -15,7 +15,7 @@ const allLessons = [...FREE_LESSONS, ...PREMIUM_LESSONS];
 
 function generateCertId(): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let result = 'B20-';
+  let result = 'BV-';
   for (let i = 0; i < 12; i++) result += chars[Math.floor(Math.random() * chars.length)];
   return result;
 }
@@ -178,7 +178,7 @@ export default function CertificatePage() {
           <div class="cert">
             <div class="cert-content">
               <div class="badge">🏆</div>
-              <h1>B_20</h1>
+              <h1>Black Vector</h1>
               <div class="subtitle">${t('cert.subtitle')}</div>
               <div class="awarded">${t('cert.presented')}</div>
               <div class="name">${certificate?.displayName || ''}</div>
@@ -198,7 +198,7 @@ export default function CertificatePage() {
                 </div>
               </div>
               <div class="footer">
-                <span>B_20</span> — ${t('footer.copyright')} ${new Date().getFullYear()}
+                <span>Black Vector</span> — ${t('footer.copyright')} ${new Date().getFullYear()}
               </div>
             </div>
           </div>
@@ -323,7 +323,7 @@ export default function CertificatePage() {
                     }} />
                   <div className="relative z-10">
                     <div className="text-5xl mb-3">🏆</div>
-                    <h1 className="text-2xl font-bold text-primary font-mono">B_20</h1>
+                    <h1 className="text-2xl font-bold text-primary font-mono">Black Vector</h1>
                     <p className="text-text-muted text-xs font-mono mt-1">{t('cert.subtitle')}</p>
                     <div className="w-16 h-0.5 bg-primary/30 mx-auto my-5" />
                     <p className="text-text-muted text-sm font-mono mb-2">{t('cert.presented')}</p>
@@ -349,7 +349,7 @@ export default function CertificatePage() {
                     </div>
                     <div className="pt-4 border-t border-border">
                       <p className="text-text-muted text-xs font-mono">
-                        <span className="text-primary">B_20</span> — {t('footer.copyright')} {new Date().getFullYear()}
+                        <span className="text-primary">Black Vector</span> — {t('footer.copyright')} {new Date().getFullYear()}
                       </p>
                     </div>
                   </div>

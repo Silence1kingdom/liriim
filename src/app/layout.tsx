@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'B_20 - منصة تعليم أوامر لينكس',
+  title: 'Black Vector - منصة تعليم أوامر لينكس',
   description: 'منصة تعليمية متكاملة لتعلم أوامر لينكس والتعامل مع التيرمينال من الصفر إلى الاحتراف',
 };
 

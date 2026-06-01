@@ -1,5 +1,6 @@
-export const SITE_NAME = 'B_20';
-export const SITE_NAME_AR = 'B_20';
+export const SITE_NAME = 'Black Vector';
+export const SITE_NAME_AR = 'بلاك فيكتور';
+export const SITE_ABBR = 'BV';
 
 export const NAV_LINKS = [
   { href: '/', label: 'الرئيسية', labelEn: 'Home' },
@@ -92,6 +93,24 @@ export const FREE_LESSONS = [
     icon: '🔍',
     duration: '25 دقيقة',
   },
+  {
+    id: 'free-7',
+    title: 'أساسيات HTML',
+    titleEn: 'HTML Fundamentals',
+    description: 'تعلم بناء هيكل صفحات الويب بلغة HTML',
+    descriptionEn: 'Learn to build web page structure with HTML',
+    icon: '🌐',
+    duration: '30 دقيقة',
+  },
+  {
+    id: 'free-8',
+    title: 'أساسيات CSS',
+    titleEn: 'CSS Fundamentals',
+    description: 'تعلم تصميم وتنسيق الصفحات بلغة CSS',
+    descriptionEn: 'Learn to style and design pages with CSS',
+    icon: '🎨',
+    duration: '35 دقيقة',
+  },
 ];
 
 export const PREMIUM_LESSONS = [
@@ -148,5 +167,23 @@ export const PREMIUM_LESSONS = [
     descriptionEn: 'System protection and hardening',
     icon: '🛡️',
     duration: '45 دقيقة',
+  },
+  {
+    id: 'prem-7',
+    title: 'أساسيات JavaScript',
+    titleEn: 'JavaScript Fundamentals',
+    description: 'تعلم البرمجة بلغة JavaScript وإضافة التفاعل للصفحات',
+    descriptionEn: 'Learn JavaScript programming and add interactivity to pages',
+    icon: '⚡',
+    duration: '50 دقيقة',
+  },
+  {
+    id: 'prem-8',
+    title: 'مقدمة في بايثون',
+    titleEn: 'Introduction to Python',
+    description: 'تعلم أساسيات البرمجة بلغة بايثون وقوة التعامل مع البيانات',
+    descriptionEn: 'Learn Python programming basics and data handling',
+    icon: '🐍',
+    duration: '55 دقيقة',
   },
 ];

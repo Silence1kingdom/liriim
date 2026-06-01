@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { FiTerminal, FiGithub, FiYoutube, FiTwitter, FiFacebook, FiHeart, FiInstagram, FiSend } from 'react-icons/fi';
-import { SITE_NAME_AR } from '@/lib/constants';
+import { SITE_ABBR, SITE_NAME } from '@/lib/constants';
 import { useT } from '@/contexts/LangContext';
 
 export default function Footer() {
@@ -27,10 +27,10 @@ export default function Footer() {
           <div>
             <Link href="/" className="flex items-center gap-2 text-primary font-bold text-xl mb-4 font-mono group">
               <FiTerminal className="group-hover:animate-pulse" />
-              {'>'} {SITE_NAME_AR}
+              {'>'} {SITE_ABBR}
             </Link>
             <p className="text-text-muted text-sm leading-relaxed font-mono">
-              $ cat /etc/b20/description
+              $ cat /etc/bv/description
               <br />
               <span className="text-primary">{t('footer.brand')}</span>
             </p>
@@ -74,10 +74,10 @@ export default function Footer() {
 
         <div className="border-t border-border mt-8 pt-8 text-center">
           <p className="text-text-muted text-sm font-mono">
-            <span className="text-primary">$</span> echo &quot;© {new Date().getFullYear()} {SITE_NAME_AR} - All rights reserved. Made with <FiHeart size={10} className="inline text-accent" /> for the Linux community&quot;
+            <span className="text-primary">$</span> echo &quot;© {new Date().getFullYear()} {SITE_NAME} - All rights reserved. Made with <FiHeart size={10} className="inline text-accent" /> for the Linux community&quot;
           </p>
           <div className="mt-2">
-            <span className="text-primary text-xs font-mono">b20@terminal:~$</span>
+            <span className="text-primary text-xs font-mono">bv@terminal:~$</span>
             <span className="text-text-muted text-xs font-mono"> _ — — — — — — — — — — — — — — — _</span>
           </div>
         </div>

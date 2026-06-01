@@ -108,7 +108,7 @@ export default function TerminalPlayground() {
     setHistoryIndex(-1);
   }, [welcomeMessage]);
 
-  const promptStr = `user@b20:${cwd}$ `;
+  const promptStr = `user@bv:${cwd}$ `;
 
   return (
     <div
@@ -120,7 +120,7 @@ export default function TerminalPlayground() {
         <span className="terminal-dot terminal-dot-red" />
         <span className="terminal-dot terminal-dot-yellow" />
         <span className="terminal-dot terminal-dot-green" />
-        <span className="text-text-muted text-xs mr-auto">b20@terminal:~</span>
+        <span className="text-text-muted text-xs mr-auto">bv@terminal:~</span>
         <span className="flex items-center gap-1">
           <button
             onClick={resetTerminal}
