@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { FiCheck, FiStar, FiShield, FiTerminal, FiX, FiRefreshCw } from 'react-icons/fi';
 import { useAuth } from '@/contexts/AuthContext';
 import { useT } from '@/contexts/LangContext';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import toast from 'react-hot-toast';
 
 const MONTHLY_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID || 'price_monthly';
@@ -15,6 +16,7 @@ const YEARLY_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID || 'price
 function PricingPageInner() {
   const { t, lang } = useT();
   const { firebaseUser, userProfile, refreshProfile } = useAuth();
+  const { settings } = useSiteSettings();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -193,7 +195,7 @@ function PricingPageInner() {
               <div className="flex items-center gap-2 text-primary mb-2 font-mono text-sm">$ ls plans/</div>
               <h3 className="text-2xl font-bold text-text mb-2">{t('pricing.free.title')}</h3>
               <div className="text-4xl font-bold text-text mb-1">
-                ${t('pricing.free.price')}
+                {settings.currency}{0}
                 <span className="text-lg text-text-muted">/{t('pricing.month')}</span>
               </div>
               <p className="text-text-muted text-sm mb-6 font-mono">{t('pricing.free.desc')}</p>
@@ -226,7 +228,7 @@ function PricingPageInner() {
               <div className="flex items-center gap-2 text-accent mb-2 font-mono text-sm"># ./pro_setup.sh</div>
               <h3 className="text-2xl font-bold text-text mb-2">{t('pricing.pro.title')}</h3>
               <div className="text-4xl font-bold text-accent mb-1">
-                ${t('pricing.pro.price')}
+                {settings.currency}{settings.premiumPrice}
                 <span className="text-lg text-text-muted">/{t('pricing.month')}</span>
               </div>
               <p className="text-text-muted text-sm mb-6 font-mono">{t('pricing.pro.desc')}</p>

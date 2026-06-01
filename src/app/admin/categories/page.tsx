@@ -1,29 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FiPlus, FiEdit2, FiTrash2, FiSave, FiX, FiGrid, FiTerminal, FiFolder } from 'react-icons/fi';
-import { getCategories, createCategory, updateCategory, deleteCategory } from '@/lib/firestore';
+import { createCategory, updateCategory, deleteCategory } from '@/lib/firestore';
 import { useT } from '@/contexts/LangContext';
+import { useCategories } from '@/contexts/CategoriesContext';
 import type { Category } from '@/lib/types';
 import toast from 'react-hot-toast';
 
 export default function AdminCategoriesPage() {
   const { t } = useT();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { categories, loading } = useCategories();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState({ name: '', nameAr: '', description: '', descriptionAr: '', type: 'free' as 'free' | 'premium', order: 0, icon: '' });
   const [showForm, setShowForm] = useState(false);
-
-  useEffect(() => { loadCategories(); }, []);
-
-  const loadCategories = async () => {
-    try {
-      const data = await getCategories();
-      setCategories(data);
-    } catch { toast.error(t('admin.categories.loadError')); }
-    finally { setLoading(false); }
-  };
 
   const resetForm = () => {
     setForm({ name: '', nameAr: '', description: '', descriptionAr: '', type: 'free', order: 0, icon: '' });
@@ -48,7 +38,6 @@ export default function AdminCategoriesPage() {
         toast.success(t('admin.categories.createSuccess'));
       }
       resetForm();
-      loadCategories();
     } catch { toast.error(t('admin.categories.saveError')); }
   };
 
@@ -57,7 +46,6 @@ export default function AdminCategoriesPage() {
     try {
       await deleteCategory(id);
       toast.success(t('admin.categories.deleteSuccess'));
-      loadCategories();
     } catch { toast.error(t('admin.categories.deleteError')); }
   };
 

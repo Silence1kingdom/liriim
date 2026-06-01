@@ -2,18 +2,19 @@
 
 import { useState, useEffect } from 'react';
 import { FiSettings, FiSave, FiTerminal, FiImage, FiRotateCcw } from 'react-icons/fi';
-import { saveSiteSettings, resetSiteSettings } from '@/lib/firestore';
+import { resetSiteSettings } from '@/lib/firestore';
 import { useSiteSettings, defaultSettings } from '@/contexts/SiteSettingsContext';
 import { useT } from '@/contexts/LangContext';
 import toast from 'react-hot-toast';
 
 export default function AdminSettingsPage() {
   const { t } = useT();
-  const { settings, loading: contextLoading } = useSiteSettings();
+  const { settings, loading: contextLoading, updateSettings } = useSiteSettings();
   const [saving, setSaving] = useState(false);
   const [resetting, setResetting] = useState(false);
   const [form, setForm] = useState({
-    siteName: '', siteNameAr: '', logoUrl: '', description: '', descriptionAr: '',
+    siteName: '', siteNameAr: '', siteAbbr: '', siteAbbrAr: '',
+    logoUrl: '', description: '', descriptionAr: '',
     primaryColor: '#00ff41', premiumPrice: 19, currency: 'USD',
     supportEmail: '', footerText: '', footerTextAr: '',
     socialGithub: '', socialTwitter: '', socialYoutube: '',
@@ -28,9 +29,12 @@ export default function AdminSettingsPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await saveSiteSettings(form);
+      await updateSettings(form);
       toast.success(t('admin.settings.saveSuccess'));
-    } catch { toast.error(t('admin.settings.saveError')); }
+    } catch (err) {
+      console.error('Save settings error:', err);
+      toast.error(t('admin.settings.saveError') + (err instanceof Error ? `: ${err.message}` : ''));
+    }
     finally { setSaving(false); }
   };
 
@@ -41,18 +45,17 @@ export default function AdminSettingsPage() {
       await resetSiteSettings(defaultSettings);
       setForm(prev => ({ ...prev, ...defaultSettings }));
       toast.success(t('admin.settings.resetSuccess'));
-    } catch { toast.error(t('admin.settings.resetError')); }
+    } catch (err) {
+      console.error('Reset settings error:', err);
+      toast.error(t('admin.settings.resetError'));
+    }
     finally { setResetting(false); }
   };
 
   if (contextLoading) return <div className="text-center py-20"><div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" /></div>;
 
-  const siteNameEN = t('admin.settings.siteName') + ' (EN)';
-  const siteNameAR = t('admin.settings.siteName') + ' (AR)';
-  const descEN = t('admin.settings.description') + ' (EN)';
-  const descAR = t('admin.settings.description') + ' (AR)';
-  const footerEN = t('admin.settings.footer') + ' (EN)';
-  const footerAR = t('admin.settings.footer') + ' (AR)';
+  const enLabel = (key: string) => key + ' (EN)';
+  const arLabel = (key: string) => key + ' (AR)';
 
   return (
     <div>
@@ -73,22 +76,34 @@ export default function AdminSettingsPage() {
       <div className="space-y-6">
         <Section title={t('admin.settings.branding')}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Field label={siteNameEN}>
+            <Field label={enLabel(t('admin.settings.siteName'))}>
               <input type="text" value={form.siteName} onChange={e => setForm({...form, siteName: e.target.value})}
                 className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
             </Field>
-            <Field label={siteNameAR}>
+            <Field label={arLabel(t('admin.settings.siteName'))}>
               <input type="text" value={form.siteNameAr} onChange={e => setForm({...form, siteNameAr: e.target.value})}
                 className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" />
             </Field>
-            <Field label={descEN}>
-              <textarea rows={3} value={form.description} onChange={e => setForm({...form, description: e.target.value})}
+            <Field label={enLabel(t('admin.settings.abbr'))}>
+              <input type="text" value={form.siteAbbr} onChange={e => setForm({...form, siteAbbr: e.target.value})} placeholder="B.V"
                 className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
             </Field>
-            <Field label={descAR}>
-              <textarea rows={3} value={form.descriptionAr} onChange={e => setForm({...form, descriptionAr: e.target.value})}
+            <Field label={arLabel(t('admin.settings.abbr'))}>
+              <input type="text" value={form.siteAbbrAr} onChange={e => setForm({...form, siteAbbrAr: e.target.value})} placeholder="ب.ف"
                 className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" />
             </Field>
+            <div className="md:col-span-2">
+              <Field label={enLabel(t('admin.settings.description'))}>
+                <textarea rows={3} value={form.description} onChange={e => setForm({...form, description: e.target.value})}
+                  className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
+              </Field>
+            </div>
+            <div className="md:col-span-2">
+              <Field label={arLabel(t('admin.settings.description'))}>
+                <textarea rows={3} value={form.descriptionAr} onChange={e => setForm({...form, descriptionAr: e.target.value})}
+                  className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" />
+              </Field>
+            </div>
           </div>
         </Section>
 
@@ -110,11 +125,11 @@ export default function AdminSettingsPage() {
               <input type="email" value={form.supportEmail} onChange={e => setForm({...form, supportEmail: e.target.value})}
                 className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
             </Field>
-            <Field label={footerEN}>
+            <Field label={enLabel(t('admin.settings.footer'))}>
               <input type="text" value={form.footerText} onChange={e => setForm({...form, footerText: e.target.value})}
                 className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
             </Field>
-            <Field label={footerAR}>
+            <Field label={arLabel(t('admin.settings.footer'))}>
               <input type="text" value={form.footerTextAr} onChange={e => setForm({...form, footerTextAr: e.target.value})}
                 className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" />
             </Field>

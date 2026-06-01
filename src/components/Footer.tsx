@@ -9,7 +9,8 @@ export default function Footer() {
   const { t, lang } = useT();
   const { settings } = useSiteSettings();
   const siteName = settings ? (lang === 'ar' ? settings.siteNameAr : settings.siteName) : 'Black Vector';
-  const siteAbbr = settings ? (lang === 'ar' ? 'ب ف' : 'BV') : 'BV';
+  const siteAbbr = settings ? (lang === 'ar' ? settings.siteAbbrAr || settings.siteAbbr : settings.siteAbbr) : 'BV';
+  const siteDesc = settings ? (lang === 'ar' ? settings.descriptionAr || settings.description : settings.description) : '';
   return (
     <footer className="bg-surface border-t border-border mt-20">
       {/* ASCII art divider */}
@@ -28,14 +29,13 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <Link href="/" className="flex items-center gap-2 text-primary font-bold text-xl mb-4 font-mono group">
-              <FiTerminal className="group-hover:animate-pulse" />
-              {'>'} {siteAbbr}
+            <Link href="/" className="text-primary font-bold text-xl mb-4 font-mono inline-block">
+              &gt; B.V
             </Link>
             <p className="text-text-muted text-sm leading-relaxed font-mono">
               $ cat /etc/bv/description
               <br />
-              <span className="text-primary">{t('footer.brand')}</span>
+              <span className="text-primary">{siteDesc || t('footer.brand')}</span>
             </p>
           </div>
 
@@ -86,7 +86,7 @@ export default function Footer() {
             <span className="text-primary">$</span> echo &quot;© {new Date().getFullYear()} {siteName} - {t('footer.rights')}. Made with <FiHeart size={10} className="inline text-accent" /> for the Linux community&quot;
           </p>
           <div className="mt-2">
-            <span className="text-primary text-xs font-mono">bv@terminal:~$</span>
+            <span className="text-primary text-xs font-mono">B.V@terminal:~$</span>
             <span className="text-text-muted text-xs font-mono"> _ — — — — — — — — — — — — — — — _</span>
           </div>
         </div>

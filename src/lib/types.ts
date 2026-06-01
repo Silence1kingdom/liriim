@@ -45,6 +45,7 @@ export interface Lesson {
   commandOutput?: string;
   videoUrl?: string;
   showDisclaimer?: boolean;
+  icon?: string;
   createdAt: number;
   updatedAt: number;
 }
@@ -53,6 +54,8 @@ export interface SiteSettings {
   id?: string;
   siteName: string;
   siteNameAr: string;
+  siteAbbr: string;
+  siteAbbrAr: string;
   description: string;
   descriptionAr: string;
   logoUrl: string;

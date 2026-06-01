@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { getLesson, updateLesson, getCategories } from '@/lib/firestore';
+import { getLesson, updateLesson } from '@/lib/firestore';
 import { useT } from '@/contexts/LangContext';
+import { useCategories } from '@/contexts/CategoriesContext';
 import { uploadVideo } from '@/lib/upload';
-import type { Category } from '@/lib/types';
 import toast from 'react-hot-toast';
 import { FiSave, FiX, FiBook, FiTerminal, FiUpload, FiTrash2 } from 'react-icons/fi';
 
@@ -14,15 +14,14 @@ export default function EditLessonPage() {
   const params = useParams();
   const router = useRouter();
   const id = params?.id as string;
+  const { categories } = useCategories();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [form, setForm] = useState<any>({});
 
   useEffect(() => {
-    getCategories().then(setCategories).catch(() => {});
     const load = async () => {
       try {
         const lesson = await getLesson(id);

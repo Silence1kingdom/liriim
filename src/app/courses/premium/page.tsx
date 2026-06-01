@@ -1,17 +1,49 @@
 'use client';
 
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useT } from '@/contexts/LangContext';
-import LessonCard from '@/components/LessonCard';
+import { useLessons } from '@/contexts/LessonsContext';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { useAuth } from '@/contexts/AuthContext';
+import LessonCard from '@/components/LessonCard';
 import { PREMIUM_LESSONS } from '@/lib/constants';
 import { FiStar, FiShield, FiCheck } from 'react-icons/fi';
 
 export default function PremiumCoursesPage() {
   const { t } = useT();
   const { userProfile } = useAuth();
+  const { lessons: firestoreLessons } = useLessons();
+  const { settings } = useSiteSettings();
   const isPremium = userProfile?.isPremium;
+
+  const displayLessons = useMemo(() => {
+    const firestorePremium = firestoreLessons
+      .filter(l => l.type === 'premium')
+      .map(l => ({
+        id: l.id,
+        title: l.titleAr || l.title,
+        description: l.descriptionAr || l.description,
+        icon: l.icon || '📄',
+        duration: l.duration || '—',
+        type: 'premium' as const,
+      }));
+
+    const constantIds = new Set(firestorePremium.map(l => l.id));
+    const staticItems = PREMIUM_LESSONS
+      .filter(l => !constantIds.has(l.id))
+      .map(l => ({
+        id: l.id,
+        title: l.title,
+        description: l.description,
+        icon: l.icon,
+        duration: l.duration,
+        type: 'premium' as const,
+      }));
+
+    return [...firestorePremium, ...staticItems];
+  }, [firestoreLessons]);
 
   return (
     <div className="pt-24 pb-16">
@@ -32,7 +64,6 @@ export default function PremiumCoursesPage() {
           </p>
         </motion.div>
 
-        {/* Pricing Card */}
         {!isPremium && (
           <motion.div
             className="max-w-md mx-auto mb-12 p-8 bg-gradient-to-br from-accent/5 via-surface to-accent/10 rounded-2xl border border-accent/30 text-center"
@@ -41,7 +72,7 @@ export default function PremiumCoursesPage() {
           >
             <FiShield className="text-accent text-4xl mx-auto mb-4" />
             <h3 className="text-2xl font-bold text-text mb-2">{t('premium.pricing.title')}</h3>
-            <div className="text-4xl font-bold text-accent mb-2">$19<span className="text-lg text-text-muted">{t('premium.pricing.monthly')}</span></div>
+            <div className="text-4xl font-bold text-accent mb-2">{settings.currency}{settings.premiumPrice}<span className="text-lg text-text-muted">{t('premium.pricing.monthly')}</span></div>
             <ul className="text-right space-y-2 mb-6 text-sm text-text-muted">
               <li className="flex items-center gap-2"><FiCheck className="text-accent" /> {t('premium.pricing.allLessons')}</li>
               <li className="flex items-center gap-2"><FiCheck className="text-accent" /> {t('premium.pricing.updates')}</li>
@@ -68,26 +99,32 @@ export default function PremiumCoursesPage() {
           </motion.div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PREMIUM_LESSONS.map((lesson, i) => (
-            <motion.div
-              key={lesson.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-            >
-              <LessonCard
-                id={lesson.id}
-                title={lesson.title}
-                description={lesson.description}
-                icon={lesson.icon}
-                duration={lesson.duration}
-                type="premium"
-                isCompleted={userProfile?.progress?.[lesson.id] === 'completed'}
-              />
-            </motion.div>
-          ))}
-        </div>
+        {displayLessons.length === 0 ? (
+          <div className="text-center py-20 text-text-muted font-mono">
+            {t('courses.empty')}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {displayLessons.map((lesson, i) => (
+              <motion.div
+                key={lesson.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <LessonCard
+                  id={lesson.id}
+                  title={lesson.title}
+                  description={lesson.description}
+                  icon={lesson.icon}
+                  duration={lesson.duration}
+                  type="premium"
+                  isCompleted={userProfile?.progress?.[lesson.id] === 'completed'}
+                />
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

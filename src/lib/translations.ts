@@ -159,6 +159,7 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'courses.premium.desc': { ar: 'أدوات متقدمة في الاختراق الأخلاقي والحماية والأمن السيبراني', en: 'Advanced tools in ethical hacking and cybersecurity' },
   'courses.premium.cta': { ar: 'اشترك الآن', en: 'Subscribe Now' },
   'courses.premium.badge': { ar: 'مميز', en: 'Featured' },
+  'courses.empty': { ar: 'لا توجد دروس متاحة بعد', en: 'No lessons available yet' },
 
   // Premium
   'premium.header.title': { ar: 'أدوات احترافية', en: 'Professional Tools' },
@@ -646,6 +647,7 @@ export const translations: Record<string, { ar: string; en: string }> = {
 
   'admin.settings.title': { ar: 'إعدادات الموقع', en: 'Site Settings' },
   'admin.settings.siteName': { ar: 'اسم الموقع', en: 'Site Name' },
+  'admin.settings.abbr': { ar: 'الاختصار', en: 'Abbreviation' },
   'admin.settings.logo': { ar: 'الشعار', en: 'Logo' },
   'admin.settings.description': { ar: 'الوصف', en: 'Description' },
   'admin.settings.branding': { ar: 'العلامة التجارية', en: 'Branding' },

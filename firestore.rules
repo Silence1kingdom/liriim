@@ -51,8 +51,14 @@ service cloud.firestore {
       allow read, delete: if isAdmin();
     }
 
-    // Settings
+    // Settings (legacy path, backward compatibility)
     match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Site Settings (new path)
+    match /siteSettings/{settingId} {
       allow read: if true;
       allow write: if isAdmin();
     }

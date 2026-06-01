@@ -3,25 +3,27 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useT } from '@/contexts/LangContext';
+import { useLessons } from '@/contexts/LessonsContext';
+import { useCategories } from '@/contexts/CategoriesContext';
 import Link from 'next/link';
 import { FiBook, FiGrid, FiUsers, FiSettings, FiTerminal, FiMail, FiTrendingUp, FiShield, FiStar, FiMessageSquare, FiPlus } from 'react-icons/fi';
-import { getLessons, getCategories, getContactMessages } from '@/lib/firestore';
+import { getContactMessages } from '@/lib/firestore';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 export default function AdminDashboard() {
   const { t, lang } = useT();
   const { userProfile } = useAuth();
-  const [stats, setStats] = useState({ lessons: 0, freeLessons: 0, premiumLessons: 0, categories: 0, users: 0, admins: 0, premium: 0, messages: 0, unread: 0, todayUsers: 0 });
+  const { lessons } = useLessons();
+  const { categories } = useCategories();
+  const [stats, setStats] = useState({ users: 0, admins: 0, premium: 0, messages: 0, unread: 0, todayUsers: 0 });
   const [loading, setLoading] = useState(true);
   const [recentUsers, setRecentUsers] = useState<any[]>([]);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [lessons, categories, usersSnap, messages, qMessages] = await Promise.all([
-          getLessons(),
-          getCategories(),
+        const [usersSnap, messages, qMessages] = await Promise.all([
           getDocs(collection(db, 'users')),
           getContactMessages(),
           getDocs(query(collection(db, 'messages'), where('read', '==', false))),
@@ -29,10 +31,6 @@ export default function AdminDashboard() {
         const users = usersSnap.docs.map(d => ({ id: d.id, ...d.data() }));
         const today = Date.now() - 86400000;
         setStats({
-          lessons: lessons.length,
-          freeLessons: lessons.filter(l => l.type === 'free').length,
-          premiumLessons: lessons.filter(l => l.type === 'premium').length,
-          categories: categories.length,
           users: users.length,
           admins: users.filter((u: any) => u.role === 'admin').length,
           premium: users.filter((u: any) => u.isPremium).length,
@@ -47,9 +45,12 @@ export default function AdminDashboard() {
     load();
   }, []);
 
+  const freeCount = lessons.filter(l => l.type === 'free').length;
+  const premiumCount = lessons.filter(l => l.type === 'premium').length;
+
   const statCards = [
-    { icon: FiBook, label: `${t('admin.statLessons')}`, value: String(stats.lessons), sub: `${stats.freeLessons} ${t('admin.statFree')} · ${stats.premiumLessons} ${t('admin.statPaid')}`, href: '/admin/lessons', color: 'text-primary', bg: 'bg-primary/10' },
-    { icon: FiGrid, label: `${t('admin.statCategories')}`, value: String(stats.categories), sub: '', href: '/admin/categories', color: 'text-accent', bg: 'bg-accent/10' },
+    { icon: FiBook, label: `${t('admin.statLessons')}`, value: String(lessons.length), sub: `${freeCount} ${t('admin.statFree')} · ${premiumCount} ${t('admin.statPaid')}`, href: '/admin/lessons', color: 'text-primary', bg: 'bg-primary/10' },
+    { icon: FiGrid, label: `${t('admin.statCategories')}`, value: String(categories.length), sub: '', href: '/admin/categories', color: 'text-accent', bg: 'bg-accent/10' },
     { icon: FiUsers, label: `${t('admin.statUsers')}`, value: String(stats.users), sub: `${stats.admins} ${t('admin.statAdminLabel')} · ${stats.premium} ${t('admin.statPremiumLabel')}`, href: '/admin/users', color: 'text-blue-400', bg: 'bg-blue-400/10' },
     { icon: FiMessageSquare, label: `${t('admin.statMessages')}`, value: String(stats.messages), sub: stats.unread > 0 ? `${stats.unread} ${t('admin.statUnread')}` : '', href: '/admin/messages', color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
     { icon: FiTrendingUp, label: `${t('admin.statToday')}`, value: String(stats.todayUsers), sub: '', href: '/admin/users', color: 'text-green-400', bg: 'bg-green-400/10' },

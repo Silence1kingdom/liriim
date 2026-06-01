@@ -3,11 +3,11 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FiSave, FiX, FiUpload, FiTerminal, FiAlertTriangle, FiBook, FiEye, FiEyeOff } from 'react-icons/fi';
-import { createLesson, getCategories } from '@/lib/firestore';
+import { createLesson } from '@/lib/firestore';
 import { useT } from '@/contexts/LangContext';
+import { useCategories } from '@/contexts/CategoriesContext';
 import { FREE_LESSONS, PREMIUM_LESSONS } from '@/lib/constants';
 import { uploadVideo } from '@/lib/upload';
-import type { Category } from '@/lib/types';
 import toast from 'react-hot-toast';
 
 function NewLessonForm() {
@@ -16,7 +16,7 @@ function NewLessonForm() {
   const searchParams = useSearchParams();
   const presetId = searchParams.get('preset');
 
-  const [categories, setCategories] = useState<Category[]>([]);
+  const { categories } = useCategories();
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -29,7 +29,6 @@ function NewLessonForm() {
   });
 
   useEffect(() => {
-    getCategories().then(setCategories).catch(() => {});
     if (presetId) {
       const all = [...FREE_LESSONS, ...PREMIUM_LESSONS];
       const found = all.find(l => l.id === presetId);

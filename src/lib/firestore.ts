@@ -81,22 +81,23 @@ export const getContactMessages = async (): Promise<ContactMessage[]> => {
   return snap.docs.map((d) => ({ id: d.id, ...d.data() } as ContactMessage));
 };
 
-// Site Settings
-const SETTINGS_DOC_ID = 'main';
+// Site Settings — collection: siteSettings, doc ID: site
+const SETTINGS_COLLECTION = 'siteSettings';
+const SETTINGS_DOC_ID = 'site';
 
 export const getSiteSettings = async (): Promise<SiteSettings | null> => {
-  const docRef = doc(db, 'settings', SETTINGS_DOC_ID);
+  const docRef = doc(db, SETTINGS_COLLECTION, SETTINGS_DOC_ID);
   const docSnap = await getDoc(docRef);
   if (!docSnap.exists()) return null;
-  return { id: docSnap.id, ...docSnap.data() } as SiteSettings;
+  return docSnap.data() as SiteSettings;
 };
 
-export const saveSiteSettings = async (data: Partial<SiteSettings>) => {
-  await setDoc(doc(db, 'settings', SETTINGS_DOC_ID), data, { merge: true });
+export const updateSiteSettings = async (data: Partial<SiteSettings>) => {
+  await setDoc(doc(db, SETTINGS_COLLECTION, SETTINGS_DOC_ID), data, { merge: true });
 };
 
 export const resetSiteSettings = async (defaults: SiteSettings) => {
-  await setDoc(doc(db, 'settings', SETTINGS_DOC_ID), defaults);
+  await setDoc(doc(db, SETTINGS_COLLECTION, SETTINGS_DOC_ID), defaults);
 };
 
 // Quiz Results

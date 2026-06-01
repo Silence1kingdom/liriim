@@ -17,8 +17,7 @@ export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const { t, lang, setLang, dir } = useT();
   const { settings } = useSiteSettings();
-  const siteAbbr = settings ? (lang === 'ar' ? 'ب ف' : 'BV') : 'BV';
-  const siteName = settings ? (lang === 'ar' ? settings.siteNameAr : settings.siteName) : 'Black Vector';
+  const displayName = lang === 'ar' ? settings.siteNameAr || settings.siteName : settings.siteName;
 
   const handleLogout = async () => {
     await logoutUser();
@@ -43,9 +42,8 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-secondary/90 nav-blur border-b border-border" dir={dir}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2 text-primary font-bold text-xl font-mono group shrink-0">
-            <FiTerminal className="text-2xl group-hover:animate-pulse" />
-            <span className="tracking-tight">{'>'}_ {siteAbbr}</span>
+          <Link href="/" className="flex items-center gap-2 text-primary font-bold text-xl font-mono shrink-0">
+            <span>&gt;_ B.V</span>
           </Link>
 
           {/* Desktop nav */}

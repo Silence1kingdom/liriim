@@ -5,6 +5,8 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { LangProvider, useT } from '@/contexts/LangContext';
 import { SiteSettingsProvider } from '@/contexts/SiteSettingsContext';
+import { CategoriesProvider } from '@/contexts/CategoriesContext';
+import { LessonsProvider } from '@/contexts/LessonsContext';
 import HeadUpdater from '@/components/HeadUpdater';
 import { Toaster } from 'react-hot-toast';
 
@@ -34,11 +36,15 @@ export const Providers = ({ children }: { children: ReactNode }) => {
     <ThemeProvider>
       <LangProvider>
         <SiteSettingsProvider>
+          <CategoriesProvider>
+            <LessonsProvider>
           <AuthProvider>
             {children}
             <ToastWrapper />
             <HeadUpdater />
           </AuthProvider>
+            </LessonsProvider>
+          </CategoriesProvider>
         </SiteSettingsProvider>
       </LangProvider>
     </ThemeProvider>

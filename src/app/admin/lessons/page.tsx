@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiSearch, FiBook, FiTerminal, FiFilter, FiX, FiChevronLeft, FiChevronRight, FiCode } from 'react-icons/fi';
-import { getLessons, deleteLesson, getCategories } from '@/lib/firestore';
+import { deleteLesson } from '@/lib/firestore';
 import { FREE_LESSONS, PREMIUM_LESSONS } from '@/lib/constants';
 import { useT } from '@/contexts/LangContext';
-import type { Lesson, Category } from '@/lib/types';
+import { useLessons } from '@/contexts/LessonsContext';
+import { useCategories } from '@/contexts/CategoriesContext';
 import toast from 'react-hot-toast';
 
 const CONSTANT_LESSONS = [
@@ -16,9 +17,8 @@ const CONSTANT_LESSONS = [
 
 export default function AdminLessonsPage() {
   const { t } = useT();
-  const [lessons, setLessons] = useState<Lesson[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { lessons, loading } = useLessons();
+  const { categories } = useCategories();
   const [filter, setFilter] = useState<'all' | 'free' | 'premium'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [search, setSearch] = useState('');
@@ -26,27 +26,10 @@ export default function AdminLessonsPage() {
   const [showConstants, setShowConstants] = useState(true);
   const perPage = 10;
 
-  useEffect(() => {
-    Promise.all([loadLessons(), loadCategories()]);
-  }, []);
-
-  const loadLessons = async () => {
-    try {
-      const data = await getLessons();
-      setLessons(data);
-    } catch { toast.error(t('admin.lessons.loadError')); }
-    finally { setLoading(false); }
-  };
-
-  const loadCategories = async () => {
-    try { setCategories(await getCategories()); } catch {}
-  };
-
   const handleDelete = async (id: string) => {
     if (!confirm(t('common.confirm'))) return;
     try {
       await deleteLesson(id);
-      setLessons(lessons.filter(l => l.id !== id));
       toast.success(t('admin.lessons.deleteSuccess'));
     } catch { toast.error(t('admin.lessons.deleteError')); }
   };

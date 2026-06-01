@@ -10,6 +10,7 @@ import LessonTraining from '@/components/LessonTraining';
 import PremiumGuard from '@/components/PremiumGuard';
 import { useAuth } from '@/contexts/AuthContext';
 import { useT } from '@/contexts/LangContext';
+import { useLessons } from '@/contexts/LessonsContext';
 import { updateUserProfile } from '@/lib/auth';
 import { toggleFavorite } from '@/lib/firestore';
 import { FREE_LESSONS, PREMIUM_LESSONS } from '@/lib/constants';
@@ -638,16 +639,37 @@ export default function LessonPage() {
   const router = useRouter();
   const id = params?.id as string;
   const { firebaseUser, userProfile, refreshProfile } = useAuth();
+  const { getLesson: getFsLesson } = useLessons();
 
   const isPremium = id?.startsWith('prem-');
   const source = isPremium ? premiumLessonData : lessonData;
-  const data = source[id];
-  const lessonMeta = allLessons.find(l => l.id === id);
+  const hardcoded = source[id];
+  const fsLesson = !hardcoded ? getFsLesson(id) : undefined;
+  const data = hardcoded || fsLesson;
+
+  const isPremiumLesson = isPremium || (!!fsLesson && fsLesson.type === 'premium');
+  const lessonMeta = (() => {
+    if (hardcoded) return allLessons.find(l => l.id === id);
+    if (fsLesson) return {
+      id: fsLesson.id,
+      title: fsLesson.titleAr || fsLesson.title,
+      titleEn: fsLesson.title,
+      description: fsLesson.descriptionAr || fsLesson.description,
+      descriptionEn: fsLesson.description,
+      icon: fsLesson.icon || '📄',
+      duration: fsLesson.duration || t('lesson.durationFallback'),
+    };
+    return undefined;
+  })();
   const isCompleted = userProfile?.progress?.[id] === 'completed';
 
-  const currentIndex = allLessons.findIndex(l => l.id === id);
-  const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
-  const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
+  const allLessonMeta: { id: string; title: string; titleEn?: string }[] = [
+    ...FREE_LESSONS, ...PREMIUM_LESSONS,
+    ...(fsLesson ? [] : []),
+  ];
+  const currentIndex = allLessonMeta.findIndex(l => l.id === id);
+  const prevLesson = currentIndex > 0 ? allLessonMeta[currentIndex - 1] : null;
+  const nextLesson = currentIndex < allLessonMeta.length - 1 ? allLessonMeta[currentIndex + 1] : null;
 
   const isFavorited = userProfile?.favorites?.includes(id) || false;
 
@@ -690,8 +712,8 @@ export default function LessonPage() {
             <FiClock />
             <span>{lessonMeta?.duration || t('lesson.durationFallback')}</span>
             <span className="mx-2">•</span>
-            <span className={isPremium ? 'text-accent' : 'text-primary'}>
-              {isPremium ? t('lesson.paid') : t('lesson.free')}
+            <span className={isPremiumLesson ? 'text-accent' : 'text-primary'}>
+              {isPremiumLesson ? t('lesson.paid') : t('lesson.free')}
             </span>
             {isCompleted && (
               <>
@@ -711,10 +733,10 @@ export default function LessonPage() {
             )}
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-text mb-6">{data.title}</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-text mb-6">{hardcoded ? data.title : ((data as any).titleAr || (data as any).title)}</h1>
 
           {/* Security Disclaimer */}
-          {(data.showDisclaimer || id.startsWith('prem-') || id === 'free-5' || id === 'free-6') && (
+          {(data.showDisclaimer || id.startsWith('prem-') || id === 'free-5' || id === 'free-6' || isPremiumLesson) && (
             <div className="mb-8 p-4 rounded-lg border border-accent/30 bg-accent/5">
               <div className="flex items-start gap-3">
                 <span className="text-accent text-xl shrink-0 mt-0.5">⚠️</span>
@@ -728,7 +750,7 @@ export default function LessonPage() {
 
           <div
             className="prose prose-invert max-w-none mb-8 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: data.content }}
+            dangerouslySetInnerHTML={{ __html: hardcoded ? data.content : ((data as any).contentAr || (data as any).content || '') }}
           />
 
           {data.videoUrl && (
@@ -740,14 +762,17 @@ export default function LessonPage() {
             </div>
           )}
 
-          {data.commands && data.commands.length > 0 && (
+          {(hardcoded ? data.commands?.length : (data as any).command) ? (
             <div className="mb-8">
               <h3 className="text-xl font-bold text-text mb-4">{t('lesson.tryYourself')}</h3>
-              <TerminalDemo commands={data.commands} autoRun={false} />
+              <TerminalDemo
+                commands={hardcoded ? data.commands : [{ cmd: (data as any).command, output: (data as any).commandOutput || '' }]}
+                autoRun={false}
+              />
             </div>
-          )}
+          ) : null}
 
-          {trainingSteps[id] && trainingSteps[id].length > 0 && (
+          {hardcoded && trainingSteps[id] && trainingSteps[id].length > 0 && (
             <div className="mb-8">
               <h3 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
                 <FiTerminal size={20} className="text-primary" />
@@ -806,7 +831,7 @@ export default function LessonPage() {
     </div>
   );
 
-  if (isPremium) {
+  if (isPremiumLesson) {
     return <PremiumGuard>{lessonContent}</PremiumGuard>;
   }
 
