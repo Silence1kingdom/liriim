@@ -5,6 +5,7 @@ import { FiUsers, FiSearch, FiShield, FiStar, FiTrash2, FiTerminal, FiChevronRig
 import { useT } from '@/contexts/LangContext';
 import { collection, doc, getDocs, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import TimeStamp from '@/components/TimeStamp';
 import type { User } from '@/lib/types';
 import toast from 'react-hot-toast';
 
@@ -120,6 +121,7 @@ export default function AdminUsersPage() {
                 <th className="text-right p-4 text-text text-sm font-mono">{t('admin.users.email')}</th>
                 <th className="text-right p-4 text-text text-sm font-mono">{t('admin.users.role')}</th>
                 <th className="text-right p-4 text-text text-sm font-mono">{t('admin.users.plan')}</th>
+                <th className="text-right p-4 text-text text-sm font-mono">{t('admin.users.lastSeen')}</th>
                 <th className="text-right p-4 text-text text-sm font-mono">{t('admin.users.progress')}</th>
                 <th className="text-left p-4 text-text text-sm font-mono">{t('admin.users.actions')}</th>
               </tr>
@@ -146,6 +148,7 @@ export default function AdminUsersPage() {
                       <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-primary/10 text-primary">{t('admin.users.subscribed')}</span>
                     ) : <span className="text-text-muted text-xs font-mono">—</span>}
                   </td>
+                  <td className="p-4"><TimeStamp ts={user.lastLoginAt} /></td>
                   <td className="p-4 text-text-muted text-xs font-mono">
                     {user.progress ? Object.values(user.progress).filter(v => v === 'completed').length : 0} {t('admin.users.lessonCount')}
                   </td>

@@ -33,6 +33,7 @@ export const defaultSettings: SiteSettings = {
   socialGithub: '',
   socialTwitter: '',
   socialYoutube: '',
+  updatedAt: Date.now(),
 };
 
 const SiteSettingsContext = createContext<SiteSettingsContextType>({

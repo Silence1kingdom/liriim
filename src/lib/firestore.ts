@@ -30,12 +30,13 @@ export const getCategory = async (id: string): Promise<Category | null> => {
   return snap.exists() ? ({ id: snap.id, ...snap.data() } as Category) : null;
 };
 
-export const createCategory = async (data: Omit<Category, 'id' | 'createdAt'>) => {
-  return addDoc(collection(db, 'categories'), { ...data, createdAt: Date.now() });
+export const createCategory = async (data: Omit<Category, 'id' | 'createdAt' | 'updatedAt'>) => {
+  const now = Date.now();
+  return addDoc(collection(db, 'categories'), { ...data, createdAt: now, updatedAt: now });
 };
 
 export const updateCategory = async (id: string, data: Partial<Category>) => {
-  await updateDoc(doc(db, 'categories', id), data);
+  await updateDoc(doc(db, 'categories', id), { ...data, updatedAt: Date.now() });
 };
 
 export const deleteCategory = async (id: string) => {
@@ -93,11 +94,11 @@ export const getSiteSettings = async (): Promise<SiteSettings | null> => {
 };
 
 export const updateSiteSettings = async (data: Partial<SiteSettings>) => {
-  await setDoc(doc(db, SETTINGS_COLLECTION, SETTINGS_DOC_ID), data, { merge: true });
+  await setDoc(doc(db, SETTINGS_COLLECTION, SETTINGS_DOC_ID), { ...data, updatedAt: Date.now() }, { merge: true });
 };
 
 export const resetSiteSettings = async (defaults: SiteSettings) => {
-  await setDoc(doc(db, SETTINGS_COLLECTION, SETTINGS_DOC_ID), defaults);
+  await setDoc(doc(db, SETTINGS_COLLECTION, SETTINGS_DOC_ID), { ...defaults, updatedAt: Date.now() });
 };
 
 // Quiz Results

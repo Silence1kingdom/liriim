@@ -27,6 +27,7 @@ export interface Category {
   order: number;
   icon: string;
   createdAt: number;
+  updatedAt: number;
 }
 
 export interface Lesson {
@@ -68,6 +69,7 @@ export interface SiteSettings {
   socialGithub: string;
   socialTwitter: string;
   socialYoutube: string;
+  updatedAt: number;
 }
 
 export interface ContactMessage {

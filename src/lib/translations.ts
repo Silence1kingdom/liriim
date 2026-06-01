@@ -669,6 +669,8 @@ export const translations: Record<string, { ar: string; en: string }> = {
   'admin.settings.resetConfirm': { ar: 'هل أنت متأكد؟ سيتم إعادة تعيين جميع الإعدادات إلى القيم الافتراضية.', en: 'Are you sure? All settings will be reset to defaults.' },
   'admin.settings.resetSuccess': { ar: 'تم إعادة التعيين إلى الإعدادات الافتراضية', en: 'Settings reset to defaults' },
   'admin.settings.resetError': { ar: 'فشل إعادة التعيين', en: 'Failed to reset settings' },
+  'admin.settings.lastUpdated': { ar: 'آخر تعديل', en: 'Updated' },
+  'admin.users.lastSeen': { ar: 'آخر ظهور', en: 'Last Seen' },
 
   'admin.seed.title': { ar: 'إعداد الأدمن', en: 'Admin Setup' },
   'admin.seed.desc': { ar: 'استخدم هذه الصفحة لترقية حسابك إلى أدمن. هذه العملية مخصصة للمرة الأولى فقط.', en: 'Use this page to upgrade your account to admin. This is for initial setup only.' },

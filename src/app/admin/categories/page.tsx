@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { FiPlus, FiEdit2, FiTrash2, FiSave, FiX, FiGrid, FiTerminal, FiFolder } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiSave, FiX, FiGrid, FiTerminal, FiFolder, FiClock } from 'react-icons/fi';
 import { createCategory, updateCategory, deleteCategory } from '@/lib/firestore';
 import { useT } from '@/contexts/LangContext';
 import { useCategories } from '@/contexts/CategoriesContext';
 import type { Category } from '@/lib/types';
+import TimeStamp from '@/components/TimeStamp';
 import toast from 'react-hot-toast';
 
 export default function AdminCategoriesPage() {
@@ -158,15 +159,18 @@ export default function AdminCategoriesPage() {
                 </span>
               </div>
               <p className="text-text-muted text-xs font-mono mb-3 line-clamp-2">{cat.descriptionAr || '—'}</p>
-              <div className="flex items-center gap-2 pt-2 border-t border-border">
-                <button onClick={() => handleEdit(cat)} className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-mono text-accent hover:bg-accent/5 transition-colors">
-                  <FiEdit2 size={11} /> {t('common.edit')}
-                </button>
-                <button onClick={() => handleDelete(cat.id)} className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-mono text-red-400 hover:bg-red-400/5 transition-colors">
-                  <FiTrash2 size={11} /> {t('common.delete')}
-                </button>
+                <div className="flex items-center justify-between pt-2 border-t border-border">
+                  <TimeStamp ts={(cat as any).updatedAt || (cat as any).createdAt} />
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => handleEdit(cat)} className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-mono text-accent hover:bg-accent/5 transition-colors">
+                      <FiEdit2 size={11} /> {t('common.edit')}
+                    </button>
+                    <button onClick={() => handleDelete(cat.id)} className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-mono text-red-400 hover:bg-red-400/5 transition-colors">
+                      <FiTrash2 size={11} /> {t('common.delete')}
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
           ))}
         </div>
       )}

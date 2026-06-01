@@ -8,6 +8,7 @@ import { FREE_LESSONS, PREMIUM_LESSONS } from '@/lib/constants';
 import { useT } from '@/contexts/LangContext';
 import { useLessons } from '@/contexts/LessonsContext';
 import { useCategories } from '@/contexts/CategoriesContext';
+import TimeStamp from '@/components/TimeStamp';
 import toast from 'react-hot-toast';
 
 const CONSTANT_LESSONS = [
@@ -138,6 +139,7 @@ export default function AdminLessonsPage() {
                 <th className="text-right p-4 text-text text-sm font-mono">{t('admin.categories.title')}</th>
                 <th className="text-right p-4 text-text text-sm font-mono">{t('admin.categories.type')}</th>
                 <th className="text-right p-4 text-text text-sm font-mono">{t('admin.categories.order')}</th>
+                <th className="text-right p-4 text-text text-sm font-mono">{t('admin.settings.lastUpdated')}</th>
                 <th className="text-left p-4 text-text text-sm font-mono">{t('admin.users.actions')}</th>
               </tr>
             </thead>
@@ -169,6 +171,7 @@ export default function AdminLessonsPage() {
                     </span>
                   </td>
                   <td className="p-4 text-text-muted text-sm font-mono">{(lesson as any).order ?? '—'}</td>
+                  <td className="p-4"><TimeStamp ts={(lesson as any).updatedAt || (lesson as any).createdAt} /></td>
                   <td className="p-4">
                     <div className="flex items-center gap-1 justify-start">
                       <Link href={`/lessons/${lesson.id}`} className="p-2 text-text-muted hover:text-primary transition-colors rounded hover:bg-primary/5" title={t('admin.lessons.view')}>
