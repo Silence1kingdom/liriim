@@ -84,7 +84,7 @@ export default function RegisterPage() {
       toast.success(t('register.created'));
       router.push('/dashboard');
     } catch (err: any) {
-      const msg = getAuthErrorMessage(err?.code || '', lang);
+      const msg = getAuthErrorMessage(err?.code || '', t);
       toast.error(msg);
       if (err?.code?.includes('email')) {
         setEmailError(msg);
@@ -104,9 +104,9 @@ export default function RegisterPage() {
       router.push('/dashboard');
     } catch (err: any) {
       if (err?.code === 'auth/popup-blocked') {
-        toast.error(getAuthErrorMessage('auth/popup-blocked', lang));
+        toast.error(getAuthErrorMessage('auth/popup-blocked', t));
       } else if (err?.code !== 'auth/popup-closed-by-user' && err?.code !== 'auth/cancelled-popup-request') {
-        toast.error(getAuthErrorMessage(err?.code || '', lang));
+        toast.error(getAuthErrorMessage(err?.code || '', t));
       }
     } finally {
       setGoogleLoading(false);
@@ -258,7 +258,7 @@ export default function RegisterPage() {
                     ))}
                   </div>
                   <p className="text-xs font-mono" style={{ color: getPasswordStrengthColor(passwordStrength.score) }}>
-                    {getPasswordStrengthLabel(passwordStrength.score, lang)}
+                    {getPasswordStrengthLabel(passwordStrength.score, t)}
                   </p>
                 </div>
               )}

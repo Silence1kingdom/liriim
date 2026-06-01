@@ -1,192 +1,170 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { saveSiteSettings, getSiteSettings } from '@/lib/firestore';
+import { FiSettings, FiSave, FiTerminal, FiImage, FiDollarSign, FiGlobe, FiAtSign } from 'react-icons/fi';
+import { getSiteSettings, saveSiteSettings } from '@/lib/firestore';
+import { useT } from '@/contexts/LangContext';
 import toast from 'react-hot-toast';
-import { FiSave, FiTerminal, FiGlobe, FiMail, FiDollarSign, FiEdit3, FiType } from 'react-icons/fi';
 
 export default function AdminSettingsPage() {
-  const [form, setForm] = useState({
-    siteName: 'Black Vector',
-    siteNameAr: 'بلاك فيكتور',
-    description: 'Linux Terminal Learning Platform',
-    descriptionAr: 'منصة تعليم أوامر لينكس',
-    logoUrl: '',
-    primaryColor: '#00ff41',
-    premiumPrice: 19,
-    currency: 'USD',
-    contactEmail: 'support@blackvector.com',
-    footerText: 'All rights reserved.',
-    footerTextAr: 'جميع الحقوق محفوظة',
-    socialLinks: { facebook: '', twitter: '', github: '', youtube: '', tiktok: '', telegram: '', instagram: '' },
-  });
+  const { t } = useT();
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({
+    siteName: '', siteNameAr: '', logoUrl: '', description: '', descriptionAr: '',
+    primaryColor: '#00ff41', premiumPrice: 19, currency: 'USD',
+    supportEmail: '', footerText: '', footerTextAr: '',
+    socialGithub: '', socialTwitter: '', socialYoutube: '',
+  });
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const settings = await getSiteSettings();
-        if (settings) setForm({ ...form, ...settings } as typeof form);
-      } catch {}
-      finally { setLoading(false); }
-    };
-    load();
+    getSiteSettings().then(settings => {
+      if (settings) setForm(prev => ({ ...prev, ...settings } as typeof form));
+    }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   const handleSave = async () => {
+    setSaving(true);
     try {
       await saveSiteSettings(form);
-      toast.success('تم حفظ الإعدادات');
-    } catch { toast.error('فشل الحفظ'); }
+      toast.success(t('admin.settings.saveSuccess'));
+    } catch { toast.error(t('admin.settings.saveError')); }
+    finally { setSaving(false); }
   };
 
-  if (loading) {
-    return <div className="text-center py-20"><div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" /></div>;
-  }
+  if (loading) return <div className="text-center py-20"><div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" /></div>;
+
+  const siteNameEN = t('admin.settings.siteName') + ' (EN)';
+  const siteNameAR = t('admin.settings.siteName') + ' (AR)';
+  const descEN = t('admin.settings.description') + ' (EN)';
+  const descAR = t('admin.settings.description') + ' (AR)';
+  const footerEN = t('admin.settings.footer') + ' (EN)';
+  const footerAR = t('admin.settings.footer') + ' (AR)';
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div>
       <div className="terminal-window mb-6">
         <div className="terminal-window-header">
           <span className="terminal-dot terminal-dot-red" />
           <span className="terminal-dot terminal-dot-yellow" />
           <span className="terminal-dot terminal-dot-green" />
-          <span className="text-text-muted text-xs font-mono mr-auto">root@bv-admin:~# nano /etc/bv/config</span>
+          <span className="text-text-muted text-xs font-mono mr-auto">root@bv-admin:~# nano /etc/bv-config</span>
         </div>
         <div className="p-5">
           <h1 className="text-2xl font-bold text-text font-mono flex items-center gap-2">
-            <FiTerminal className="text-primary" /> إعدادات الموقع
+            <FiSettings className="text-primary" /> {t('admin.settings.title')}
           </h1>
         </div>
       </div>
 
-      <div className="bg-surface rounded-xl border border-border p-6 space-y-6">
-        {/* Site Name */}
-        <div className="space-y-1">
-          <h3 className="text-text font-bold font-mono text-sm flex items-center gap-2"><FiType className="text-primary" /> اسم الموقع</h3>
+      <div className="space-y-6">
+        <Section title={t('admin.settings.branding')}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-text-muted text-xs mb-1 font-mono">English</label>
+            <Field label={siteNameEN}>
               <input type="text" value={form.siteName} onChange={e => setForm({...form, siteName: e.target.value})}
-                className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono" dir="ltr" />
-            </div>
-            <div>
-              <label className="block text-text-muted text-xs mb-1 font-mono">عربي</label>
+                className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
+            </Field>
+            <Field label={siteNameAR}>
               <input type="text" value={form.siteNameAr} onChange={e => setForm({...form, siteNameAr: e.target.value})}
-                className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono" />
-            </div>
-          </div>
-        </div>
-
-        {/* Logo */}
-        <div className="space-y-1">
-          <h3 className="text-text font-bold font-mono text-sm flex items-center gap-2"><FiTerminal className="text-primary" /> الشعار</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-text-muted text-xs mb-1 font-mono">رابط الصورة</label>
-              <input type="url" value={form.logoUrl} onChange={e => setForm({...form, logoUrl: e.target.value})}
-                className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" placeholder="https://example.com/logo.png" />
-            </div>
-            <div className="flex items-center">
-              {form.logoUrl ? (
-                <img src={form.logoUrl} alt="Logo" className="h-12 rounded border border-border" />
-              ) : (
-                <span className="text-text-muted text-xs font-mono">لا يوجد شعار</span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Description */}
-        <div className="space-y-1">
-          <h3 className="text-text font-bold font-mono text-sm flex items-center gap-2"><FiTerminal className="text-primary" /> الوصف</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-text-muted text-xs mb-1 font-mono">English</label>
+                className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" />
+            </Field>
+            <Field label={descEN}>
               <textarea rows={3} value={form.description} onChange={e => setForm({...form, description: e.target.value})}
-                className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
-            </div>
-            <div>
-              <label className="block text-text-muted text-xs mb-1 font-mono">عربي</label>
+                className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
+            </Field>
+            <Field label={descAR}>
               <textarea rows={3} value={form.descriptionAr} onChange={e => setForm({...form, descriptionAr: e.target.value})}
-                className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono text-sm" />
-            </div>
+                className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" />
+            </Field>
           </div>
-        </div>
+        </Section>
 
-        {/* Branding */}
-        <div className="space-y-1">
-          <h3 className="text-text font-bold font-mono text-sm flex items-center gap-2"><FiEdit3 className="text-primary" /> العلامة التجارية</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-text-muted text-xs mb-1 font-mono">اللون الأساسي</label>
-              <div className="flex items-center gap-2">
-                <input type="color" value={form.primaryColor} onChange={e => setForm({...form, primaryColor: e.target.value})}
-                  className="w-12 h-12 bg-secondary border border-border rounded-lg cursor-pointer" />
-                <span className="text-text-muted text-xs font-mono">{form.primaryColor}</span>
-              </div>
-            </div>
-            <div>
-              <label className="block text-text-muted text-xs mb-1 font-mono">سعر الباقة</label>
-              <input type="number" value={form.premiumPrice} onChange={e => setForm({...form, premiumPrice: parseInt(e.target.value) || 0})}
-                className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono" />
-            </div>
-            <div>
-              <label className="block text-text-muted text-xs mb-1 font-mono">العملة</label>
-              <input type="text" value={form.currency} onChange={e => setForm({...form, currency: e.target.value})}
-                className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono" />
-            </div>
+        <Section title={t('admin.settings.logo')}>
+          <div className="flex items-center gap-4">
+            {form.logoUrl ? (
+              <img src={form.logoUrl} alt="" className="w-16 h-16 rounded-lg object-cover border border-border" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+            ) : (
+              <div className="w-16 h-16 rounded-lg bg-secondary border border-border flex items-center justify-center"><FiImage className="text-text-muted" size={20} /></div>
+            )}
+            <input type="text" value={form.logoUrl} onChange={e => setForm({...form, logoUrl: e.target.value})} placeholder={t('admin.settings.imageUrl')}
+              className="flex-1 bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
           </div>
-        </div>
+        </Section>
 
-        {/* Contact */}
-        <div className="space-y-1">
-          <h3 className="text-text font-bold font-mono text-sm flex items-center gap-2"><FiMail className="text-primary" /> التواصل</h3>
-          <div>
-            <label className="block text-text-muted text-xs mb-1 font-mono">البريد الإلكتروني للدعم</label>
-            <input type="email" value={form.contactEmail} onChange={e => setForm({...form, contactEmail: e.target.value})}
-              className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono" dir="ltr" />
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="space-y-1">
-          <h3 className="text-text font-bold font-mono text-sm flex items-center gap-2"><FiTerminal className="text-primary" /> التذييل</h3>
+        <Section title={t('admin.settings.contact')}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-text-muted text-xs mb-1 font-mono">English</label>
+            <Field label={t('admin.settings.supportEmail')}>
+              <input type="email" value={form.supportEmail} onChange={e => setForm({...form, supportEmail: e.target.value})}
+                className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
+            </Field>
+            <Field label={footerEN}>
               <input type="text" value={form.footerText} onChange={e => setForm({...form, footerText: e.target.value})}
-                className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono" dir="ltr" />
-            </div>
-            <div>
-              <label className="block text-text-muted text-xs mb-1 font-mono">عربي</label>
+                className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
+            </Field>
+            <Field label={footerAR}>
               <input type="text" value={form.footerTextAr} onChange={e => setForm({...form, footerTextAr: e.target.value})}
-                className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono" />
-            </div>
+                className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" />
+            </Field>
           </div>
-        </div>
+        </Section>
 
-        {/* Social Links */}
-        <div className="space-y-1">
-          <h3 className="text-text font-bold font-mono text-sm flex items-center gap-2"><FiGlobe className="text-primary" /> روابط التواصل الاجتماعي</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {(['facebook', 'twitter', 'github', 'youtube', 'tiktok', 'telegram', 'instagram'] as const).map((platform) => (
-              <div key={platform}>
-                <label className="block text-text-muted text-xs mb-1 font-mono">{platform}</label>
-                <input type="url" value={form.socialLinks[platform] || ''} onChange={e => setForm({...form, socialLinks: {...form.socialLinks, [platform]: e.target.value}})}
-                  className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" placeholder={`https://${platform}.com/...`} />
-              </div>
-            ))}
+        <Section title={t('admin.settings.social')}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Field label="GitHub">
+              <input type="text" value={form.socialGithub} onChange={e => setForm({...form, socialGithub: e.target.value})}
+                className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
+            </Field>
+            <Field label="Twitter / X">
+              <input type="text" value={form.socialTwitter} onChange={e => setForm({...form, socialTwitter: e.target.value})}
+                className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
+            </Field>
+            <Field label="YouTube">
+              <input type="text" value={form.socialYoutube} onChange={e => setForm({...form, socialYoutube: e.target.value})}
+                className="w-full bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
+            </Field>
           </div>
-        </div>
+        </Section>
 
-        {/* Save */}
-        <div className="border-t border-border pt-6">
-          <button onClick={handleSave} className="flex items-center gap-2 px-6 py-3 bg-primary text-secondary font-bold rounded-lg hover:bg-primary-dark transition-colors font-mono">
-            <FiSave /> حفظ الإعدادات
-          </button>
-        </div>
+        <Section title={t('admin.settings.primaryColor')}>
+          <div className="flex items-center gap-4">
+            <input type="color" value={form.primaryColor} onChange={e => setForm({...form, primaryColor: e.target.value})}
+              className="w-12 h-12 rounded-lg cursor-pointer bg-secondary border border-border" />
+            <input type="text" value={form.primaryColor} onChange={e => setForm({...form, primaryColor: e.target.value})}
+              className="w-32 bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
+            <Field label={t('admin.settings.price')}>
+              <input type="number" value={form.premiumPrice} onChange={e => setForm({...form, premiumPrice: parseInt(e.target.value) || 0})}
+                className="w-24 bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" />
+            </Field>
+            <Field label={t('admin.settings.currency')}>
+              <input type="text" value={form.currency} onChange={e => setForm({...form, currency: e.target.value})}
+                className="w-24 bg-secondary border border-border rounded-lg py-2 px-3 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
+            </Field>
+          </div>
+        </Section>
+
+        <button onClick={handleSave} disabled={saving}
+          className="flex items-center gap-2 px-6 py-3 bg-primary text-secondary font-bold rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 font-mono">
+          <FiSave /> {saving ? t('common.loading') : t('admin.settings.saveBtn')}
+        </button>
       </div>
+    </div>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="bg-surface rounded-xl border border-border p-6 space-y-4">
+      <h3 className="font-bold text-text font-mono text-sm flex items-center gap-2"><FiTerminal className="text-primary" /> {title}</h3>
+      {children}
+    </div>
+  );
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className="block text-text-muted text-xs mb-1 font-mono">{label}</label>
+      {children}
     </div>
   );
 }

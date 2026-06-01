@@ -8,12 +8,12 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useT } from '@/contexts/LangContext';
 import { logoutUser } from '@/lib/auth';
 import { SITE_ABBR } from '@/lib/constants';
-import { FiMenu, FiX, FiTerminal, FiLogOut, FiUser, FiSun, FiMoon, FiGlobe, FiCommand, FiChevronRight, FiChevronLeft, FiAward, FiTrendingUp } from 'react-icons/fi';
+import { FiMenu, FiX, FiTerminal, FiLogOut, FiUser, FiSun, FiMoon, FiGlobe, FiCommand, FiChevronRight, FiChevronLeft, FiAward, FiTrendingUp, FiShield } from 'react-icons/fi';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const { firebaseUser, userProfile } = useAuth();
+  const { firebaseUser, userProfile, isAdmin } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { t, lang, setLang, dir } = useT();
 
@@ -60,7 +60,19 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className={`px-4 py-2 rounded-lg text-sm transition-all font-mono flex items-center gap-1 ${
+                  isActive('/admin') || pathname.startsWith('/admin')
+                    ? 'text-accent bg-accent/10 border border-accent/20 shadow-sm shadow-accent/5'
+                    : 'text-accent/70 hover:text-accent hover:bg-accent/5'
+                }`}
+              >
+                <FiShield size={14} />
+                {t('nav.admin')}
+              </Link>
+            )}
           </div>
 
           {/* Right section */}
@@ -186,6 +198,11 @@ export default function Navbar() {
                     <p className="text-text-muted text-xs truncate">{firebaseUser.email}</p>
                   </div>
                 </div>
+                {isAdmin && (
+                  <MobileLink href="/admin" onClick={() => setIsOpen(false)} active={pathname.startsWith('/admin')} dir={dir}>
+                    <span className="flex items-center gap-2"><FiShield size={14} /> {t('nav.admin')}</span>
+                  </MobileLink>
+                )}
                 <MobileLink href="/profile" onClick={() => setIsOpen(false)} active={isActive('/profile')} dir={dir}>
                   <span className="flex items-center gap-2"><FiUser size={14} /> {t('nav.profile')}</span>
                 </MobileLink>

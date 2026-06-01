@@ -3,12 +3,14 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getLesson, updateLesson, getCategories } from '@/lib/firestore';
+import { useT } from '@/contexts/LangContext';
 import { uploadVideo } from '@/lib/upload';
 import type { Category } from '@/lib/types';
 import toast from 'react-hot-toast';
 import { FiSave, FiX, FiBook, FiTerminal, FiUpload, FiTrash2 } from 'react-icons/fi';
 
 export default function EditLessonPage() {
+  const { t } = useT();
   const params = useParams();
   const router = useRouter();
   const id = params?.id as string;
@@ -42,7 +44,7 @@ export default function EditLessonPage() {
             showDisclaimer: lesson.showDisclaimer || false,
           });
         }
-      } catch { toast.error('فشل تحميل الدرس'); }
+      } catch { toast.error(t('admin.lessons.new.loadError')); }
       finally { setLoading(false); }
     };
     load();
@@ -51,18 +53,15 @@ export default function EditLessonPage() {
   const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith('video/')) { toast.error('يرجى رفع ملف فيديو'); return; }
+    if (!file.type.startsWith('video/')) { toast.error(t('admin.lessons.new.videoRequired')); return; }
     setUploading(true);
     setUploadProgress(0);
     try {
       const url = await uploadVideo(file, `lesson_${id}`, setUploadProgress);
       setForm({ ...form, videoUrl: url });
-      toast.success('تم رفع الفيديو');
-    } catch {
-      toast.error('فشل رفع الفيديو');
-    } finally {
-      setUploading(false);
-    }
+      toast.success(t('admin.lessons.new.videoSuccess'));
+    } catch { toast.error(t('admin.lessons.new.videoError')); }
+    finally { setUploading(false); }
   };
 
   const handleRemoveVideo = () => setForm({ ...form, videoUrl: '' });
@@ -72,9 +71,9 @@ export default function EditLessonPage() {
     setSaving(true);
     try {
       await updateLesson(id, form);
-      toast.success('تم تحديث الدرس');
+      toast.success(t('admin.lessons.new.updateSuccess'));
       router.push('/admin/lessons');
-    } catch { toast.error('فشل التحديث'); }
+    } catch { toast.error(t('admin.lessons.new.updateError')); }
     finally { setSaving(false); }
   };
 
@@ -97,7 +96,7 @@ export default function EditLessonPage() {
         </div>
         <div className="p-5">
           <h1 className="text-2xl font-bold text-text font-mono flex items-center gap-2">
-            <FiBook className="text-accent" /> تعديل الدرس
+            <FiBook className="text-accent" /> {t('admin.lessons.title')}
           </h1>
         </div>
       </div>
@@ -105,12 +104,12 @@ export default function EditLessonPage() {
       <form onSubmit={handleSubmit} className="bg-surface rounded-xl border border-border p-6 space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-text-muted text-xs mb-1 font-mono">العنوان (English)</label>
+            <label className="block text-text-muted text-xs mb-1 font-mono">{t('admin.lessons.new.titleEn')}</label>
             <input type="text" value={form.title} onChange={e => setForm({...form, title: e.target.value})}
               className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono" dir="ltr" />
           </div>
           <div>
-            <label className="block text-text-muted text-xs mb-1 font-mono">العنوان (عربي)</label>
+            <label className="block text-text-muted text-xs mb-1 font-mono">{t('admin.lessons.new.titleAr')}</label>
             <input type="text" value={form.titleAr} onChange={e => setForm({...form, titleAr: e.target.value})}
               className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono" />
           </div>
@@ -118,55 +117,55 @@ export default function EditLessonPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-text-muted text-xs mb-1 font-mono">الوصف (English)</label>
+            <label className="block text-text-muted text-xs mb-1 font-mono">{t('admin.lessons.new.descEn')}</label>
             <textarea rows={3} value={form.description} onChange={e => setForm({...form, description: e.target.value})}
               className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none resize-none font-mono text-sm" dir="ltr" />
           </div>
           <div>
-            <label className="block text-text-muted text-xs mb-1 font-mono">الوصف (عربي)</label>
+            <label className="block text-text-muted text-xs mb-1 font-mono">{t('admin.lessons.new.descAr')}</label>
             <textarea rows={3} value={form.descriptionAr} onChange={e => setForm({...form, descriptionAr: e.target.value})}
               className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none resize-none font-mono text-sm" />
           </div>
         </div>
 
         <div>
-          <label className="block text-text-muted text-xs mb-1 font-mono">المحتوى (عربي)</label>
+          <label className="block text-text-muted text-xs mb-1 font-mono">{t('admin.lessons.new.contentAr')}</label>
           <textarea rows={10} value={form.contentAr} onChange={e => setForm({...form, contentAr: e.target.value})}
             className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none resize-none font-mono text-sm leading-relaxed" />
         </div>
 
         <div>
-          <label className="block text-text-muted text-xs mb-1 font-mono">المحتوى (English)</label>
+          <label className="block text-text-muted text-xs mb-1 font-mono">{t('admin.lessons.new.contentEn')}</label>
           <textarea rows={10} value={form.content} onChange={e => setForm({...form, content: e.target.value})}
             className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none resize-none font-mono text-sm leading-relaxed" dir="ltr" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-text-muted text-xs mb-1 font-mono">النوع</label>
+            <label className="block text-text-muted text-xs mb-1 font-mono">{t('admin.lessons.new.type')}</label>
             <select value={form.type} onChange={e => setForm({...form, type: e.target.value})}
               className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono text-sm">
-              <option value="free">مجاني</option>
-              <option value="premium">مدفوع</option>
+              <option value="free">{t('admin.categories.free')}</option>
+              <option value="premium">{t('admin.categories.premium')}</option>
             </select>
           </div>
           <div>
-            <label className="block text-text-muted text-xs mb-1 font-mono">التصنيف</label>
+            <label className="block text-text-muted text-xs mb-1 font-mono">{t('admin.lessons.new.category')}</label>
             <select value={form.categoryId} onChange={e => setForm({...form, categoryId: e.target.value})}
               className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono text-sm">
-              <option value="">— بدون تصنيف —</option>
+              <option value="">{t('admin.lessons.new.noCategory')}</option>
               {categories.filter(c => c.type === form.type).map(c => (
                 <option key={c.id} value={c.id}>{c.nameAr}</option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-text-muted text-xs mb-1 font-mono">الترتيب</label>
+            <label className="block text-text-muted text-xs mb-1 font-mono">{t('admin.lessons.new.order')}</label>
             <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})}
               className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono" />
           </div>
           <div>
-            <label className="block text-text-muted text-xs mb-1 font-mono">المدة</label>
+            <label className="block text-text-muted text-xs mb-1 font-mono">{t('admin.lessons.new.duration')}</label>
             <input type="text" value={form.duration} onChange={e => setForm({...form, duration: e.target.value})}
               className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono" />
           </div>
@@ -174,19 +173,19 @@ export default function EditLessonPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-text-muted text-xs mb-1 font-mono">الأمر (اختياري)</label>
+            <label className="block text-text-muted text-xs mb-1 font-mono">{t('admin.lessons.new.command')}</label>
             <input type="text" value={form.command} onChange={e => setForm({...form, command: e.target.value})}
               className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
           </div>
           <div>
-            <label className="block text-text-muted text-xs mb-1 font-mono">مخرج الأمر (اختياري)</label>
+            <label className="block text-text-muted text-xs mb-1 font-mono">{t('admin.lessons.new.commandOutput')}</label>
             <textarea rows={3} value={form.commandOutput} onChange={e => setForm({...form, commandOutput: e.target.value})}
               className="w-full bg-secondary border border-border rounded-lg py-3 px-4 text-text focus:border-primary focus:outline-none font-mono text-sm" dir="ltr" />
           </div>
         </div>
 
         <div>
-          <label className="block text-text-muted text-xs mb-1 font-mono">فيديو الدرس (اختياري)</label>
+          <label className="block text-text-muted text-xs mb-1 font-mono">{t('admin.lessons.new.video')}</label>
           {form.videoUrl ? (
             <div className="space-y-2">
               <video src={form.videoUrl} controls className="w-full max-h-64 rounded-lg bg-black" />
@@ -204,12 +203,12 @@ export default function EditLessonPage() {
               {uploading ? (
                 <div className="text-center">
                   <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-                  <span className="text-primary text-xs font-mono">جاري الرفع {uploadProgress}%</span>
+                  <span className="text-primary text-xs font-mono">{t('admin.lessons.new.uploading').replace('{pct}', String(uploadProgress))}</span>
                 </div>
               ) : (
                 <div className="text-center">
                   <FiUpload className="text-text-muted mx-auto mb-2" size={24} />
-                  <span className="text-text-muted text-xs font-mono">اضغط لرفع فيديو</span>
+                  <span className="text-text-muted text-xs font-mono">{t('admin.lessons.new.uploadVideo')}</span>
                 </div>
               )}
               <input type="file" accept="video/*" onChange={handleVideoUpload} className="hidden" disabled={uploading} />
@@ -222,18 +221,18 @@ export default function EditLessonPage() {
             onChange={e => setForm({...form, showDisclaimer: e.target.checked})}
             className="w-4 h-4 rounded border-border bg-secondary text-primary focus:ring-primary" />
           <label htmlFor="showDisclaimer" className="text-text-muted text-xs font-mono cursor-pointer select-none">
-            {form.showDisclaimer ? 'التوعية الأمنية ظاهرة' : 'إخفاء التوعية الأمنية'}
+            {form.showDisclaimer ? t('admin.lessons.new.showDisclaimer') : t('admin.lessons.new.hideDisclaimer')}
           </label>
         </div>
 
         <div className="flex items-center gap-3 pt-4 border-t border-border">
           <button type="submit" disabled={saving}
             className="flex items-center gap-2 px-6 py-3 bg-primary text-secondary font-bold rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 font-mono">
-            <FiSave /> {saving ? 'جاري الحفظ...' : 'حفظ التغييرات'}
+            <FiSave /> {saving ? t('admin.lessons.new.saving') : t('admin.lessons.new.saveChanges')}
           </button>
           <button type="button" onClick={() => router.push('/admin/lessons')}
             className="flex items-center gap-2 px-6 py-3 border border-border text-text rounded-lg hover:bg-surface-light transition-colors font-mono">
-            <FiX /> إلغاء
+            <FiX /> {t('admin.lessons.new.cancel')}
           </button>
         </div>
       </form>

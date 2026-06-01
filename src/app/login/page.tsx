@@ -58,7 +58,7 @@ export default function LoginPage() {
       toast.success(t('login.success'));
       router.push('/dashboard');
     } catch (err: any) {
-      const msg = getAuthErrorMessage(err?.code || '', lang);
+      const msg = getAuthErrorMessage(err?.code || '', t);
       toast.error(msg);
       if (err?.code?.includes('password') || err?.code?.includes('credential')) {
         setPasswordError(msg);
@@ -78,9 +78,9 @@ export default function LoginPage() {
       router.push('/dashboard');
     } catch (err: any) {
       if (err?.code === 'auth/popup-blocked') {
-        toast.error(getAuthErrorMessage('auth/popup-blocked', lang));
+        toast.error(getAuthErrorMessage('auth/popup-blocked', t));
       } else if (err?.code !== 'auth/popup-closed-by-user' && err?.code !== 'auth/cancelled-popup-request') {
-        toast.error(getAuthErrorMessage(err?.code || '', lang));
+        toast.error(getAuthErrorMessage(err?.code || '', t));
       }
     } finally {
       setGoogleLoading(false);

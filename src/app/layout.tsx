@@ -5,8 +5,11 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Black Vector - منصة تعليم أوامر لينكس',
-  description: 'منصة تعليمية متكاملة لتعلم أوامر لينكس والتعامل مع التيرمينال من الصفر إلى الاحتراف',
+  title: {
+    template: '%s | Black Vector',
+    default: 'Black Vector - منصة تعليم أوامر لينكس',
+  },
+  description: 'منصة تعليمية متكاملة لتعلم أوامر لينكس من الصفر إلى الاحتراف. An integrated platform for learning Linux commands and terminal from scratch.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

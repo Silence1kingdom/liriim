@@ -35,13 +35,13 @@ const formatDateTime = (timestamp: number, lang: 'ar' | 'en'): string => {
   } catch { return '—'; }
 };
 
-const getRelativeTime = (timestamp: number, lang: 'ar' | 'en'): string => {
+const getRelativeTime = (timestamp: number, t: (k: string) => string): string => {
   const diff = Date.now() - timestamp;
   const days = Math.floor(diff / 86400000);
-  if (days === 0) return lang === 'ar' ? 'اليوم' : 'Today';
-  if (days === 1) return lang === 'ar' ? 'أمس' : 'Yesterday';
-  if (days < 7) return lang === 'ar' ? `منذ ${days} أيام` : `${days} days ago`;
-  return formatDate(timestamp, lang);
+  if (days === 0) return t('profile.today');
+  if (days === 1) return t('profile.yesterday');
+  if (days < 7) return t('profile.daysAgo').replace('{days}', String(days));
+  return formatDate(timestamp, 'ar');
 };
 
 export default function ProfilePage() {
@@ -208,7 +208,7 @@ export default function ProfilePage() {
                 {userProfile.lastLoginAt && (
                   <p className="text-xs text-text-muted mt-1.5 font-mono flex items-center gap-1 justify-center md:justify-start">
                     <FiClock size={11} />
-                    {t('profile.lastLogin')}: {getRelativeTime(userProfile.lastLoginAt, lang)}
+                    {t('profile.lastLogin')}: {getRelativeTime(userProfile.lastLoginAt, t)}
                   </p>
                 )}
               </div>

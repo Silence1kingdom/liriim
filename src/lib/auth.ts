@@ -179,15 +179,15 @@ export const getPasswordStrengthColor = (score: number): string => {
   return '#00ff41';
 };
 
-export const getPasswordStrengthLabel = (score: number, lang: 'ar' | 'en'): string => {
-  if (score <= 1) return lang === 'ar' ? 'ضعيفة' : 'Weak';
-  if (score <= 2) return lang === 'ar' ? 'متوسطة' : 'Medium';
-  if (score <= 3) return lang === 'ar' ? 'جيدة' : 'Good';
-  if (score <= 4) return lang === 'ar' ? 'قوية' : 'Strong';
-  return lang === 'ar' ? 'ممتازة' : 'Excellent';
+export const getPasswordStrengthLabel = (score: number, t: (k: string) => string): string => {
+  if (score <= 1) return t('password.weak');
+  if (score <= 2) return t('password.medium');
+  if (score <= 3) return t('password.good');
+  if (score <= 4) return t('password.strong');
+  return t('password.excellent');
 };
 
-export const getAuthErrorMessage = (code: string, lang: 'ar' | 'en'): string => {
+export const getAuthErrorMessage = (code: string, t: (k: string) => string): string => {
   const messages: Record<string, { ar: string; en: string }> = {
     'auth/invalid-credential': { ar: 'البريد الإلكتروني أو كلمة المرور غير صحيحة', en: 'Invalid email or password' },
     'auth/user-not-found': { ar: 'لا يوجد حساب بهذا البريد الإلكتروني', en: 'No account with this email' },
@@ -203,5 +203,5 @@ export const getAuthErrorMessage = (code: string, lang: 'ar' | 'en'): string => 
     'auth/cancelled-popup-request': { ar: 'تم إلغاء الطلب', en: 'Request was cancelled' },
     'auth/network-request-failed': { ar: 'خطأ في الشبكة. تأكد من اتصالك بالإنترنت', en: 'Network error. Check your internet connection' },
   };
-  return messages[code]?.[lang] || (lang === 'ar' ? 'حدث خطأ' : 'An error occurred');
+  return messages[code]?.['ar'] || t('common.error');
 };

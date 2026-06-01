@@ -149,9 +149,7 @@ export default function QuizPage() {
                       <span className="text-text">{lang === 'ar' ? q.question : q.questionEn}</span>
                     </div>
                     <p className="text-text-muted mt-1 mr-5">
-                      {lang === 'ar'
-                        ? `الإجابة: ${q.options[q.correct]}`
-                        : `Answer: ${q.optionsEn[q.correct]}`}
+                      {t('quiz.answerLabel')}{(lang === 'ar' ? q.options : q.optionsEn)[q.correct]}
                     </p>
                   </div>
                 ))}

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useT } from '@/contexts/LangContext';
-import { FiHome, FiBook, FiGrid, FiUsers, FiSettings, FiTerminal, FiArrowRight, FiMail } from 'react-icons/fi';
+import { FiHome, FiBook, FiGrid, FiUsers, FiSettings, FiTerminal, FiArrowRight, FiMail, FiShield } from 'react-icons/fi';
 
 export default function AdminSidebar() {
   const { t, dir } = useT();
@@ -16,6 +16,7 @@ export default function AdminSidebar() {
     { href: '/admin/users', label: t('admin.users'), icon: FiUsers },
     { href: '/admin/messages', label: t('admin.messages'), icon: FiMail },
     { href: '/admin/settings', label: t('admin.settings'), icon: FiSettings },
+    { href: '/admin/seed', label: 'Seed', icon: FiShield },
   ];
 
   return (
@@ -26,7 +27,7 @@ export default function AdminSidebar() {
       </Link>
       <nav className="space-y-1">
         {adminLinks.map((link) => {
-          const isActive = pathname === link.href;
+          const isActive = link.href === '/admin' ? pathname === '/admin' : pathname.startsWith(link.href);
           return (
             <Link
               key={link.href}
